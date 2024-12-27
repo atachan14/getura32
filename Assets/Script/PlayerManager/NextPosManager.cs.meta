@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 04f5aeb0c009fda4fbceb254904052bd
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - pController: {instanceID: 0}
+  - pClickMoveEffect: {fileID: 6182275077804975917, guid: cc64e99d0008689489328ac437d56fdb, type: 3}
+  - pClickMoveMark: {fileID: 7042895240213307620, guid: 78b1d66086038b2499ffa4a821963ad0, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
