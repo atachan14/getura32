@@ -5,11 +5,11 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Title : NetworkBehaviour
+public class ButtonManager : NetworkBehaviour
 {
     public TMP_InputField nameInputField;
-    public TextMeshProUGUI displayNameText;
     public PlayerStatus playerStatus;
+    public NamePlate NamePlate;
     public void StartHost()
     {
         NetworkManager.Singleton.StartHost();
@@ -25,14 +25,13 @@ public class Title : NetworkBehaviour
 
     public void OnSubmitName()
     {
+        Debug.Log("OnSubmitName1 PlayerName:" + playerStatus.Name);
+        Debug.Log("OnSubmitName1 nameInputField.text:" + nameInputField.text);
+        Debug.Log(" 1NamePlate.DisplayName:" + NamePlate.DisplayName);
         string playerName = nameInputField.text;  // 入力された名前を取得
-        playerStatus.name = playerName;  // PlayerStatesにセット
-
-        // 必要に応じて、名前をUIに表示
-        displayNameText.text = playerName;
-
-        // 名前入力UIを非表示にするなど
-        nameInputField.gameObject.SetActive(false);
+        playerStatus.Name.Value = playerName;  // PlayerStatesにセット
+        NamePlate.DisplayName = playerName;
+        Debug.Log(" 2NamePlate.DisplayName:" + NamePlate.DisplayName);
     }
 
 }

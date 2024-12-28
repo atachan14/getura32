@@ -130,8 +130,9 @@ GameObject:
   - component: {fileID: 2573807}
   - component: {fileID: 2573809}
   - component: {fileID: 2573808}
+  - component: {fileID: 2573810}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: NamePlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,7 +154,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 13}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2573808
@@ -255,6 +256,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2573806}
   m_CullTransparentMesh: 1
+--- !u!114 &2573810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2573806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe9e7bf44bc26a141b51e0886e6d50b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameTMP: {fileID: 2573808}
+  playerStatus: {fileID: 988796920}
 --- !u!1 &346108708
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,8 +302,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   nameInputField: {fileID: 1793541793}
-  displayNameText: {fileID: 0}
   playerStatus: {fileID: 988796920}
+  NamePlate: {fileID: 2573810}
 --- !u!4 &346108710
 Transform:
   m_ObjectHideFlags: 0
@@ -297,8 +312,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 346108708}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 405, y: 187.5, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 405.00003, y: 187.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -981,10 +996,19 @@ PrefabInstance:
       value: 743072798
       objectReference: {fileID: 0}
     - target: {fileID: 8176683915115214338, guid: b86654ab9dc3d6a4581e4c6924f40f61, type: 3}
+      propertyPath: nameTMP
+      value: 
+      objectReference: {fileID: 2573808}
+    - target: {fileID: 8176683915115214338, guid: b86654ab9dc3d6a4581e4c6924f40f61, type: 3}
       propertyPath: playerStatus
       value: 
       objectReference: {fileID: 988796920}
-    m_RemovedComponents: []
+    - target: {fileID: 8176683915115214338, guid: b86654ab9dc3d6a4581e4c6924f40f61, type: 3}
+      propertyPath: playerNameText
+      value: 
+      objectReference: {fileID: 2573808}
+    m_RemovedComponents:
+    - {fileID: 8176683915115214338, guid: b86654ab9dc3d6a4581e4c6924f40f61, type: 3}
     m_RemovedGameObjects:
     - {fileID: 1534589169553020970, guid: b86654ab9dc3d6a4581e4c6924f40f61, type: 3}
     m_AddedGameObjects:
@@ -1586,8 +1610,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_AnchoredPosition: {x: 0.5, y: 2.3}
+  m_SizeDelta: {x: 15, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1560930394
 MonoBehaviour:
@@ -1665,7 +1689,7 @@ GameObject:
   - component: {fileID: 1751108156}
   - component: {fileID: 1751108155}
   m_Layer: 5
-  m_Name: Button
+  m_Name: HostButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1798,7 +1822,7 @@ GameObject:
   - component: {fileID: 1793541794}
   - component: {fileID: 1793541793}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: InputName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1885,7 +1909,19 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 346108709}
+        m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
+        m_MethodName: OnSubmitName
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -1976,7 +2012,7 @@ GameObject:
   - component: {fileID: 1856251393}
   - component: {fileID: 1856251392}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: ClientButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2104,5 +2140,5 @@ SceneRoots:
   - {fileID: 1374845686}
   - {fileID: 752681151}
   - {fileID: 555777596}
-  - {fileID: 346108710}
   - {fileID: 988796919}
+  - {fileID: 346108710}
