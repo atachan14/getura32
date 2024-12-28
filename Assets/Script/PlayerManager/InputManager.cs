@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    public OwnerPlayer OwnerPlayer;
     public QolEffect QolEffect;
     public CameraController cameraController;
     // Start is called before the first frame update
