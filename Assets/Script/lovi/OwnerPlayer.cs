@@ -11,48 +11,57 @@ public class OwnerPlayer : NetworkBehaviour
     private Vector3 nextPos;
     private Vector3 direction;
     private bool isMoving = false;
-    // Start is called before the first frame update
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (IsOwner)
         {
-            if (Input.GetMouseButtonDown(1)) ClickMove(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            if (Input.GetMouseButtonDown(1))
+            {
+                // ï¿½}ï¿½Eï¿½Xï¿½Nï¿½ï¿½ï¿½bï¿½Nï¿½Ê’uï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ÄƒTï¿½[ï¿½oï¿½[ï¿½É‘ï¿½ï¿½M
+                Vector3 clickWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                clickWorldPos.z = 0; // Zï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½Å’ï¿½
+                ClickMoveServerRpc(clickWorldPos); // ï¿½Tï¿½[ï¿½oï¿½[ï¿½É’Ê’m
+            }
         }
-
-
     }
 
     void FixedUpdate()
     {
-        if (IsOwner)
+        if (isMoving)
         {
-            if (isMoving) MoveToNextPosServerRpc();
+            MoveToNextPosition();
         }
     }
-    public void ClickMove(Vector3 worldPosition)
+
+    [ServerRpc]
+    void ClickMoveServerRpc(Vector3 worldPosition)
     {
-        worldPosition.z = 0; // ZÀ•W‚Í2D‚Ìê‡ŒÅ’è’l‚É‚·‚é
         nextPos = worldPosition;
         isMoving = true;
+
+        // Rigidbody2Dï¿½Ì‘ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½g
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
     }
-    [ServerRpc]
-    void MoveToNextPosServerRpc()
+
+    void MoveToNextPosition()
     {
+        // ï¿½ï¿½ï¿½İˆÊ’uï¿½ï¿½ï¿½çŸï¿½ÌˆÊ’uï¿½Ö‚Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vï¿½Z
         Vector3 direction = (nextPos - transform.position).normalized;
         float step = speed * Time.fixedDeltaTime;
         rb.MovePosition(transform.position + direction * step);
 
+        // ï¿½Ú“Iï¿½nï¿½É“ï¿½ï¿½Bï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½~
         if (Vector3.Distance(transform.position, nextPos) < 0.1f)
         {
-            transform.position = nextPos; // ÅI“I‚ÉˆÊ’u‚ğ³Šm‚É‡‚í‚¹‚é
+            transform.position = nextPos; // ï¿½ÅIï¿½Ê’uï¿½ğ³Šmï¿½Éï¿½ï¿½í‚¹ï¿½ï¿½
             isMoving = false;
         }
     }
-
 }
