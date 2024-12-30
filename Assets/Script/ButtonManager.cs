@@ -25,13 +25,12 @@ public class ButtonManager : NetworkBehaviour
 
     public void OnSubmitName()
     {
-        Debug.Log("OnSubmitName1 PlayerName:" + playerStatus.Name);
         Debug.Log("OnSubmitName1 nameInputField.text:" + nameInputField.text);
-        Debug.Log(" 1NamePlate.DisplayName:" + NamePlate.DisplayName);
+        //Debug.Log(" 1NamePlate.DisplayName:" + NamePlate.DisplayName);
         string playerName = nameInputField.text;  // 入力された名前を取得
-        playerStatus.Name.Value = playerName;  // PlayerStatesにセット
-        NamePlate.DisplayName = playerName;
-        Debug.Log(" 2NamePlate.DisplayName:" + NamePlate.DisplayName);
+        //NamePlate.DisplayName = playerName;
+        PlayerPrefs.SetString("PlayerName", playerName);
+        //Debug.Log(" 2NamePlate.DisplayName:" + NamePlate.DisplayName);
     }
 
 }

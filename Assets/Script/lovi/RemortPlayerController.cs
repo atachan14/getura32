@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class RemortPlayerController : MonoBehaviour
+public class RemortPlayerController : NetworkBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -13,6 +15,9 @@ public class RemortPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (IsServer)
+        {
+            
+        }
     }
 }

@@ -1,31 +1,39 @@
 using UnityEngine;
 using TMPro;
+using Unity.Netcode;
 
-public class NamePlate : MonoBehaviour
+using Unity.Collections;
+
+public class NamePlate : NetworkBehaviour
 {
-    public TextMeshProUGUI nameTMP; // TextMeshProの参照
-    public string DisplayName
-    {
-        get => nameTMP.text;  // 現在のテキストを取得
-        set => nameTMP.text = value;  // テキストを設定
-    }
-    public PlayerStatus playerStatus;   // PlayerStatusの参照
+    // FixedString64Bytes を使用
+    private NetworkVariable<FixedString64Bytes> playerName = new NetworkVariable<FixedString64Bytes>(
+        default(FixedString64Bytes), // デフォルト値
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Server);
+
+    public TextMeshProUGUI nameTMP;
 
     void Start()
     {
-        // PlayerStatusが設定されていない場合はエラーチェック
-        if (playerStatus != null && nameTMP != null)
+        if (IsOwner)
         {
-            // PlayerStatusのnameをTextMeshProに設定
-            nameTMP.text = playerStatus.Name.Value;  // nameを表示
-            Debug.Log("playerStatus.name");
-        }
-        else
-        {
-            Debug.LogWarning("PlayerStatus or playerNameText is not assigned!");
-            Debug.Log("playerStatus.name"+ playerStatus.name);
-            Debug.Log("nameTMP.text:"+nameTMP.text);
+            // ローカルプレイヤーの名前を設定
+            string savedName = PlayerPrefs.GetString("PlayerName", "DefaultName");
+            SetPlayerNameServerRpc(savedName);
         }
     }
 
+    // 名前をServerRpcで設定
+    [ServerRpc]
+    void SetPlayerNameServerRpc(string newName)
+    {
+        playerName.Value = newName; // サーバーで値を更新
+    }
+
+    void Update()
+    {
+        // ネットワーク変数が更新されたら表示を反映
+        nameTMP.text = playerName.Value.ToString();
+    }
 }

@@ -30,7 +30,10 @@ public class OwnerPlayer : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (isMoving) MoveToNextPos();
+        if (IsOwner)
+        {
+            if (isMoving) MoveToNextPosServerRpc();
+        }
     }
     public void ClickMove(Vector3 worldPosition)
     {
@@ -38,8 +41,8 @@ public class OwnerPlayer : NetworkBehaviour
         nextPos = worldPosition;
         isMoving = true;
     }
-
-    void MoveToNextPos()
+    [ServerRpc]
+    void MoveToNextPosServerRpc()
     {
         Vector3 direction = (nextPos - transform.position).normalized;
         float step = speed * Time.fixedDeltaTime;
