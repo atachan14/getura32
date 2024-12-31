@@ -24,6 +24,11 @@ public class NamePlate : NetworkBehaviour
         }
     }
 
+    public void SetPlayerName(string newName)
+    {
+        playerName.Value = newName; // サーバーで値を更新
+    }
+
     // 名前をServerRpcで設定
     [ServerRpc]
     void SetPlayerNameServerRpc(string newName)

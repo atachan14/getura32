@@ -48,6 +48,7 @@ public class OwnerPlayer : NetworkBehaviour
         // Rigidbody2D�̑��x�����Z�b�g
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
+        rb.rotation = 0f; // これで Z 回転をリセット
     }
 
     void MoveToNextPosition()
