@@ -7,9 +7,8 @@ using UnityEngine;
 public class PlayerStatus : NetworkBehaviour
 {
     public NetworkVariable<int> Gold = new NetworkVariable<int>(10000);
-    public NetworkVariable<int> Feeling = new NetworkVariable<int>(50);
-    public NetworkVariable<int> CharmPower = new NetworkVariable<int>(0);
-    public GameObject playerObject;
+    public NetworkVariable<int> Fine = new NetworkVariable<int>(50);
+    public NetworkVariable<int> Charm = new NetworkVariable<int>(0);
 
     
 

@@ -32,6 +32,7 @@ public class ButtonManager : NetworkBehaviour
         PlayerPrefs.SetString("PlayerName", playerName);
         //Debug.Log(" 2NamePlate.DisplayName:" + NamePlate.DisplayName);
         NamePlate.SetPlayerName(playerName);
+        Debug.Log("NamePlate.GetName" + NamePlate.GetPlayerName());
     }
 
 }

@@ -6,13 +6,12 @@ using Unity.Collections;
 
 public class NamePlate : NetworkBehaviour
 {
-    // FixedString64Bytes を使用
     private NetworkVariable<FixedString64Bytes> playerName = new NetworkVariable<FixedString64Bytes>(
         default(FixedString64Bytes), // デフォルト値
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Server);
 
-    public TextMeshProUGUI nameTMP;
+    [SerializeField] private  TextMeshProUGUI nameTMP;
 
     void Start()
     {
@@ -27,6 +26,12 @@ public class NamePlate : NetworkBehaviour
     public void SetPlayerName(string newName)
     {
         playerName.Value = newName; // サーバーで値を更新
+        nameTMP.text = newName;
+    }
+
+    public string GetPlayerName()
+    {
+        return playerName.Value.ToString();
     }
 
     // 名前をServerRpcで設定
