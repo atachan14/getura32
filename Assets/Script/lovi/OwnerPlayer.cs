@@ -23,10 +23,9 @@ public class OwnerPlayer : NetworkBehaviour
         {
             if (Input.GetMouseButtonDown(1))
             {
-                // �}�E�X�N���b�N�ʒu���擾���ăT�[�o�[�ɑ��M
                 Vector3 clickWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                clickWorldPos.z = 0; // Z���W���Œ�
-                ClickMoveServerRpc(clickWorldPos); // �T�[�o�[�ɒʒm
+                clickWorldPos.z = 0; 
+                ClickMoveServerRpc(clickWorldPos); 
             }
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour
 {
@@ -48,6 +49,8 @@ public class InputManager : MonoBehaviour
 
     void OpenInfo()
     {
+        Debug.Log("Open Info");
+
 
         // レイキャストを発射
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -58,22 +61,29 @@ public class InputManager : MonoBehaviour
             // ヒットしたオブジェクトがPlayerタグを持っているか確認
             if (hit.collider.CompareTag("CharacterClick"))
             {
+                Debug.Log("click CharacterClick");
+
                 // 対象プレイヤーを取得
                 targetPlayer = hit.collider.gameObject;
 
-                // UIを表示 (ヒット地点にUIを設定)
-                Vector3 uiPosition = hit.point;
-                uiPosition.z = 0; 
-                InfoUI.transform.position = uiPosition;
+                //// UIを表示
                 InfoUIscript.SetTargetName(targetPlayer.GetComponent<NamePlate>().GetPlayerName());
                 InfoUI.SetActive(true);
 
-                Debug.Log("uiPosition:"+uiPosition);
             }
+            else
+            {
+                Debug.Log("click else Tag:"+hit.collider.ToString());
+            }
+        }
+        else if (EventSystem.current.IsPointerOverGameObject())
+        {
+            Debug.Log("click Info UI");
         }
         else
         {
             HideInfoUI();
+            Debug.Log("hit.collider == null");
         }
     }
 
@@ -81,6 +91,7 @@ public class InputManager : MonoBehaviour
     {
         // UIを非表示
         InfoUI.SetActive(false);
+        targetPlayer = null;
     }
 
 
@@ -94,3 +105,4 @@ public class InputManager : MonoBehaviour
 
 
 }
+

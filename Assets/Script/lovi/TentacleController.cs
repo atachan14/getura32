@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TentacleController : NetworkBehaviour
 {
@@ -17,7 +18,6 @@ public class TentacleController : NetworkBehaviour
     {
         if (IsOwner)
         {
-
             if (Input.GetMouseButtonDown(0)) ActivateTentacle();
             if (targetPlayer != null) KeepTentacle();
         }
@@ -68,6 +68,10 @@ public class TentacleController : NetworkBehaviour
             activeTentacle.transform.localScale = new Vector3(1, distance / spriteHeight, 1);
             
             targetPlayer = hit.collider.gameObject;
+        }
+        else if (EventSystem.current.IsPointerOverGameObject())
+        {
+            Debug.Log("click Info UI");
         }
         else
         {
