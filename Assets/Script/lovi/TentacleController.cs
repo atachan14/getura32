@@ -11,9 +11,9 @@ public class TentacleController : NetworkBehaviour
     private GameObject targetPlayer;
 
     // 触手の状態を同期するためのNetworkVariable
-    private NetworkVariable<Vector3> tentaclePosition = new NetworkVariable<Vector3>();
-    private NetworkVariable<Quaternion> tentacleRotation = new NetworkVariable<Quaternion>();
-    private NetworkVariable<float> tentacleScaleY = new NetworkVariable<float>();
+    private readonly NetworkVariable<Vector3> tentaclePosition = new NetworkVariable<Vector3>();
+    private readonly NetworkVariable<Quaternion> tentacleRotation = new NetworkVariable<Quaternion>();
+    private readonly NetworkVariable<float> tentacleScaleY = new NetworkVariable<float>();
 
     void Start()
     {
@@ -22,29 +22,59 @@ public class TentacleController : NetworkBehaviour
 
     void Update()
     {
-        if (IsOwner)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                ActivateTentacleServerRpc();
-            }
 
-            if (targetPlayer != null)
-            {
-                KeepTentacle();
-            }
+        if (IsOwner && Input.GetMouseButtonDown(0))
+        {
+            ActivateTentacle();
         }
+
+        if (IsOwner && targetPlayer != null)
+        {
+            KeepTentacle();
+        }
+
 
         // 触手の同期情報を反映
         SyncTentacle();
     }
 
-    [ServerRpc]
-    public void ActivateTentacleServerRpc()
+    public void ActivateTentacle()
     {
-        ActivateTentacle();
-    }
+        activeTentacle.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 5);
+        inactiveTentacle.SetActive(false);
+        activeTentacle.SetActive(true);
 
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+        if (hit.collider != null && hit.collider.CompareTag("CharacterClick"))
+        {
+            targetPlayer = hit.collider.gameObject;
+
+            // クライアントで計算
+            Vector3 targetPosition = targetPlayer.transform.position;
+            targetPosition.z = activeTentacle.transform.position.z;
+
+            Vector3 direction = targetPosition - activeTentacle.transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            float distance = direction.magnitude;
+            float spriteHeight = activeTentacle.GetComponent<SpriteRenderer>().sprite.bounds.size.y;
+
+            Quaternion calculatedRotation = Quaternion.Euler(0, 0, angle - 90);
+            float calculatedScaleY = distance / spriteHeight;
+
+            // 計算結果をサーバーに送信
+            UpdateTentacleDataServerRpc(activeTentacle.transform.position, calculatedRotation, calculatedScaleY);
+        }
+        else if (EventSystem.current.IsPointerOverGameObject())
+        {
+            Debug.Log("click Info UI");
+        }
+        else
+        {
+            DeactivateTentacle();
+        }
+    }
     public void KeepTentacle()
     {
         Vector3 targetPosition = targetPlayer.transform.position;
@@ -70,11 +100,12 @@ public class TentacleController : NetworkBehaviour
         tentaclePosition.Value = position;
         tentacleRotation.Value = rotation;
         tentacleScaleY.Value = scaleY;
+
     }
 
     public void SyncTentacle()
     {
-        // NetworkVariableの値をUIに反映
+        // NetworkVariableの値を反映
         activeTentacle.transform.position = tentaclePosition.Value;
         activeTentacle.transform.rotation = tentacleRotation.Value;
         activeTentacle.transform.localScale = new Vector3(1, tentacleScaleY.Value, 1);
@@ -84,29 +115,6 @@ public class TentacleController : NetworkBehaviour
     public void DeactivateTentacleServerRpc()
     {
         DeactivateTentacle();
-    }
-
-    public void ActivateTentacle()
-    {
-        activeTentacle.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 5);
-        inactiveTentacle.SetActive(false);
-        activeTentacle.SetActive(true);
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-
-        if (hit.collider != null && hit.collider.CompareTag("CharacterClick"))
-        {
-            targetPlayer = hit.collider.gameObject;
-        }
-        else if (EventSystem.current.IsPointerOverGameObject())
-        {
-            Debug.Log("click Info UI");
-        }
-        else
-        {
-            DeactivateTentacle();
-        }
     }
 
     public void DeactivateTentacle()
