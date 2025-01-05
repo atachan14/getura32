@@ -48,6 +48,7 @@ public class InputManager : MonoBehaviour
 
     void OpenInfo()
     {
+
         // レイキャストを発射
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
@@ -66,6 +67,8 @@ public class InputManager : MonoBehaviour
                 InfoUI.transform.position = uiPosition;
                 InfoUIscript.SetTargetName(targetPlayer.GetComponent<NamePlate>().GetPlayerName());
                 InfoUI.SetActive(true);
+
+                Debug.Log("uiPosition:"+uiPosition);
             }
         }
         else

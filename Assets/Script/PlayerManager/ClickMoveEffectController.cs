@@ -17,7 +17,6 @@ public class ClickMoveEffectController : MonoBehaviour
             objectMaterial = objectRenderer.material; // マテリアルのインスタンスを取得
             initialColor = objectMaterial.color; // 元の色を保存
             StartCoroutine(FadeOutAndDestroy());
-            Debug.Log("ClickMoveEffectController:true");
         }
         else
         {

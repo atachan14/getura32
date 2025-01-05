@@ -22,10 +22,7 @@ public class QolEffect : MonoBehaviour
             Debug.LogError("ClickMoveEffect‚ªnull‚Å‚·Bíœ‚³‚ê‚½‰Â”\«‚ª‚ ‚è‚Ü‚·B");
             return;
         }
-        Debug.Log("QolEffect: this=" + (this != null));
-        Debug.Log("QolEffect: this.gameObject=" + (this.gameObject != null));
-        Debug.Log("QolEffect: ClickMoveEffect=" + (ClickMoveEffect != null));
+      
         Instantiate(ClickMoveEffect, pos, Quaternion.identity,this.transform);
-        Debug.Log("QolEffect:¶¬Š®—¹");
     }
 }
