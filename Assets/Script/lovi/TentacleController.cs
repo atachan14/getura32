@@ -15,6 +15,14 @@ public class TentacleController : NetworkBehaviour
     private readonly NetworkVariable<Quaternion> tentacleRotation = new NetworkVariable<Quaternion>();
     private readonly NetworkVariable<float> tentacleScaleY = new NetworkVariable<float>();
 
+    public NetworkVariable<Vector3> TentaclePosition => tentaclePosition;
+
+    public NetworkVariable<Quaternion> TentacleRotation => tentacleRotation;
+
+    public NetworkVariable<float> TentacleScaleY => tentacleScaleY;
+
+    public GameObject TargetPlayer { get => targetPlayer; set => targetPlayer = value; }
+
     void Start()
     {
         DeactivateTentacle();
@@ -28,7 +36,7 @@ public class TentacleController : NetworkBehaviour
             ActivateTentacle();
         }
 
-        if (IsOwner && targetPlayer != null)
+        if (IsOwner && TargetPlayer != null)
         {
             KeepTentacle();
         }
@@ -49,10 +57,10 @@ public class TentacleController : NetworkBehaviour
 
         if (hit.collider != null && hit.collider.CompareTag("CharacterClick"))
         {
-            targetPlayer = hit.collider.gameObject;
+            TargetPlayer = hit.collider.gameObject;
 
             // クライアントで計算
-            Vector3 targetPosition = targetPlayer.transform.position;
+            Vector3 targetPosition = TargetPlayer.transform.position;
             targetPosition.z = activeTentacle.transform.position.z;
 
             Vector3 direction = targetPosition - activeTentacle.transform.position;
@@ -77,7 +85,7 @@ public class TentacleController : NetworkBehaviour
     }
     public void KeepTentacle()
     {
-        Vector3 targetPosition = targetPlayer.transform.position;
+        Vector3 targetPosition = TargetPlayer.transform.position;
         targetPosition.z = activeTentacle.transform.position.z;
 
         Vector3 direction = targetPosition - activeTentacle.transform.position;
@@ -90,25 +98,26 @@ public class TentacleController : NetworkBehaviour
         activeTentacle.transform.localScale = new Vector3(1, distance / spriteHeight, 1);
 
         // サーバーに同期データを送信
-        UpdateTentacleDataServerRpc(activeTentacle.transform.position, activeTentacle.transform.rotation, activeTentacle.transform.localScale.y);
+        UpdateTentacleDataServerRpc(transform.position, activeTentacle.transform.rotation, activeTentacle.transform.localScale.y);
     }
 
     [ServerRpc]
     public void UpdateTentacleDataServerRpc(Vector3 position, Quaternion rotation, float scaleY)
     {
         // 計算したデータのみを同期
-        tentaclePosition.Value = position;
-        tentacleRotation.Value = rotation;
-        tentacleScaleY.Value = scaleY;
+        TentaclePosition.Value = position;
+        TentacleRotation.Value = rotation;
+        TentacleScaleY.Value = scaleY;
 
     }
 
     public void SyncTentacle()
     {
         // NetworkVariableの値を反映
-        activeTentacle.transform.position = tentaclePosition.Value;
-        activeTentacle.transform.rotation = tentacleRotation.Value;
-        activeTentacle.transform.localScale = new Vector3(1, tentacleScaleY.Value, 1);
+        // 親のワールド座標を基準に触手の座標を更新
+        activeTentacle.transform.position = transform.position;
+        activeTentacle.transform.rotation = TentacleRotation.Value;
+        activeTentacle.transform.localScale = new Vector3(1, TentacleScaleY.Value, 1);
     }
 
     [ServerRpc]
@@ -121,6 +130,6 @@ public class TentacleController : NetworkBehaviour
     {
         inactiveTentacle.SetActive(true);
         activeTentacle.SetActive(false);
-        targetPlayer = null;
+        TargetPlayer = null;
     }
 }
