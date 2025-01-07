@@ -23,11 +23,7 @@ public class DebugUI : MonoBehaviour
         GUI.Label(new Rect(10, 390, 700, 20), "TargetPlayer:" + tentacleController.TargetPlayer.transform.position, customStyle);
         GUI.Label(new Rect(10, 410, 700, 20), "TentaclePosition:" + tentacleController.TentaclePosition.Value, customStyle);
         GUI.Label(new Rect(10, 430, 700, 20), "thisTransformPosition:" + this.transform.position, customStyle);
-
         GUI.Label(new Rect(10, 450, 700, 20), "TentacleRotation:" + tentacleController.TentacleRotation.Value, customStyle);
         GUI.Label(new Rect(10, 470, 700, 20), "tentacleScaleY:" + tentacleController.TentacleScaleY.Value, customStyle);
-
-
-        
     }
 }

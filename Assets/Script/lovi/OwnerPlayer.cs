@@ -44,7 +44,6 @@ public class OwnerPlayer : NetworkBehaviour
         nextPos = worldPosition;
         isMoving = true;
 
-        // Rigidbody2D�̑��x�����Z�b�g
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
         rb.rotation = 0f; // これで Z 回転をリセット
@@ -52,15 +51,13 @@ public class OwnerPlayer : NetworkBehaviour
 
     void MoveToNextPosition()
     {
-        // ���݈ʒu���玟�̈ʒu�ւ̕������v�Z
         Vector3 direction = (nextPos - transform.position).normalized;
         float step = speed * Time.fixedDeltaTime;
         rb.MovePosition(transform.position + direction * step);
 
-        // �ړI�n�ɓ��B�������~
         if (Vector3.Distance(transform.position, nextPos) < 0.1f)
         {
-            transform.position = nextPos; // �ŏI�ʒu�𐳊m�ɍ��킹��
+            transform.position = nextPos; 
             isMoving = false;
         }
     }
