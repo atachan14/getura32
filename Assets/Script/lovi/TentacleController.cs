@@ -25,7 +25,7 @@ public class TentacleController : NetworkBehaviour
 
     void Start()
     {
-        DeactivateTentacle();
+        ContactTentacleServerRpc();
     }
 
     void Update()
@@ -41,22 +41,22 @@ public class TentacleController : NetworkBehaviour
             KeepTentacle();
         }
 
-
         // êGéËÇÃìØä˙èÓïÒÇîΩâf
         SyncTentacle();
     }
 
     public void ActivateTentacle()
     {
-        activeTentacle.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 5);
-        inactiveTentacle.SetActive(false);
-        activeTentacle.SetActive(true);
+        
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
         if (hit.collider != null && hit.collider.CompareTag("CharacterClick"))
         {
+            UnContactTentacleServerRpc();
+
+            activeTentacle.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 5);
             TargetPlayer = hit.collider.gameObject;
 
             // ÉNÉâÉCÉAÉìÉgÇ≈åvéZ
@@ -80,7 +80,7 @@ public class TentacleController : NetworkBehaviour
         }
         else
         {
-            DeactivateTentacle();
+            ContactTentacleServerRpc();
         }
     }
     public void KeepTentacle()
@@ -108,7 +108,6 @@ public class TentacleController : NetworkBehaviour
         TentaclePosition.Value = position;
         TentacleRotation.Value = rotation;
         TentacleScaleY.Value = scaleY;
-
     }
 
     public void SyncTentacle()
@@ -119,14 +118,33 @@ public class TentacleController : NetworkBehaviour
         activeTentacle.transform.rotation = TentacleRotation.Value;
         activeTentacle.transform.localScale = new Vector3(1, TentacleScaleY.Value, 1);
     }
-
     [ServerRpc]
-    public void DeactivateTentacleServerRpc()
+    public void UnContactTentacleServerRpc()
     {
-        DeactivateTentacle();
+        UnContactTentacleClientRpc();
+    }
+    [ClientRpc]
+    public void UnContactTentacleClientRpc()
+    {
+        UnContactTentacle();
+    }
+    public void UnContactTentacle()
+    {
+        inactiveTentacle.SetActive(false);
+        activeTentacle.SetActive(true);
     }
 
-    public void DeactivateTentacle()
+    [ServerRpc]
+    public void ContactTentacleServerRpc()
+    {
+        ContactTentacleClientRpc();
+    }
+    [ClientRpc]
+    public void ContactTentacleClientRpc()
+    {
+        ContactTentacle();
+    }
+    public void ContactTentacle()
     {
         inactiveTentacle.SetActive(true);
         activeTentacle.SetActive(false);
