@@ -5,7 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ButtonManager : NetworkBehaviour
+public class MenuButtonManager : NetworkBehaviour
 {
     public TMP_InputField nameInputField;
     public PlayerStatus playerStatus;

@@ -7,7 +7,7 @@ public class InputManager : MonoBehaviour
 {
     [SerializeField] private QolEffect QolEffect;
     [SerializeField] private GameObject targetInfo; // UIの親オブジェクト
-    [SerializeField] private TargetInfo targetInfoScript;
+    [SerializeField] private TargetUIManager targetInfoScript;
     private GameObject targetPlayer;
 
     [SerializeField] private CameraController cameraController;

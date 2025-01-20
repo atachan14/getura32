@@ -615,7 +615,6 @@ GameObject:
   - component: {fileID: 4796237350690588874}
   - component: {fileID: 3233107752504255013}
   - component: {fileID: 4314499854811265196}
-  - component: {fileID: 7173642578826666356}
   - component: {fileID: 4807617455058861305}
   - component: {fileID: 895719066640888902}
   - component: {fileID: 5990460610914336070}
@@ -623,7 +622,6 @@ GameObject:
   - component: {fileID: 6571697458557658280}
   - component: {fileID: 6188605153877770221}
   - component: {fileID: 980536899576658914}
-  - component: {fileID: 8066289739169347948}
   m_Layer: 0
   m_Name: Character 1 1
   m_TagString: CharacterClick
@@ -732,7 +730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4102734170
+  GlobalObjectIdHash: 3111720705
   InScenePlacedSourceGlobalObjectIdHash: 578380149
   DeferredDespawnTick: 0
   Ownership: 1
@@ -759,19 +757,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   speed: 5
---- !u!114 &7173642578826666356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8501463007481296686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1ae0031f8d5a0947b97b02e8d32d3c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!114 &4807617455058861305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -785,12 +770,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  Gold:
-    m_InternalValue: 10000
-  Fine:
-    m_InternalValue: 50
-  Charm:
-    m_InternalValue: 0
 --- !u!222 &895719066640888902
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -927,19 +906,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   inactiveTentacle: {fileID: 857386873991446368}
   activeTentacle: {fileID: 1903377336699644917}
---- !u!114 &8066289739169347948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8501463007481296686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 027e5970d2f0a854e8c034be09655af6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tentacleController: {fileID: 980536899576658914}
 --- !u!1 &8860980868835103586
 GameObject:
   m_ObjectHideFlags: 0
