@@ -5,14 +5,14 @@ using UnityEngine.Rendering;
 
 public class LovePopupManager : MonoBehaviour
 {
+    [SerializeField] private GameObject self;
     public TextMeshProUGUI senderName;
     public TMP_Text moneyText;
 
-    [SerializeField] private DebugUI debugUI;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        self.SetActive(false);
     }
 
     // Update is called once per frame
@@ -28,7 +28,6 @@ public class LovePopupManager : MonoBehaviour
             GameObject senderGmo = client.PlayerObject.gameObject;
             PlayerStatus senderStatus = senderGmo.GetComponent<PlayerStatus>();
 
-            debugUI.AddDlList($"SetData true,senderName:{senderStatus.PlayerName.Value.ToString()}");
             this.senderName.text = senderStatus.PlayerName.Value.ToString();
         }
         else

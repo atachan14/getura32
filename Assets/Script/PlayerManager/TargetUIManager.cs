@@ -7,7 +7,7 @@ public class TargetUIManager : NetworkBehaviour
 {
     private ulong targetId;
     [SerializeField] private TextMeshProUGUI nameTMP;
-    [SerializeField] private LoveCallWindowManager loveCalls;
+    [SerializeField] private LoveCallsManager loveCalls;
 
     [SerializeField] private DebugUI debugUI;
 
@@ -42,11 +42,9 @@ public class TargetUIManager : NetworkBehaviour
         
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void LoveCallServerRpc(ulong targetId,ulong senderId, int money)
     {
-        debugUI.AddDlList($"LoveCallServerRpc senderId:{senderId}");
-        debugUI.AddDlList($"LoveCallServerRpc targetId:{targetId}");
         LoveCallClientRpc(targetId,senderId, money);
     }
 
@@ -57,7 +55,6 @@ public class TargetUIManager : NetworkBehaviour
         debugUI.AddDlList($"LoveCallClientRpc targetId:{targetId}");
         debugUI.AddDlList($"LoveCallClientRpc myId:{NetworkManager.Singleton.LocalClientId}");
         
-        //targetIdÇégÇ¡ÇƒtargetIdÇæÇØÇ…ëóêMÅB
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
             debugUI.AddDlList($"LoveCallClientRpc true senderId{senderId}");

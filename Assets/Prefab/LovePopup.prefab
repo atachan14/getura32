@@ -858,9 +858,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ebc3d231f230db4696f93199174fab4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  self: {fileID: 4375731466551578397}
   senderName: {fileID: 5737484674081593062}
   moneyText: {fileID: 0}
-  debugUI: {fileID: 0}
 --- !u!1 &5154558013407965649
 GameObject:
   m_ObjectHideFlags: 0

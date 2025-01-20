@@ -16,6 +16,7 @@ public class DebugUI : MonoBehaviour
     private void Update()
     {
             debugText.text = string.Join("\n", dlList);
+
     }
 
     public void AddDlList(string value)
