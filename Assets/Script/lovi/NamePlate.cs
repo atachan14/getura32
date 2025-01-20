@@ -6,8 +6,8 @@ using Unity.Collections;
 
 public class NamePlate : NetworkBehaviour
 {
-    private NetworkVariable<FixedString64Bytes> playerName = new NetworkVariable<FixedString64Bytes>(
-        default(FixedString64Bytes), // デフォルト値
+    private NetworkVariable<FixedString64Bytes> playerName = new(
+        default, // デフォルト値
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Server);
 
@@ -22,10 +22,15 @@ public class NamePlate : NetworkBehaviour
             SetPlayerNameServerRpc(savedName);
         }
     }
+    void Update()
+    {
+        // ネットワーク変数が更新されたら表示を反映
+        nameTMP.text = playerName.Value.ToString();
+    }
 
     public void SetPlayerName(string newName)
     {
-        playerName.Value = newName; // サーバーで値を更新
+        playerName.Value = newName; 
         nameTMP.text = newName;
     }
 
@@ -38,12 +43,8 @@ public class NamePlate : NetworkBehaviour
     [ServerRpc]
     void SetPlayerNameServerRpc(string newName)
     {
-        playerName.Value = newName; // サーバーで値を更新
+        playerName.Value = newName; 
     }
 
-    void Update()
-    {
-        // ネットワーク変数が更新されたら表示を反映
-        nameTMP.text = playerName.Value.ToString();
-    }
+  
 }

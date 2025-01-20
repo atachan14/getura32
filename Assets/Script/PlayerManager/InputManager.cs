@@ -6,8 +6,8 @@ using UnityEngine.EventSystems;
 public class InputManager : MonoBehaviour
 {
     [SerializeField] private QolEffect QolEffect;
-    [SerializeField] private GameObject InfoUI; // UIの親オブジェクト
-    [SerializeField] private InfoUI InfoUIscript;
+    [SerializeField] private GameObject targetInfo; // UIの親オブジェクト
+    [SerializeField] private TargetInfo targetInfoScript;
     private GameObject targetPlayer;
 
     [SerializeField] private CameraController cameraController;
@@ -15,7 +15,7 @@ public class InputManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InfoUI.SetActive(false);
+        targetInfo.SetActive(false);
     }
 
     // Update is called once per frame
@@ -67,8 +67,8 @@ public class InputManager : MonoBehaviour
                 targetPlayer = hit.collider.gameObject;
 
                 //// UIを表示
-                InfoUIscript.SetTargetName(targetPlayer.GetComponent<NamePlate>().GetPlayerName());
-                InfoUI.SetActive(true);
+                targetInfoScript.SetTarget(targetPlayer);
+                targetInfo.SetActive(true);
 
             }
             else
@@ -90,7 +90,7 @@ public class InputManager : MonoBehaviour
     void HideInfoUI()
     {
         // UIを非表示
-        InfoUI.SetActive(false);
+        targetInfo.SetActive(false);
         targetPlayer = null;
     }
 

@@ -35,12 +35,10 @@ public class TentacleController : NetworkBehaviour
         {
             ActivateTentacle();
         }
-
         if (IsOwner && TargetPlayer != null)
         {
             KeepTentacle();
         }
-
         // êGéËÇÃìØä˙èÓïÒÇîΩâf
         SyncTentacle();
     }
@@ -109,7 +107,6 @@ public class TentacleController : NetworkBehaviour
         TentacleRotation.Value = rotation;
         TentacleScaleY.Value = scaleY;
     }
-
     public void SyncTentacle()
     {
         // NetworkVariableÇÃílÇîΩâf
@@ -118,6 +115,7 @@ public class TentacleController : NetworkBehaviour
         activeTentacle.transform.rotation = TentacleRotation.Value;
         activeTentacle.transform.localScale = new Vector3(1, TentacleScaleY.Value, 1);
     }
+
     [ServerRpc]
     public void UnContactTentacleServerRpc()
     {
@@ -126,13 +124,10 @@ public class TentacleController : NetworkBehaviour
     [ClientRpc]
     public void UnContactTentacleClientRpc()
     {
-        UnContactTentacle();
-    }
-    public void UnContactTentacle()
-    {
         inactiveTentacle.SetActive(false);
         activeTentacle.SetActive(true);
     }
+ 
 
     [ServerRpc]
     public void ContactTentacleServerRpc()
@@ -142,12 +137,9 @@ public class TentacleController : NetworkBehaviour
     [ClientRpc]
     public void ContactTentacleClientRpc()
     {
-        ContactTentacle();
-    }
-    public void ContactTentacle()
-    {
         inactiveTentacle.SetActive(true);
         activeTentacle.SetActive(false);
         TargetPlayer = null;
     }
+  
 }

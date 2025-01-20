@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class RemortPlayerController : NetworkBehaviour
+public class SendOwner : NetworkBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -15,9 +15,12 @@ public class RemortPlayerController : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (IsServer)
-        {
-            
-        }
+        
     }
+
+    public void ShowLovePopup(GameObject target)
+    {
+
+    }
+
 }

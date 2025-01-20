@@ -6,16 +6,26 @@ using UnityEngine;
 
 public class PlayerStatus : NetworkBehaviour
 {
-    public NetworkVariable<int> Gold = new NetworkVariable<int>(10000);
-    public NetworkVariable<int> Fine = new NetworkVariable<int>(50);
-    public NetworkVariable<int> Charm = new NetworkVariable<int>(0);
+    private NetworkVariable<FixedString64Bytes> playerName = new();
+    private NetworkVariable<int> gold = new(10000);
+    private NetworkVariable<int> fine = new(50);
+    private NetworkVariable<int> charm = new(0);
 
-    
+    public NetworkVariable<FixedString64Bytes> PlayerName { get => playerName; set => playerName = value; }
+    public NetworkVariable<int> Gold { get => gold; set => gold = value; }
+    public NetworkVariable<int> Fine { get => fine; set => fine = value; }
+    public NetworkVariable<int> Charm { get => charm; set => charm = value; }
+
+
 
     // Start is called before the first frame update
     void Start()
     {
-      
+        if (IsOwner)
+        {
+            string savedName = PlayerPrefs.GetString("PlayerName", "DefaultName");
+            SetPlayerNameServerRpc(savedName);
+        }
     }
 
     // Update is called once per frame
@@ -24,4 +34,9 @@ public class PlayerStatus : NetworkBehaviour
         
     }
 
+    [ServerRpc]
+    void SetPlayerNameServerRpc(string newName)
+    {
+        PlayerName.Value = newName;
+    }
 }
