@@ -32,14 +32,8 @@ public class TargetUIManager : NetworkBehaviour
 
     public void LoveCall()
     {
-        
         ulong myId = NetworkManager.Singleton.LocalClientId;
-        debugUI.AddDlList($"~~~~~");
-        debugUI.AddDlList($"LoveCall start myId:{myId}");
-        debugUI.AddDlList($"LoveCall start targetId:{targetId}");
-
         LoveCallServerRpc(targetId,myId, 0);
-        
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -51,27 +45,9 @@ public class TargetUIManager : NetworkBehaviour
     [ClientRpc]
     public void LoveCallClientRpc(ulong targetId,ulong senderId, int money)
     {
-        debugUI.AddDlList($"LoveCallClientRpc senderId:{senderId}");
-        debugUI.AddDlList($"LoveCallClientRpc targetId:{targetId}");
-        debugUI.AddDlList($"LoveCallClientRpc myId:{NetworkManager.Singleton.LocalClientId}");
-        
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            debugUI.AddDlList($"LoveCallClientRpc true senderId{senderId}");
-            debugUI.AddDlList($"LoveCallClientRpc true targetId:{targetId}");
-            debugUI.AddDlList($"LoveCallClientRpc true myId:{NetworkManager.Singleton.LocalClientId}");
-
             loveCalls.ReceiveLoveCall(senderId, money); 
         }
-        else
-        {
-            debugUI.AddDlList($"LoveCallClientRpc false senderId{senderId}");
-            debugUI.AddDlList($"LoveCallClientRpc false targetId:{targetId}");
-            debugUI.AddDlList($"LoveCallClientRpc false myId:{NetworkManager.Singleton.LocalClientId}");
-
-        }
     }
-
-
-
 }

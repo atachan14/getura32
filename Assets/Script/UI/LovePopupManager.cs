@@ -6,8 +6,10 @@ using UnityEngine.Rendering;
 public class LovePopupManager : MonoBehaviour
 {
     [SerializeField] private GameObject self;
-    public TextMeshProUGUI senderName;
-    public TMP_Text moneyText;
+    [SerializeField] private TextMeshProUGUI senderName;
+    [SerializeField] private TMP_Text moneyText;
+    private GameObject senderGmo;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,17 +27,23 @@ public class LovePopupManager : MonoBehaviour
     {
         if (NetworkManager.Singleton.ConnectedClients.TryGetValue(senderId, out var client))
         {
-            GameObject senderGmo = client.PlayerObject.gameObject;
+            senderGmo = client.PlayerObject.gameObject;
             PlayerStatus senderStatus = senderGmo.GetComponent<PlayerStatus>();
 
-            this.senderName.text = senderStatus.PlayerName.Value.ToString();
+            senderName.text = senderStatus.PlayerName.Value.ToString();
         }
         else
         {
             Debug.LogWarning("指定されたClientIdのクライアントが存在しません！");
         }
-        
-        
+    }
+    public void OKClick()
+    {
+        self.SetActive(false);
 
+    }
+    public void NGClick()
+    {
+        self.SetActive(false);
     }
 }

@@ -14,7 +14,7 @@ public class MenuButtonManager : NetworkBehaviour
     {
         NetworkManager.Singleton.StartHost();
 
-        NetworkManager.Singleton.SceneManager.LoadScene("Test", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("Robby", LoadSceneMode.Single);
     }
 
 
