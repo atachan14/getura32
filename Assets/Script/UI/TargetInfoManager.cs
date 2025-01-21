@@ -3,13 +3,15 @@ using Unity.Netcode;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
-public class TargetUIManager : NetworkBehaviour
+public class TargetInfoManager : NetworkBehaviour
 {
-    private ulong targetId;
     [SerializeField] private TextMeshProUGUI nameTMP;
-    [SerializeField] private LoveCallsManager loveCalls;
+    [SerializeField] private LoveCallsManage loveCalls;
 
-    [SerializeField] private DebugUI debugUI;
+    [SerializeField] private DebugWndow debugUI;
+    [SerializeField] private MatchingEffect matchingEffect;
+
+    private GameObject target;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,15 +27,17 @@ public class TargetUIManager : NetworkBehaviour
 
     public void SetTarget(GameObject target)
     {
-        targetId = target.GetComponent<NetworkObject>().OwnerClientId;
+        this.target = target;
+        
         nameTMP.text = target.GetComponent<PlayerStatus>().PlayerName.Value.ToString();
-        debugUI.AddDlList($"SetTarget Id:{targetId} , Name:{nameTMP.text}");
     }
 
     public void LoveCall()
     {
+        ulong targetId = target.GetComponent<NetworkObject>().OwnerClientId;
         ulong myId = NetworkManager.Singleton.LocalClientId;
         LoveCallServerRpc(targetId,myId, 0);
+        matchingEffect.OnRedEffect(target);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -49,5 +53,10 @@ public class TargetUIManager : NetworkBehaviour
         {
             loveCalls.ReceiveLoveCall(senderId, money); 
         }
+    }
+
+    void RedEffect()
+    {
+
     }
 }

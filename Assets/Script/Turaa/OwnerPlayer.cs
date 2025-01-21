@@ -12,6 +12,8 @@ public class OwnerPlayer : NetworkBehaviour
     private Vector3 direction;
     private bool isMoving = false;
 
+    private bool isRedStop = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -19,6 +21,7 @@ public class OwnerPlayer : NetworkBehaviour
 
     void Update()
     {
+        if (isRedStop) return;
         if (IsOwner)
         {
             if (Input.GetMouseButtonDown(1))
@@ -28,6 +31,11 @@ public class OwnerPlayer : NetworkBehaviour
                 ClickMoveServerRpc(clickWorldPos); 
             }
         }
+    }
+
+    public void RedStop()
+    {
+        isRedStop= true;
     }
 
     void FixedUpdate()

@@ -3,7 +3,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class LovePopupManager : MonoBehaviour
+public class LovePopupManage : MonoBehaviour
 {
     [SerializeField] private GameObject self;
     [SerializeField] private TextMeshProUGUI senderName;
@@ -42,8 +42,18 @@ public class LovePopupManager : MonoBehaviour
         self.SetActive(false);
 
     }
+
+    public void NegClick()
+    {
+
+    }
     public void NGClick()
     {
         self.SetActive(false);
+    }
+
+    public void BlockClick()
+    {
+
     }
 }

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class LoveCallsManager : MonoBehaviour
+public class LoveCallsManage : MonoBehaviour
 {
     private List<(ulong senderId, int money)> loveCallList = new List<(ulong senderId, int money)>();
     [SerializeField] private GameObject[] LovePopups = new GameObject[4];
 
-    [SerializeField] private DebugUI debugUI;
+    [SerializeField] private DebugWndow debugUI;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -52,7 +52,7 @@ public class LoveCallsManager : MonoBehaviour
 
     void SetupLovePopups(int i)
     {
-        LovePopupManager lovePopupManager = LovePopups[i].GetComponent<LovePopupManager>();
+        LovePopupManage lovePopupManager = LovePopups[i].GetComponent<LovePopupManage>();
         lovePopupManager.SetData(loveCallList[i].senderId, loveCallList[i].money);
     }
 }

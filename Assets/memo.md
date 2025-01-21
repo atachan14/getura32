@@ -15,6 +15,7 @@
 - 演出
 	- redEffect
 		- フラグ
+		- キャンセル
 		- 色
 		- 移動不可
 		- receiveNG(おうち)
@@ -40,3 +41,6 @@
 		- interfase
 			- MatchingMove
 			- MatchingEffect
+
+
+- steamworks
