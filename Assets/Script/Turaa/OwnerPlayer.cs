@@ -37,6 +37,10 @@ public class OwnerPlayer : NetworkBehaviour
     {
         isRedStop= true;
     }
+    public void RedRelease()
+    {
+        isRedStop= false;
+    }
 
     void FixedUpdate()
     {

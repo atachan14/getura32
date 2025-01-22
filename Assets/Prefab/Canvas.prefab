@@ -534,6 +534,7 @@ GameObject:
   - component: {fileID: 8982715760382981107}
   - component: {fileID: 638552924255308400}
   - component: {fileID: 7510015849752115455}
+  - component: {fileID: 9093351773710693566}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -555,10 +556,10 @@ RectTransform:
   m_Children:
   - {fileID: 802208105646331230}
   - {fileID: 1507964879020716438}
-  - {fileID: 3792065612417169788}
   - {fileID: 6034137268797695440}
   - {fileID: 1390773689860606479}
   - {fileID: 7674093353182075832}
+  - {fileID: 3792065612417169788}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -629,6 +630,31 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &9093351773710693566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3922812534870363198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1958170936
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &3959358542917982139
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,10 +708,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LovePopups:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 5883213959366064269}
+  - {fileID: 1309825745995158842}
+  - {fileID: 7343436518890171230}
+  - {fileID: 3983230857575087918}
   debugUI: {fileID: 1116093250655080392}
 --- !u!1 &4798923212275683439
 GameObject:
@@ -771,9 +797,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 802208105646331230}
-  - component: {fileID: 4879669309435524596}
   - component: {fileID: 4169945770611784213}
-  - component: {fileID: 5063471808732390881}
   m_Layer: 5
   m_Name: TargetInfo
   m_TagString: InfoUI
@@ -804,31 +828,6 @@ RectTransform:
   m_AnchoredPosition: {x: 5, y: -5}
   m_SizeDelta: {x: 110, y: 160}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &4879669309435524596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5364838457435269843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 812502266
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!114 &4169945770611784213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -845,52 +844,7 @@ MonoBehaviour:
   nameTMP: {fileID: 7073868201196359251}
   loveCalls: {fileID: 5053237752742680198}
   debugUI: {fileID: 1116093250655080392}
---- !u!61 &5063471808732390881
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5364838457435269843}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 1.1, y: -1.6}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 2.2, y: 3.2}
-  m_EdgeRadius: 0
+  matchingEffect: {fileID: 0}
 --- !u!1 &6037982647323120624
 GameObject:
   m_ObjectHideFlags: 0
@@ -1706,6 +1660,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}
+--- !u!1 &3983230857575087918 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4375731466551578397, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}
+  m_PrefabInstance: {fileID: 864409420282294323}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &4433262231225125429 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3925136988599564806, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}
@@ -1808,6 +1767,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}
+--- !u!1 &1309825745995158842 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4375731466551578397, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}
+  m_PrefabInstance: {fileID: 3356544044476766759}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1795867857532526625 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3925136988599564806, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}
@@ -1910,6 +1874,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}
+--- !u!1 &7343436518890171230 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4375731466551578397, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}
+  m_PrefabInstance: {fileID: 6435811055613125699}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8009787477846072901 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3925136988599564806, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}
@@ -2007,11 +1976,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: LovePopup
       objectReference: {fileID: 0}
+    - target: {fileID: 7582618990910816964, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}
+      propertyPath: debugUI
+      value: 
+      objectReference: {fileID: 1116093250655080392}
+    - target: {fileID: 7582618990910816964, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}
+      propertyPath: loveCallsManage
+      value: 
+      objectReference: {fileID: 5053237752742680198}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}
+--- !u!1 &5883213959366064269 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4375731466551578397, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}
+  m_PrefabInstance: {fileID: 7862413557330900880}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6585393169088990614 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3925136988599564806, guid: 8b631b42fe2800949a93b3d381247a02, type: 3}

@@ -51,7 +51,7 @@ public class TargetInfoManager : NetworkBehaviour
     {
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            loveCalls.ReceiveLoveCall(senderId, money); 
+            loveCalls.AddLoveCallList(senderId, money); 
         }
     }
 

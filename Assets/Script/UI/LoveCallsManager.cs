@@ -21,32 +21,41 @@ public class LoveCallsManage : MonoBehaviour
     {
 
     }
-    public void ReceiveLoveCall(ulong senderId, int money)
+    public void AddLoveCallList(ulong senderId, int money)
     {
-        debugUI.AddDlList($"ReceiveLoveCall , senderId:{senderId}");
 
         loveCallList.Add((senderId, money));
         ShowLovePopups();
     }
 
+    public void RemoveLoveCallList(ulong senderId, int money)
+    {
+        loveCallList.Remove((senderId, money));
+        ShowLovePopups();
+    }
+
     void ShowLovePopups()
     {
-        debugUI.AddDlList($"ShowLovePopups loveCallList.Count:{loveCallList.Count}");
+        ResetLovePopups();
         for (int i = 0; i < loveCallList.Count; i++)
         {
             if (i < 4)
             {
-                debugUI.AddDlList($"ShowLovePopups true , senderId:{loveCallList[i].senderId}");
                 LovePopups[i].SetActive(true);
-                debugUI.AddDlList($"ShowLovePopups SetActive end , senderId:{loveCallList[i].senderId}");
                 SetupLovePopups(i);
-                debugUI.AddDlList($"ShowLovePopups SetupLovePopups end , senderId:{loveCallList[i].senderId}");
-
             }
             else if (i < 5)
             {
                 return;
             }
+        }
+    }
+
+    void ResetLovePopups()
+    {
+        foreach (GameObject popup in LovePopups)
+        {
+            popup.SetActive(false);
         }
     }
 

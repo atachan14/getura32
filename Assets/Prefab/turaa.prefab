@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 8734193503606515894}
   - component: {fileID: 8565862314090274318}
   m_Layer: 0
-  m_Name: ContactMouth
+  m_Name: tentacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -623,7 +623,7 @@ GameObject:
   - component: {fileID: 6188605153877770221}
   - component: {fileID: 980536899576658914}
   m_Layer: 0
-  m_Name: Character 1 1
+  m_Name: turaa
   m_TagString: CharacterClick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -730,7 +730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3111720705
+  GlobalObjectIdHash: 3092954044
   InScenePlacedSourceGlobalObjectIdHash: 578380149
   DeferredDespawnTick: 0
   Ownership: 1
@@ -795,9 +795,9 @@ MonoBehaviour:
   AuthorityMode: 0
   TickSyncChildren: 0
   UseUnreliableDeltas: 0
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
+  SyncPositionX: 0
+  SyncPositionY: 0
+  SyncPositionZ: 0
   SyncRotAngleX: 1
   SyncRotAngleY: 1
   SyncRotAngleZ: 1

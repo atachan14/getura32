@@ -3,11 +3,19 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class LovePopupManage : MonoBehaviour
+public class LovePopupManage : NetworkBehaviour
 {
+    [SerializeField] DebugWndow debugUI;
+
     [SerializeField] private GameObject self;
+    [SerializeField] private LoveCallsManage loveCallsManage;
+    [SerializeField] private MatchingEffect matchingEffect;
+
     [SerializeField] private TextMeshProUGUI senderName;
     [SerializeField] private TMP_Text moneyText;
+
+    private ulong senderId;
+    private int money;
     private GameObject senderGmo;
 
 
@@ -25,6 +33,9 @@ public class LovePopupManage : MonoBehaviour
 
     public void SetData(ulong senderId, int money)
     {
+        this.senderId = senderId;
+        this.money = money;
+
         if (NetworkManager.Singleton.ConnectedClients.TryGetValue(senderId, out var client))
         {
             senderGmo = client.PlayerObject.gameObject;
@@ -34,7 +45,7 @@ public class LovePopupManage : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("指定されたClientIdのクライアントが存在しません！");
+            Debug.LogWarning("SetData error:指定されたClientIdのクライアントが存在しません！");
         }
     }
     public void OKClick()
@@ -49,11 +60,26 @@ public class LovePopupManage : MonoBehaviour
     }
     public void NGClick()
     {
-        self.SetActive(false);
+        SendMatchingReleaseServerRpc(senderId);
+        loveCallsManage.RemoveLoveCallList(senderId, money);
     }
 
     public void BlockClick()
     {
 
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void SendMatchingReleaseServerRpc(ulong targetId)
+    {
+        SendMatchingReleaseClientRpc(targetId);
+    }
+    [ClientRpc]
+    void SendMatchingReleaseClientRpc(ulong targetId)
+    {
+        if (NetworkManager.Singleton.LocalClientId == targetId)
+        {
+            matchingEffect.OffRedEffect();
+        }
     }
 }
