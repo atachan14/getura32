@@ -1,7 +1,9 @@
+using TMPro;
 using UnityEngine;
 
 public class RoomSize : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI robbySizeTMP;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,4 +15,10 @@ public class RoomSize : MonoBehaviour
     {
         
     }
+
+    public void Reflection(int size)
+    {
+        robbySizeTMP.text = size.ToString();
+    }
+
 }

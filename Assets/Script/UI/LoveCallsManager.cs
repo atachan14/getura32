@@ -34,6 +34,12 @@ public class LoveCallsManage : MonoBehaviour
         ShowLovePopups();
     }
 
+    public void ClearLoveCallList()
+    {
+        loveCallList.Clear();
+        ShowLovePopups() ;
+    }
+
     void ShowLovePopups()
     {
         ResetLovePopups();

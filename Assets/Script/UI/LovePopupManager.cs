@@ -50,9 +50,10 @@ public class LovePopupManage : NetworkBehaviour
     }
     public void OKClick()
     {
-        self.SetActive(false);
-
+        SendOKServerRpc(senderId);
+        loveCallsManage.ClearLoveCallList();
     }
+   
 
     public void NegClick()
     {
@@ -60,7 +61,7 @@ public class LovePopupManage : NetworkBehaviour
     }
     public void NGClick()
     {
-        SendMatchingReleaseServerRpc(senderId);
+        SendNGServerRpc(senderId);
         loveCallsManage.RemoveLoveCallList(senderId, money);
     }
 
@@ -68,14 +69,27 @@ public class LovePopupManage : NetworkBehaviour
     {
 
     }
-
     [ServerRpc(RequireOwnership = false)]
-    void SendMatchingReleaseServerRpc(ulong targetId)
+    void SendOKServerRpc(ulong targetId)
     {
-        SendMatchingReleaseClientRpc(targetId);
+        SendOKClientRpc(targetId);
     }
     [ClientRpc]
-    void SendMatchingReleaseClientRpc(ulong targetId)
+    void SendOKClientRpc(ulong targetId)
+    {
+        if (NetworkManager.Singleton.LocalClientId == targetId)
+        {
+            matchingEffect.OffRedEffect();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void SendNGServerRpc(ulong targetId)
+    {
+        SendNGClientRpc(targetId);
+    }
+    [ClientRpc]
+    void SendNGClientRpc(ulong targetId)
     {
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {

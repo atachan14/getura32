@@ -36,8 +36,8 @@ public class MatchingEffect : MonoBehaviour
     public void OnRedEffect(GameObject target)
     {
         this.redTarget = target;
-        RedPullZ(myTuraa);
-        RedPullZ(target);
+        RedPullSO(myTuraa);
+        RedPullSO(target);
 
         redBoard.SetActive(true);
         myTuraa.GetComponent<OwnerPlayer>().RedStop();
@@ -45,30 +45,33 @@ public class MatchingEffect : MonoBehaviour
 
     public void OffRedEffect()
     {
-        NotMatchingReturnZ(myTuraa);
-        NotMatchingReturnZ(redTarget);
+        NotMatchingReturnSO(myTuraa);
+        NotMatchingReturnSO(redTarget);
         redTarget = null;
 
         redBoard.SetActive(false);
         myTuraa.GetComponent<OwnerPlayer>().RedRelease();
     }
 
-    void RedPullZ(GameObject turaa)
+    void RedPullSO(GameObject turaa)
     {
-        Vector3 oPos = turaa.transform.position;
-        oPos.z = -9;
-        turaa.transform.position = oPos;
         debugUI.AddDlList($"--RedPullZ--");
-        debugUI.AddDlList($"myId:{NetworkManager.Singleton.LocalClientId} , turra.cId{turaa.GetComponent<NetworkObject>().OwnerClientId} , turra.transform.position:{turaa.transform.position}");
-        Vector3 eyepos = turaa.transform.Find("Eye").transform.position;
-        Vector3 legpos = turaa.transform.Find("Leg").transform.position;
-        debugUI.AddDlList($"eyepos:{eyepos} , legpos{legpos} , redBoardpos:{redBoard.transform.position}");
+        
+        SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sprite in spriteRenderers)
+        {
+            sprite.sortingOrder = 10; 
+        }
+        debugUI.AddDlList($"myId:{NetworkManager.Singleton.LocalClientId} , turra.cId{turaa.GetComponent<NetworkObject>().OwnerClientId} ,  spriteRenderers[0].sortingOrder:{spriteRenderers[0].sortingOrder}");
+
     }
 
-    void NotMatchingReturnZ(GameObject turaa)
+    void NotMatchingReturnSO(GameObject turaa)
     {
-        Vector3 oPos = turaa.transform.position;
-        oPos.z = 0;
-        turaa.transform.position = oPos;
+        SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sprite in spriteRenderers)
+        {
+            sprite.sortingOrder = 0;
+        }
     }
 }

@@ -37,7 +37,9 @@ public class TargetInfoManager : NetworkBehaviour
         ulong targetId = target.GetComponent<NetworkObject>().OwnerClientId;
         ulong myId = NetworkManager.Singleton.LocalClientId;
         LoveCallServerRpc(targetId,myId, 0);
+
         matchingEffect.OnRedEffect(target);
+
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -54,7 +56,6 @@ public class TargetInfoManager : NetworkBehaviour
             loveCalls.AddLoveCallList(senderId, money); 
         }
     }
-
     void RedEffect()
     {
 
