@@ -17,6 +17,16 @@ public class OwnerPlayer : NetworkBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        if (IsOwner) MyTuraaSOup();
+    }
+
+    void MyTuraaSOup()
+    {
+        SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sprite in spriteRenderers)
+        {
+            sprite.sortingOrder = 1;
+        }
     }
 
     void Update()
