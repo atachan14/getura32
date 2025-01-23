@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -6,14 +7,14 @@ using static UnityEngine.Rendering.DebugUI;
 public class TargetInfoManager : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI nameTMP;
-    [SerializeField] private LoveCallsManage loveCalls;
     [SerializeField] private GameObject loveCallButton;
     [SerializeField] private GameObject loveCallCansellButton;
 
-    [SerializeField] private DebugWndow debugUI;
+    [SerializeField] private MatchingEffect mEffect;
+    [SerializeField] private LoveCallsManage loveCalls;
 
     private GameObject myTuraa;
-    private GameObject target;
+    private GameObject targetTuraa;
     private ulong myId;
     ulong targetId;
     private int tribute = 0;
@@ -35,42 +36,50 @@ public class TargetInfoManager : NetworkBehaviour
 
     public void SetTarget(GameObject target)
     {
-        this.target = target;
+        this.targetTuraa = target;
         targetId = target.GetComponent<NetworkObject>().OwnerClientId;
         nameTMP.text = target.GetComponent<PlayerStatus>().PlayerName.Value.ToString();
     }
 
+    public void ActiveLoveCall(bool can)
+    {
+        loveCallButton.SetActive(can);
+        loveCallCansellButton.SetActive(!can);
+    }
+
     public void LoveCall()
     {
-        LoveCallServerRpc(targetId, myTuraa, tribute);
-        ClientManager.CI.SendLoveCall(targetId);
+        DebugWndow.CI.AddDlList("TargetInfo.LoveCall");
 
-        loveCallButton.SetActive(false);
-        loveCallCansellButton.SetActive(true);
+        mEffect.OnRedEffect(targetTuraa);
+        DebugWndow.CI.AddDlList("TargetInfo.LoveCall OnRedEffect");
+        ActiveLoveCall(false);
+        DebugWndow.CI.AddDlList("TargetInfo.LoveCall ActiveLoveCall");
+
+        LoveCallServerRpc(targetId, myId, tribute);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void LoveCallServerRpc(ulong targetId, ulong senderId, int money)
+    {
+        DebugWndow.CI.AddDlList("TargetInfo.LoveCallServerRpc");
+        LoveCallClientRpc(targetId, senderId, money);
+    }
+
+    [ClientRpc]
+    public void LoveCallClientRpc(ulong targetId, ulong senderId, int money)
+    {
+        if (NetworkManager.Singleton.LocalClientId == targetId)
+        {
+           loveCalls.ReceiveLoveCall(senderId, money);
+        }
     }
 
     public void LoveCallCansell()
     {
         LoveCallCansellServerRpc(targetId, myId);
-        ClientManager.CI.SendLoveCallCansell();
-
-        loveCallButton.SetActive(true);
-        loveCallCansellButton.SetActive(false);
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void LoveCallServerRpc(ulong targetId, GameObject senderTuraa, int money)
-    {
-        LoveCallClientRpc(targetId, senderTuraa, money);
-    }
-
-    [ClientRpc]
-    public void LoveCallClientRpc(ulong targetId, GameObject senderTuraa, int money)
-    {
-        if (NetworkManager.Singleton.LocalClientId == targetId)
-        {
-            ClientManager.CI.ReceiveLoveCall(senderTuraa, money);
-        }
+        mEffect.OffRedEffect();
+        ActiveLoveCall(true);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -84,7 +93,18 @@ public class TargetInfoManager : NetworkBehaviour
     {
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            ClientManager.CI.ReceiveLoveCallCansell(senderId);
+            loveCalls.ReceiveLoveCallCansell(senderId);
         }
     }
+    public void ReceiveOK()
+    {
+        mEffect.OffRedEffect();
+        ActiveLoveCall(true);
+    }
+    public void ReceiveNG()
+    {
+        mEffect.OffRedEffect();
+        ActiveLoveCall(true);
+    }
+
 }

@@ -1,49 +1,56 @@
 ﻿### がっこーでやること。
-	- UI作成
-		- fine
-		- money
-		- charm
-		- menberSize
-			- 中の表示(おうち)
-		- startButton
-		- lovePoint
-		- aura
-	- カメラ
-		- space
-		- y
-		- zoomUp/down
-	- 演出
-		- redEffect
-			- フラグ
-			- キャンセル
-			- 色
-			- 移動不可
-			- receiveNG(おうち)
-	
-	- 関数
+	- practice
+		- animation
+	- BaseUI
+		- targetInfo
+			- targetNameの色(free, send, receive, other, pair)
+			- tributeBer
+		- PleaseTalkAura
+	- RobbyMangager
+		- timeSetting
+		- stageSelect
+	- GameManager
 		- SetupLovePoint
 			- CalcLovePoint
 			- それの表示(おうち)
+	- turaa
+		- eyeMove
+		- 触手分割SortingOrder
 	- アバター追加
 	- 背景
 	- アニメ？
+		- LoveCall
+		- MatchingEffect
+		- ReceiveNG
 		- Opening
 		- gameStart
 
 ### おうちでやること。
-	- 同期
-	- 演出
-		- pinkEffect(おうち)
-			- フラグ
-			- 色
-			- 移動不可
-		- instantMaching
-			- interfase
-				- MatchingMove
-				- MatchingEffect
+# 優先順
+	- RobbyMangager
+		- start
+		- robbySize
+	- シーン, 偏移
+		- RoomSettingを持ち越してのシーン偏移
+		- GameStart
+		- day
+		- night
 
+# リスト
+	- 同期
+		- RoomSettingを持ち越してのシーン偏移
+	- MachingManager
+		- MatchingEffect
+			- MatchingMove
+			- MatchingEffect
+	- RobbyMangager
+		- start
+		- robbySize
+		- timeSetting
+		- stageSelect
 	- steamworks
 
+	- MenuからRobbyへの持ち越し
 
 
 ### 構造案

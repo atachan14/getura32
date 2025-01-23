@@ -1,14 +1,16 @@
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class LoveCallsManage : MonoBehaviour
 {
-    private List<(GameObject senderTuraa, int money)> loveCallList = new List<(GameObject senderTuraa, int money)>();
+    [SerializeField] private MatchingEffect mEffect;
     [SerializeField] private GameObject[] LovePopups = new GameObject[4];
 
-    [SerializeField] private DebugWndow debugUI;
+    private List<(GameObject senderTuraa, int money)> loveCallList = new List<(GameObject senderTuraa, int money)>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,22 +30,23 @@ public class LoveCallsManage : MonoBehaviour
         ShowLovePopups();
     }
 
-    public void RemoveLoveCallList(GameObject senderTuraa, int money)
+    public void RemoveLoveCallList(GameObject senderTuraa)
     {
-        loveCallList.Remove((senderTuraa, money));
+        loveCallList.RemoveAll(x => x.senderTuraa == senderTuraa);
         ShowLovePopups();
     }
 
     public void ClearLoveCallList()
     {
         loveCallList.Clear();
-        ShowLovePopups() ;
+        ShowLovePopups();
     }
 
     void ShowLovePopups()
     {
-        List<GameObject> senderTuraaList = new();
         ResetLovePopups();
+
+        List<GameObject> senderTuraaList = new();
         for (int i = 0; i < loveCallList.Count; i++)
         {
             senderTuraaList.Add(loveCallList[i].senderTuraa);
@@ -52,32 +55,43 @@ public class LoveCallsManage : MonoBehaviour
                 LovePopups[i].SetActive(true);
                 SetupLovePopups(i);
             }
-            else if (i < 5)
+            else if (4 <= i)
             {
-                return;
+                break;
             }
         }
-        if (loveCallList.Count>0)
+
+        DebugWndow.CI.AddDlList($"LoveCallManager if (loveCallList.Count > 0):{loveCallList.Count > 0}");
+        if (loveCallList.Count > 0)
         {
-            ClientManager.CI.haveLoveCalls(senderTuraaList);
+            mEffect.OnPinkEffect(senderTuraaList);
         }
         else
         {
-            ClientManager.CI.dontHaveLoveCalls();
+            mEffect.OffPinkEffect();
         }
     }
 
     void ResetLovePopups()
     {
-        foreach (GameObject popup in LovePopups)
-        {
-            popup.SetActive(false);
-        }
+        foreach (GameObject popup in LovePopups) popup.SetActive(false);
     }
 
     void SetupLovePopups(int i)
     {
         LovePopupManage lovePopupManager = LovePopups[i].GetComponent<LovePopupManage>();
         lovePopupManager.SetData(loveCallList[i].senderTuraa, loveCallList[i].money);
+    }
+
+    public void ReceiveLoveCall(ulong senderId, int money)
+    {
+        GameObject senderTuraa = NetworkManager.Singleton.ConnectedClients[senderId].PlayerObject.gameObject;
+        AddLoveCallList(senderTuraa, money);
+    }
+
+    public void ReceiveLoveCallCansell(ulong senderId)
+    {
+        GameObject senderTuraa = NetworkManager.Singleton.ConnectedClients[senderId].PlayerObject.gameObject;
+        RemoveLoveCallList(senderTuraa);
     }
 }

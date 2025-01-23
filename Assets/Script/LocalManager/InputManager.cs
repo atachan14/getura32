@@ -15,6 +15,8 @@ public class InputManager : MonoBehaviour
     private bool isTakeCamera;
     private GameObject targetPlayer;
     private float scroll;
+    public bool IsRedStop { get; set; } = false;
+
 
     private NetworkObject myTuraa;
 
@@ -75,7 +77,7 @@ public class InputManager : MonoBehaviour
         {
             return;
         }
-        else
+        else if(!IsRedStop)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);

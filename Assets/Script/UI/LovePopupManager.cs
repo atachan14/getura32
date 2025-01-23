@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 public class LovePopupManage : NetworkBehaviour
 {
-    [SerializeField] DebugWndow debugUI;
+    [SerializeField] TargetInfoManager targetInfo;
 
     [SerializeField] private GameObject self;
     [SerializeField] private LoveCallsManage loveCallsManage;
@@ -13,9 +13,9 @@ public class LovePopupManage : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI senderNameTMP;
     [SerializeField] private TextMeshProUGUI moneyTMP;
 
-    private GameObject senderId;
+    private ulong senderId;
     private int money;
-    private GameObject senderGmo;
+    private GameObject senderTuraa;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -32,37 +32,18 @@ public class LovePopupManage : NetworkBehaviour
 
     public void SetData(GameObject senderTuraa, int money)
     {
-        this.senderId = senderTuraa;
+        this.senderTuraa = senderTuraa;
         this.money = money;
+        senderId = senderTuraa.GetComponent<NetworkObject>().OwnerClientId;
 
-
-        
-        PlayerStatus senderStatus = senderTuraa.GetComponent<PlayerStatus>();
-
-        senderNameTMP.text = senderStatus.PlayerName.Value.ToString();
-
+        senderNameTMP.text = senderTuraa.GetComponent<PlayerStatus>().PlayerName.Value.ToString();
     }
     public void OKClick()
     {
-        SendOKServerRpc(senderId);
         loveCallsManage.ClearLoveCallList();
+        SendOKServerRpc(senderId);
+        
     }
-
-    public void NegClick()
-    {
-
-    }
-    public void NGClick()
-    {
-        SendNGServerRpc(senderId);
-        loveCallsManage.RemoveLoveCallList(senderId, money);
-    }
-
-    public void BlockClick()
-    {
-
-    }
-
     [ServerRpc(RequireOwnership = false)]
     void SendOKServerRpc(ulong targetId)
     {
@@ -74,10 +55,19 @@ public class LovePopupManage : NetworkBehaviour
     {
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            ClientManager.CI.ReceiveOK();
+            targetInfo.ReceiveOK();
         }
     }
+    public void NegClick()
+    {
 
+    }
+    public void NGClick()
+    {
+        loveCallsManage.RemoveLoveCallList(senderTuraa);
+        SendNGServerRpc(senderId);
+        
+    }
     [ServerRpc(RequireOwnership = false)]
     void SendNGServerRpc(ulong targetId)
     {
@@ -89,7 +79,15 @@ public class LovePopupManage : NetworkBehaviour
     {
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            ClientManager.CI.ReceiveNG();
+           targetInfo.ReceiveNG();
         }
     }
+    public void BlockClick()
+    {
+
+    }
+
+    
+
+    
 }

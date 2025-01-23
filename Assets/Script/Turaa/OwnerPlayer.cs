@@ -6,21 +6,23 @@ using UnityEngine;
 public class OwnerPlayer : NetworkBehaviour
 {
     public float speed = 4f;
+    private float pinkRatio = 1f;
+    private float redRatio = 1f;
 
     private Rigidbody2D rb;
     private Vector3 nextPos;
     private Vector3 direction;
     private bool isMoving = false;
 
-    private bool isRedStop = false;
+    public bool IsRedStop { get; set; } = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        if (IsOwner) MyTuraaSOup();
+        if (!IsOwner) OtherTuraaSOup();
     }
 
-    void MyTuraaSOup()
+    void OtherTuraaSOup()
     {
         SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
@@ -31,35 +33,36 @@ public class OwnerPlayer : NetworkBehaviour
 
     void Update()
     {
-        if (isRedStop) return;
+        if (IsRedStop) return;
         if (IsOwner)
         {
             if (Input.GetMouseButtonDown(1))
             {
                 Vector3 clickWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                clickWorldPos.z = 0; 
-                ClickMoveServerRpc(clickWorldPos); 
+                clickWorldPos.z = 0;
+                ClickMoveServerRpc(clickWorldPos);
             }
         }
     }
 
-    public void RedStop()
-    {
-        isRedStop= true;
-    }
-    public void RedRelease()
-    {
-        isRedStop= false;
-    }
 
     public void OnPinkSlow()
     {
-        isRedStop = true;
+        pinkRatio = 0.2f;
+        SendPinkRatioServerRpc(pinkRatio);
+        DebugWndow.CI.AddDlList($"----OnPinkSlow:{pinkRatio}");
     }
     public void OffPinkSlow()
     {
-        isRedStop = false;
+        pinkRatio = 1;
+        SendPinkRatioServerRpc(pinkRatio);
     }
+    [ServerRpc]
+    void SendPinkRatioServerRpc(float pinkRatio)
+    {
+        this.pinkRatio = pinkRatio;
+    }
+
 
     void FixedUpdate()
     {
@@ -75,6 +78,7 @@ public class OwnerPlayer : NetworkBehaviour
         nextPos = worldPosition;
         isMoving = true;
 
+        //rbÇÃóÕÇ∆Ç©âÒì]Ç∆Ç©é~ÇﬂÇÈÅB
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
         rb.rotation = 0f;
@@ -83,12 +87,12 @@ public class OwnerPlayer : NetworkBehaviour
     void MoveToNextPosition()
     {
         Vector3 direction = (nextPos - transform.position).normalized;
-        float step = speed * Time.fixedDeltaTime;
+        float step = speed * pinkRatio * Time.fixedDeltaTime;
         rb.MovePosition(transform.position + direction * step);
 
         if (Vector3.Distance(transform.position, nextPos) < 0.1f)
         {
-            transform.position = nextPos; 
+            transform.position = nextPos;
             isMoving = false;
         }
     }

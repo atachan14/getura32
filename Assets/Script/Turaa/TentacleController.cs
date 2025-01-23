@@ -9,6 +9,8 @@ public class TentacleController : NetworkBehaviour
     public GameObject activeTentacle;
 
     private GameObject targetPlayer;
+    public bool IsRedStop { get; set; } = false;
+
 
     // Gè‚Ìó‘Ô‚ğ“¯Šú‚·‚é‚½‚ß‚ÌNetworkVariable
     private readonly NetworkVariable<Vector3> tentaclePosition = new NetworkVariable<Vector3>();
@@ -22,6 +24,7 @@ public class TentacleController : NetworkBehaviour
     public NetworkVariable<float> TentacleScaleY => tentacleScaleY;
 
     public GameObject TargetPlayer { get => targetPlayer; set => targetPlayer = value; }
+    
 
     void Start()
     {
@@ -30,8 +33,7 @@ public class TentacleController : NetworkBehaviour
 
     void Update()
     {
-
-        if (IsOwner && Input.GetMouseButtonDown(0))
+        if (IsOwner && Input.GetMouseButtonDown(0)&&!IsRedStop)
         {
             ActivateTentacle();
         }

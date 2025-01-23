@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -5,19 +6,22 @@ using static UnityEngine.GraphicsBuffer;
 
 public class MatchingEffect : MonoBehaviour
 {
-    [SerializeField] private DebugWndow debugUI;
+    [SerializeField] private TargetInfoManager targetInfo;
+    [SerializeField] private InputManager inputManager;
 
     [SerializeField] private GameObject redBoard;
     private GameObject redTarget;
+
     [SerializeField] private GameObject pinkBoard;
-    private GameObject pinkTarget;
+    private List<GameObject> pinkTargetList;
+
     private GameObject myTuraa;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
         SetupBoard(redBoard);
+        SetupBoard(pinkBoard);
     }
 
     void SetupBoard(GameObject board)
@@ -25,23 +29,25 @@ public class MatchingEffect : MonoBehaviour
         board.SetActive(false);
         SpriteRenderer redSpriteRenderer = board.GetComponent<SpriteRenderer>();
         Color boardColor = redSpriteRenderer.color;
-        boardColor.a = 0.7f; // Alpha値を設定（0.0 - 1.0）
+        boardColor.a = 0.5f; // Alpha値を設定（0.0 - 1.0）
         redSpriteRenderer.color = boardColor;
     }
 
-    // Update is called once per frame
     void Update()
     {
 
     }
     public void OnRedEffect(GameObject target)
     {
+        DebugWndow.CI.AddDlList("OnRedEffect");
         redTarget = target;
         PullSO(myTuraa);
         PullSO(redTarget);
 
         redBoard.SetActive(true);
-        myTuraa.GetComponent<OwnerPlayer>().RedStop();
+        myTuraa.GetComponent<OwnerPlayer>().IsRedStop=true;
+        myTuraa.GetComponent<TentacleController>().IsRedStop=true;
+        inputManager.IsRedStop=true;
     }
 
     public void OffRedEffect()
@@ -51,23 +57,30 @@ public class MatchingEffect : MonoBehaviour
         redTarget = null;
 
         redBoard.SetActive(false);
-        myTuraa.GetComponent<OwnerPlayer>().RedRelease();
+        myTuraa.GetComponent<OwnerPlayer>().IsRedStop = false;
+        myTuraa.GetComponent<TentacleController>().IsRedStop = false;
+        inputManager.IsRedStop = false;
     }
 
-    public void OnPinkEffect()
+    public void OnPinkEffect(List<GameObject> targetList)
     {
+        DebugWndow.CI.AddDlList("---------OnPinkEffect");
+
+        pinkTargetList = targetList;
         PullSO(myTuraa);
-        PullSO(redTarget);
+        foreach (GameObject target in pinkTargetList) PullSO(target);
 
         pinkBoard.SetActive(true);
         myTuraa.GetComponent<OwnerPlayer>().OnPinkSlow();
+
+        DebugWndow.CI.AddDlList("---------OnPinkEffect end");
     }
 
     public void OffPinkEffect()
     {
         ReturnSO(myTuraa);
-        ReturnSO(redTarget);
-        pinkTarget = null;
+        foreach (GameObject target in pinkTargetList) ReturnSO(target);
+        pinkTargetList.Clear();
 
         pinkBoard.SetActive(false);
         myTuraa.GetComponent<OwnerPlayer>().OffPinkSlow();
@@ -78,10 +91,9 @@ public class MatchingEffect : MonoBehaviour
         SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
-            sprite.sortingOrder = 10; 
+            sprite.sortingOrder += 10; 
         }
-        debugUI.AddDlList($"myId:{NetworkManager.Singleton.LocalClientId} , turra.cId{turaa.GetComponent<NetworkObject>().OwnerClientId} ,  spriteRenderers[0].sortingOrder:{spriteRenderers[0].sortingOrder}");
-
+        DebugWndow.CI.AddDlList($"PullSO myId:{NetworkManager.Singleton.LocalClientId} , turra.cId{turaa.GetComponent<NetworkObject>().OwnerClientId} ,  spriteRenderers[0].sortingOrder:{spriteRenderers[0].sortingOrder}");
     }
 
     void ReturnSO(GameObject turaa)
@@ -89,7 +101,7 @@ public class MatchingEffect : MonoBehaviour
         SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
-            sprite.sortingOrder = 0;
+            sprite.sortingOrder -= 10;
         }
     }
 }
