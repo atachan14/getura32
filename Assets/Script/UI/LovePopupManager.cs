@@ -9,12 +9,11 @@ public class LovePopupManage : NetworkBehaviour
 
     [SerializeField] private GameObject self;
     [SerializeField] private LoveCallsManage loveCallsManage;
-    [SerializeField] private MatchingEffect matchingEffect;
 
-    [SerializeField] private TextMeshProUGUI senderName;
-    [SerializeField] private TMP_Text moneyText;
+    [SerializeField] private TextMeshProUGUI senderNameTMP;
+    [SerializeField] private TextMeshProUGUI moneyTMP;
 
-    private ulong senderId;
+    private GameObject senderId;
     private int money;
     private GameObject senderGmo;
 
@@ -31,29 +30,23 @@ public class LovePopupManage : NetworkBehaviour
 
     }
 
-    public void SetData(ulong senderId, int money)
+    public void SetData(GameObject senderTuraa, int money)
     {
-        this.senderId = senderId;
+        this.senderId = senderTuraa;
         this.money = money;
 
-        if (NetworkManager.Singleton.ConnectedClients.TryGetValue(senderId, out var client))
-        {
-            senderGmo = client.PlayerObject.gameObject;
-            PlayerStatus senderStatus = senderGmo.GetComponent<PlayerStatus>();
 
-            senderName.text = senderStatus.PlayerName.Value.ToString();
-        }
-        else
-        {
-            Debug.LogWarning("SetData error:指定されたClientIdのクライアントが存在しません！");
-        }
+        
+        PlayerStatus senderStatus = senderTuraa.GetComponent<PlayerStatus>();
+
+        senderNameTMP.text = senderStatus.PlayerName.Value.ToString();
+
     }
     public void OKClick()
     {
         SendOKServerRpc(senderId);
         loveCallsManage.ClearLoveCallList();
     }
-   
 
     public void NegClick()
     {
@@ -69,17 +62,19 @@ public class LovePopupManage : NetworkBehaviour
     {
 
     }
+
     [ServerRpc(RequireOwnership = false)]
     void SendOKServerRpc(ulong targetId)
     {
         SendOKClientRpc(targetId);
     }
+
     [ClientRpc]
     void SendOKClientRpc(ulong targetId)
     {
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            matchingEffect.OffRedEffect();
+            ClientManager.CI.ReceiveOK();
         }
     }
 
@@ -88,12 +83,13 @@ public class LovePopupManage : NetworkBehaviour
     {
         SendNGClientRpc(targetId);
     }
+
     [ClientRpc]
     void SendNGClientRpc(ulong targetId)
     {
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            matchingEffect.OffRedEffect();
+            ClientManager.CI.ReceiveNG();
         }
     }
 }

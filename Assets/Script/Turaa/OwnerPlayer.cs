@@ -52,6 +52,15 @@ public class OwnerPlayer : NetworkBehaviour
         isRedStop= false;
     }
 
+    public void OnPinkSlow()
+    {
+        isRedStop = true;
+    }
+    public void OffPinkSlow()
+    {
+        isRedStop = false;
+    }
+
     void FixedUpdate()
     {
         if (isMoving)
@@ -68,7 +77,7 @@ public class OwnerPlayer : NetworkBehaviour
 
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
-        rb.rotation = 0f; // これで Z 回転をリセット
+        rb.rotation = 0f;
     }
 
     void MoveToNextPosition()

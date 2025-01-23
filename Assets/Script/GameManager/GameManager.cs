@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class GameManager : NetworkBehaviour
 {
-    public static GameManager Inst;
+    public static GameManager SI;
 
     [SerializeField] private RoomSize roomSize;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
     {
-        if (IsServer && Inst == null) Inst = this;
+        if (IsServer && SI == null) SI = this;
     }
 
     void Start()

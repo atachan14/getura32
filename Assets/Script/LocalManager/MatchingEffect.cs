@@ -5,10 +5,12 @@ using static UnityEngine.GraphicsBuffer;
 
 public class MatchingEffect : MonoBehaviour
 {
-    [SerializeField] DebugWndow debugUI;
+    [SerializeField] private DebugWndow debugUI;
 
-    [SerializeField] GameObject redBoard;
+    [SerializeField] private GameObject redBoard;
     private GameObject redTarget;
+    [SerializeField] private GameObject pinkBoard;
+    private GameObject pinkTarget;
     private GameObject myTuraa;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -32,12 +34,11 @@ public class MatchingEffect : MonoBehaviour
     {
 
     }
-
     public void OnRedEffect(GameObject target)
     {
-        this.redTarget = target;
-        RedPullSO(myTuraa);
-        RedPullSO(target);
+        redTarget = target;
+        PullSO(myTuraa);
+        PullSO(redTarget);
 
         redBoard.SetActive(true);
         myTuraa.GetComponent<OwnerPlayer>().RedStop();
@@ -45,18 +46,35 @@ public class MatchingEffect : MonoBehaviour
 
     public void OffRedEffect()
     {
-        NotMatchingReturnSO(myTuraa);
-        NotMatchingReturnSO(redTarget);
+        ReturnSO(myTuraa);
+        ReturnSO(redTarget);
         redTarget = null;
 
         redBoard.SetActive(false);
         myTuraa.GetComponent<OwnerPlayer>().RedRelease();
     }
 
-    void RedPullSO(GameObject turaa)
+    public void OnPinkEffect()
     {
-        debugUI.AddDlList($"--RedPullZ--");
-        
+        PullSO(myTuraa);
+        PullSO(redTarget);
+
+        pinkBoard.SetActive(true);
+        myTuraa.GetComponent<OwnerPlayer>().OnPinkSlow();
+    }
+
+    public void OffPinkEffect()
+    {
+        ReturnSO(myTuraa);
+        ReturnSO(redTarget);
+        pinkTarget = null;
+
+        pinkBoard.SetActive(false);
+        myTuraa.GetComponent<OwnerPlayer>().OffPinkSlow();
+    }
+
+    void PullSO(GameObject turaa)
+    {
         SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
@@ -66,7 +84,7 @@ public class MatchingEffect : MonoBehaviour
 
     }
 
-    void NotMatchingReturnSO(GameObject turaa)
+    void ReturnSO(GameObject turaa)
     {
         SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)

@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 public class LoveCallsManage : MonoBehaviour
 {
-    private List<(ulong senderId, int money)> loveCallList = new List<(ulong senderId, int money)>();
+    private List<(GameObject senderTuraa, int money)> loveCallList = new List<(GameObject senderTuraa, int money)>();
     [SerializeField] private GameObject[] LovePopups = new GameObject[4];
 
     [SerializeField] private DebugWndow debugUI;
@@ -21,16 +21,16 @@ public class LoveCallsManage : MonoBehaviour
     {
 
     }
-    public void AddLoveCallList(ulong senderId, int money)
+    public void AddLoveCallList(GameObject senderTuraa, int money)
     {
 
-        loveCallList.Add((senderId, money));
+        loveCallList.Add((senderTuraa, money));
         ShowLovePopups();
     }
 
-    public void RemoveLoveCallList(ulong senderId, int money)
+    public void RemoveLoveCallList(GameObject senderTuraa, int money)
     {
-        loveCallList.Remove((senderId, money));
+        loveCallList.Remove((senderTuraa, money));
         ShowLovePopups();
     }
 
@@ -42,9 +42,11 @@ public class LoveCallsManage : MonoBehaviour
 
     void ShowLovePopups()
     {
+        List<GameObject> senderTuraaList = new();
         ResetLovePopups();
         for (int i = 0; i < loveCallList.Count; i++)
         {
+            senderTuraaList.Add(loveCallList[i].senderTuraa);
             if (i < 4)
             {
                 LovePopups[i].SetActive(true);
@@ -54,6 +56,14 @@ public class LoveCallsManage : MonoBehaviour
             {
                 return;
             }
+        }
+        if (loveCallList.Count>0)
+        {
+            ClientManager.CI.haveLoveCalls(senderTuraaList);
+        }
+        else
+        {
+            ClientManager.CI.dontHaveLoveCalls();
         }
     }
 
@@ -68,6 +78,6 @@ public class LoveCallsManage : MonoBehaviour
     void SetupLovePopups(int i)
     {
         LovePopupManage lovePopupManager = LovePopups[i].GetComponent<LovePopupManage>();
-        lovePopupManager.SetData(loveCallList[i].senderId, loveCallList[i].money);
+        lovePopupManager.SetData(loveCallList[i].senderTuraa, loveCallList[i].money);
     }
 }
