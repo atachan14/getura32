@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class StartButtonManagaer : MonoBehaviour
+public class DayManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -12,10 +12,5 @@ public class StartButtonManagaer : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public void StartExe()
-    {
-        SLD.SingleLoad(SNM.Opening);
     }
 }

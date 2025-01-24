@@ -12,20 +12,8 @@ public class LoveCallsManage : MonoBehaviour
 
     private List<(GameObject senderTuraa, int money)> loveCallList = new List<(GameObject senderTuraa, int money)>();
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     public void AddLoveCallList(GameObject senderTuraa, int money)
     {
-
         loveCallList.Add((senderTuraa, money));
         ShowLovePopups();
     }
@@ -61,7 +49,6 @@ public class LoveCallsManage : MonoBehaviour
             }
         }
 
-        DebugWndow.CI.AddDlList($"LoveCallManager if (loveCallList.Count > 0):{loveCallList.Count > 0}");
         if (loveCallList.Count > 0)
         {
             mEffect.OnPinkEffect(senderTuraaList);

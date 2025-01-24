@@ -49,12 +49,9 @@ public class TargetInfoManager : NetworkBehaviour
 
     public void LoveCall()
     {
-        DebugWndow.CI.AddDlList("TargetInfo.LoveCall");
 
         mEffect.OnRedEffect(targetTuraa);
-        DebugWndow.CI.AddDlList("TargetInfo.LoveCall OnRedEffect");
         ActiveLoveCall(false);
-        DebugWndow.CI.AddDlList("TargetInfo.LoveCall ActiveLoveCall");
 
         LoveCallServerRpc(targetId, myId, tribute);
     }
@@ -62,7 +59,6 @@ public class TargetInfoManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void LoveCallServerRpc(ulong targetId, ulong senderId, int money)
     {
-        DebugWndow.CI.AddDlList("TargetInfo.LoveCallServerRpc");
         LoveCallClientRpc(targetId, senderId, money);
     }
 

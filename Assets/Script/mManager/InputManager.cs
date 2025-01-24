@@ -60,7 +60,6 @@ public class InputManager : MonoBehaviour
         NetworkObject DPPn = NetworkManager.Singleton.LocalClient.PlayerObject;
         GameObject DPPg = DPPn.gameObject;
         DPPg.transform.position += new Vector3(0, 0, value);
-        debugUI.AddDlList($"DPPgPos:{DPPg.transform.position}");
     }
 
 
@@ -94,13 +93,12 @@ public class InputManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("click else Tag:" + hit.collider.ToString());
+
                 }
             }
             else
             {
                 HideInfoUI();
-                Debug.Log("hit.collider == null");
             }
         }
     }

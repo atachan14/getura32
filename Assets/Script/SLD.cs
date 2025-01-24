@@ -8,7 +8,7 @@ public enum SNM
     Title,
     Menu,
     Robby,
-    GameStart,
+    Opening,
     Day,
     Night
 }
@@ -20,12 +20,12 @@ public static class SLD
         SceneManager.LoadScene(name.ToString());
     }
 
-    public static void NetworkSingleLoad(SNM name)
+    public static void SingleLoad(SNM name)
     {
         NetworkManager.Singleton.SceneManager.LoadScene(name.ToString(), LoadSceneMode.Single);
     }
 
-    public static void NetworkAdditiveLoad(SNM name)
+    public static void AdditiveLoad(SNM name)
     {
         NetworkManager.Singleton.SceneManager.LoadScene(name.ToString(), LoadSceneMode.Additive);
     }

@@ -1,12 +1,11 @@
+using TMPro;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class MatchingStatus : MonoBehaviour
+public class StartGameManager : MonoBehaviour
 {
-    private bool red;
-    private GameManager redTarget;
-    private bool pink;
-    private GameManager pinkSender;
-    private bool matching;
+    [SerializeField] private TextMeshProUGUI nextTMP;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,5 +16,10 @@ public class MatchingStatus : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void NextExe()
+    {
+        SLD.SingleLoad(SNM.Day);
     }
 }

@@ -18,13 +18,11 @@ public class LovePopupManage : NetworkBehaviour
     private GameObject senderTuraa;
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         self.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
 
@@ -37,12 +35,12 @@ public class LovePopupManage : NetworkBehaviour
         senderId = senderTuraa.GetComponent<NetworkObject>().OwnerClientId;
 
         senderNameTMP.text = senderTuraa.GetComponent<PlayerStatus>().PlayerName.Value.ToString();
+        DebugWndow.CI.AddDlList($"after SetData.senderId:{senderId},senderName:{senderNameTMP.text}");
     }
     public void OKClick()
     {
-        loveCallsManage.ClearLoveCallList();
         SendOKServerRpc(senderId);
-        
+        loveCallsManage.ClearLoveCallList();
     }
     [ServerRpc(RequireOwnership = false)]
     void SendOKServerRpc(ulong targetId)
@@ -64,19 +62,23 @@ public class LovePopupManage : NetworkBehaviour
     }
     public void NGClick()
     {
-        loveCallsManage.RemoveLoveCallList(senderTuraa);
+       
+        DebugWndow.CI.AddDlList($"NGClick.senderId:{senderId}");
         SendNGServerRpc(senderId);
-        
+        loveCallsManage.RemoveLoveCallList(senderTuraa);
+
     }
     [ServerRpc(RequireOwnership = false)]
     void SendNGServerRpc(ulong targetId)
     {
+        DebugWndow.CI.AddDlList($"NGClickSeverRpc.targetId:{targetId}");
         SendNGClientRpc(targetId);
     }
 
     [ClientRpc]
     void SendNGClientRpc(ulong targetId)
     {
+        DebugWndow.CI.AddDlList($"NGClickClientRpc.targetId:{targetId}");
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
            targetInfo.ReceiveNG();

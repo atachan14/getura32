@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class OwnerPlayer : NetworkBehaviour
 {
-    public float speed = 4f;
+    [SerializeField] private float speed = 4f;
+    [SerializeField] private float newPink = 0.2f;
+    [SerializeField] private float defaultPink = 1.0f;
     private float pinkRatio = 1f;
-    private float redRatio = 1f;
 
     private Rigidbody2D rb;
     private Vector3 nextPos;
@@ -48,13 +49,12 @@ public class OwnerPlayer : NetworkBehaviour
 
     public void OnPinkSlow()
     {
-        pinkRatio = 0.2f;
+        pinkRatio =newPink;
         SendPinkRatioServerRpc(pinkRatio);
-        DebugWndow.CI.AddDlList($"----OnPinkSlow:{pinkRatio}");
     }
     public void OffPinkSlow()
     {
-        pinkRatio = 1;
+        pinkRatio = defaultPink;
         SendPinkRatioServerRpc(pinkRatio);
     }
     [ServerRpc]
