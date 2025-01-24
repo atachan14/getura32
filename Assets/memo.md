@@ -93,44 +93,17 @@
 
 	
 
-	- ゲーム概要、流れ
-		プレイ人数：10人前後の可変（オンライン）。
+### ゲーム概要
+	プレイ人数：10人前後の可変（オンライン）。
 	ゲームの流れ：
 	●ゲーム開始まで
-	①（タイトル画面）
-	②メニュー画面。画面左側でアバターやハンドルネームを設定し、画面右側のボタンでHostやClientとして接続。
-	③ロビー画面。参加者たちのアバターが表示され、MatchingTurnに近い動作や操作が可能。Hostの[Start]ボタンによってゲーム開始。
-		- 主なオブジェクト
-			- Turaa（DefaultPlayerPrefab（アバター））
-			- UICanvas
-				- targetInfo（左上 , 他ClientのTuraaを選択するとtargetとして反映される）
-					- targetName
-					- LoveCall（告白ボタン）
-					- TributeBer（貢ぐ額を設定 , デフォル値は0）
-					- Block/Cansell（targetからのLoveCallを受けなくする）
-				- CantTalkAura（左中 , 対象指定不可モード切替トグル）
-				- LoveCalls（左下 , LoveCallを受けるとLoveCallListに追加され、状況がLovePopupとして反映される）
-					- LovePopup
-						- SenderName
-						- Tribute
-						- OK（暫定的にMatchingが成立、LoveCallListをClear）
-						- Neg（tributeの交渉UIを表示）
-						- NG
-						- Block/Cansell
-				- Status（中下）
-					- Money
-					- Fine
-					- Charm
-				- Chat（右下）
-
-			- RobbyManager（Robbyだけで行う処理）
-				- RobbySizeManager（現在の参加人数をUIに反映）
-				- StartButtonManager（Hostにだけ表示）
-				- StageSelectManager（Hostにだけ表示）
+	①（Title）
+	②（Menu）画面左側でTuraa（DefaultPlayerPrefab（アバター））のカスタマイズやハンドルネームの設定を行い、画面右側のボタンでHostやClientとして接続。
+	③（Robby）参加者たちのTuraaが表示され、MatchingTurnに近い動作や操作が可能。Hostの[Start]ボタンによってゲーム開始。
 
 	●ゲーム開始後
 	①（GameStart）適当な演出。
-	②（MatchingTurn）制限時間内に各プレイヤーが自由にペアを作る。
+	②（MatchingTurn）制限時間内に各プレイヤーが自由にペアを作る。このフェイズ以外には殆ど操作がない。
 	③（TurnEnd）制限時間の終了に伴いペアが確定する。
 	④（TrunResult）ペア毎にホテルに入っていき、ステータスの増減等が行われる。
 	⑤（TurnSetup）下記条件によりプレイヤーが1人以上脱落する。
@@ -143,7 +116,8 @@
 	●各パラメーター：
 	　[好き好きポイント]：
 	　　●GameStart時に各プレイヤーと対象毎に、ランダムかつ公平（許容値は設定するが未定）に振り分けられる。
-	（例：
+	（送信値の合計と受信値の合計が各プレイヤー間で同じくらい。
+	例：
 		／　a　 b　 c　 d
 		a→ ／　80　10　60　
 		b→ 40　／　90　20
@@ -166,6 +140,51 @@
 	　[魅力]：
 	　　●上述の条件で上昇し、他プレイヤーからの[好き好きポイント]を集めやすくする。
 
-	●MatchingTurnでの操作（その他のフェイズでは殆ど操作しない）：
-	　[右クリック] LOL的なアバターの座標移動（実装済）。
+	●Robby/MatchingTurnでの操作（その他のフェイズでは殆ど操作しない）：
+	　[右クリック] LOL的なTuraaの座標移動（実装済）。
 	　[左クリック] targetの選択やButtonのクリック。
+
+	- Robby/MatchingTurnの主なオブジェクト
+			- Turaa（DefaultPlayerPrefab（アバター））
+			- MatchingSet
+				- MatchingUI
+					- targetInfo（左上 , 他ClientのTuraaを選択するとtargetとして反映される）
+						- targetName
+						- LoveCall（告白ボタン）
+						- TributeBer（貢ぐ額を設定する , デフォル値は0）
+						- Block/Cansell（targetからのLoveCallを受けなくする）
+					- CantTalkAura（左中 , 対象指定不可モード切替トグル）
+					- PleaseTalkAura（左中 , 目立つエフェクトが付くだけのモード切替トグル）
+					- LoveCalls（左下 , LoveCallを受けるとLoveCallListに追加され、古い順に最大4件までLovePopupとして反映される）
+						- LovePopup
+							- SenderName
+							- Tribute
+							- OK（暫定的にMatchingが成立、LoveCallListをClear）
+							- Neg（tributeの交渉UIを表示）
+							- NG
+							- Block/Cansell
+				- InputManager
+				- QolEffectManager
+				- MatchingManager（状態に応じたEffectを管理）
+					（状態：Effect
+					　LoveCall送信中：Red
+					　LoveCall受信中：Pink
+					　Matching成立中：Matching
+					　CantTalkAura：Gray
+					　PleaseTalkAura：Orange
+					　Default:None）
+			- BaseUI
+				- Status（中下）
+					- Money
+					- Fine
+					- Charm
+				- Chat（右下）
+			- RobbyCanvas
+				- RobbySize（右上 , 現在の参加人数をUIに反映）
+				- StartButton（その下 , Hostにだけ表示）
+				- StageSelect（その下 ,Hostにだけ表示）
+				- TimeSetting（中上）
+			- GameManager？（MatchingTurnの処理？）
+				- GameSize（右上 , 生存人数/参加人数）
+				- Time（中上 , 制限時間）
+				- 未定
