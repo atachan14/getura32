@@ -105,7 +105,7 @@
 	①（GameStart）適当な演出。
 	②（MatchingTurn）制限時間内に各プレイヤーが自由にペアを作る。このフェイズ以外には殆ど操作がない。
 	③（TurnEnd）制限時間の終了に伴いペアが確定する。
-	④（TrunResult）ペア毎にホテルに入っていき、ステータスの増減等が行われる。
+	④（TurnResult）ペア毎にホテルに入っていき、ステータスの増減等が行われる。
 	⑤（TurnSetup）下記条件によりプレイヤーが1人以上脱落する。
 	　・奇数時：ペアを作れなかったプレイヤーが脱落。
 	　・偶数時：ステータス[元気]が最も低いプレイヤーが脱落。
@@ -153,8 +153,9 @@
 						- LoveCall（告白ボタン）
 						- TributeBer（貢ぐ額を設定する , デフォル値は0）
 						- Block/Cansell（targetからのLoveCallを受けなくする）
-					- CantTalkAura（左中 , 対象指定不可モード切替トグル）
-					- PleaseTalkAura（左中 , 目立つエフェクトが付くだけのモード切替トグル）
+					- Aura（左中 , モード切替トグル）
+						- CantTalkAura（対象指定不可モード）
+						- PleaseTalkAura（目立つエフェクトが付くだけのモード）
 					- LoveCalls（左下 , LoveCallを受けるとLoveCallListに追加され、古い順に最大4件までLovePopupとして反映される）
 						- LovePopup
 							- SenderName
