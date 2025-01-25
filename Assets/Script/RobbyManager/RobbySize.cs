@@ -1,24 +1,24 @@
+using System.Drawing;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
 public class RoomSize : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI robbySizeTMP;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    [SerializeField] private RoomSetting RoomSetting;
+   
     void Update()
     {
-        
+        {
+            if (NetworkManager.Singleton != null)
+            {
+                int clientCount = NetworkManager.Singleton.ConnectedClients.Count;
+                robbySizeTMP.text = clientCount.ToString();
+                RoomSetting.RoomSize = clientCount;
+            }
+        }
     }
 
-    public void Reflection(int size)
-    {
-        robbySizeTMP.text = size.ToString();
-    }
 
 }

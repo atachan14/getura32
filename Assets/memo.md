@@ -3,40 +3,43 @@
 
 
 ### がっこーでやること。
-	- practice
-		- animation
-	- BaseUI
-		- targetInfo
-			- targetNameの色(free, send, receive, other, pair)
-			- tributeBer
+	- InputManager
+		- OwnerPlayer,Tentacleと合わせてリファクタリング
+	- TargetInfo
+		- targetNameの色(free, send, receive, other, pair)
+		- tributeButton
+			- [-]
+			- [1000]
+			- [5000]
+			- [10000]
+			- TMP
 		- PleaseTalkAura
+		- CantTalkAura
+	- PlayerStatus
+		- MatchingColor
 	- RobbyMangager
 		- timeSetting
 		- stageSelect
 	- GameManager
 		- SetupLovePoint
 			- CalcLovePoint
-			- それの表示(おうち)
 	- turaa
 		- eyeMove
 		- 触手分割SortingOrder
 	- アバター追加
 	- 背景
 	- アニメ？
-		- LoveCall
+		- LoveCallTentacle
 		- MatchingEffect
 		- ReceiveNG
+		- Title
 		- Opening
-		- gameStart
 
 ### おうちでやること。
 # 優先順
-	- RobbyMangager
-		- start
-		- robbySize
+
 	- シーン, 偏移
 		- RoomSettingを持ち越してのシーン偏移
-		- GameStart
 		- day
 		- night
 
