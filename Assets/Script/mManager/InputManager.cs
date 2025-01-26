@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -31,43 +32,45 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(1)) ClickMoveEffect(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        if (Input.GetMouseButtonDown(0)) OpenInfo();
-        if (Input.GetKeyDown(KeyCode.F9)) fixedCamera = !fixedCamera;
-
-        if (!fixedCamera && !isTakeCamera)
-        {
-            if (Input.mousePosition.x < 0) ToMoveCamera(Vector3.left);
-            if (Input.mousePosition.x > Screen.width) ToMoveCamera(Vector3.right);
-            if (Input.mousePosition.y < 0) ToMoveCamera(Vector3.down);
-            if (Input.mousePosition.y > Screen.height) ToMoveCamera(Vector3.up);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Y)) isTakeCamera = !isTakeCamera;
+        if (Input.GetKeyDown(KeyCode.F8)) isTakeCamera = !isTakeCamera;
         if (Input.GetKey(KeyCode.Space) || isTakeCamera) TakeCamera();
+
+        if (!fixedCamera && !isTakeCamera) SelectMoveCamera();
+        if (Input.GetKeyDown(KeyCode.F9)) fixedCamera = !fixedCamera;
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0f) ZoomCamera(scroll);
 
-        //debug
-        if (Input.GetKeyDown(KeyCode.V)) DebugDPPTransZ(1);
-        if (Input.GetKeyDown(KeyCode.C)) DebugDPPTransZ(-1);
+        if (IsRedStop) return;
+        if (Input.GetMouseButtonDown(1)) ClickMove(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        if (Input.GetMouseButtonDown(0)) OpenInfo();
+
+        ////debug
+        //if (Input.GetKeyDown(KeyCode.V)) DebugDPPTransZ(1);
+        //if (Input.GetKeyDown(KeyCode.C)) DebugDPPTransZ(-1);
 
     }
 
-    void DebugDPPTransZ(int value)
+    //void DebugDPPTransZ(int value)
+    //{
+    //    NetworkObject DPPn = NetworkManager.Singleton.LocalClient.PlayerObject;
+    //    GameObject DPPg = DPPn.gameObject;
+    //    DPPg.transform.position += new Vector3(0, 0, value);
+    //}
+    void SelectMoveCamera()
     {
-        NetworkObject DPPn = NetworkManager.Singleton.LocalClient.PlayerObject;
-        GameObject DPPg = DPPn.gameObject;
-        DPPg.transform.position += new Vector3(0, 0, value);
+        if (Input.mousePosition.x < 0) ToMoveCamera(Vector3.left);
+        if (Input.mousePosition.x > Screen.width) ToMoveCamera(Vector3.right);
+        if (Input.mousePosition.y < 0) ToMoveCamera(Vector3.down);
+        if (Input.mousePosition.y > Screen.height) ToMoveCamera(Vector3.up);
     }
 
-
-    void ClickMoveEffect(Vector3 worldPosition)
+    void ClickMove(Vector3 worldPosition)
     {
-        worldPosition.z = 0; // Zç¿ïWÇÕ2DÇÃèÍçáå≈íËílÇ…Ç∑ÇÈ
+        worldPosition.z = 0;
 
         QolEffect.ClickMove(worldPosition);
+        NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<OwnerPlayer>().ClickMoveServerRpc(worldPosition);
     }
 
     void OpenInfo()
@@ -76,7 +79,7 @@ public class InputManager : MonoBehaviour
         {
             return;
         }
-        else if(!IsRedStop)
+        else
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);

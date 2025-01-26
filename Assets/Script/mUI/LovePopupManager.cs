@@ -17,15 +17,9 @@ public class LovePopupManage : NetworkBehaviour
     private int money;
     private GameObject senderTuraa;
 
-
     void Start()
     {
         self.SetActive(false);
-    }
-
-    void Update()
-    {
-
     }
 
     public void SetData(GameObject senderTuraa, int money)

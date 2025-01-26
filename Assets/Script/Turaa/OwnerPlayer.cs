@@ -16,6 +16,7 @@ public class OwnerPlayer : NetworkBehaviour
     private bool isMoving = false;
 
     public bool IsRedStop { get; set; } = false;
+    public GameObject partner { get; set; }
 
     void Start()
     {
@@ -34,16 +35,7 @@ public class OwnerPlayer : NetworkBehaviour
 
     void Update()
     {
-        if (IsRedStop) return;
-        if (IsOwner)
-        {
-            if (Input.GetMouseButtonDown(1))
-            {
-                Vector3 clickWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                clickWorldPos.z = 0;
-                ClickMoveServerRpc(clickWorldPos);
-            }
-        }
+   
     }
 
 
@@ -73,7 +65,7 @@ public class OwnerPlayer : NetworkBehaviour
     }
 
     [ServerRpc]
-    void ClickMoveServerRpc(Vector3 worldPosition)
+    public void ClickMoveServerRpc(Vector3 worldPosition)
     {
         nextPos = worldPosition;
         isMoving = true;

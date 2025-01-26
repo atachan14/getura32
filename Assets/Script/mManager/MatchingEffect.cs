@@ -15,6 +15,10 @@ public class MatchingEffect : MonoBehaviour
     [SerializeField] private GameObject pinkBoard;
     private List<GameObject> pinkTargetList;
 
+    [SerializeField] private GameObject HeartPrefab;
+    private GameObject matchingTarget;
+    private int which;
+
     private GameObject myTuraa;
 
     void Start()
@@ -35,8 +39,22 @@ public class MatchingEffect : MonoBehaviour
 
     void Update()
     {
+        if (matchingTarget != null) MatchingDance();
+    }
+
+    public void SetMatchingTarget(GameObject target,int which)
+    {
+        matchingTarget = target;
+        this.which = which;
+    }
+
+    void MatchingDance()
+    {
+
 
     }
+
+
     public void OnRedEffect(GameObject target)
     {
         redTarget = target;
