@@ -23,13 +23,11 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] private CameraController cameraController;
     private bool fixedCamera = false;
-    // Start is called before the first frame update
     void Start()
     {
         targetInfo.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F8)) isTakeCamera = !isTakeCamera;
@@ -45,18 +43,9 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButtonDown(1)) ClickMove(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         if (Input.GetMouseButtonDown(0)) OpenInfo();
 
-        ////debug
-        //if (Input.GetKeyDown(KeyCode.V)) DebugDPPTransZ(1);
-        //if (Input.GetKeyDown(KeyCode.C)) DebugDPPTransZ(-1);
-
     }
 
-    //void DebugDPPTransZ(int value)
-    //{
-    //    NetworkObject DPPn = NetworkManager.Singleton.LocalClient.PlayerObject;
-    //    GameObject DPPg = DPPn.gameObject;
-    //    DPPg.transform.position += new Vector3(0, 0, value);
-    //}
+
     void SelectMoveCamera()
     {
         if (Input.mousePosition.x < 0) ToMoveCamera(Vector3.left);
@@ -83,25 +72,19 @@ public class InputManager : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-            if (hit.collider != null)
+            if (hit.collider != null && hit.collider.CompareTag("CharacterClick"))
             {
-                if (hit.collider.CompareTag("CharacterClick"))
-                {
-                    // 対象プレイヤーを取得
-                    targetPlayer = hit.collider.gameObject;
+                targetPlayer = hit.collider.gameObject;
 
-                    //// UIを表示
-                    targetInfoScript.SetTarget(targetPlayer);
-                    targetInfo.SetActive(true);
-                }
-                else
-                {
+                targetInfoScript.SetTarget(targetPlayer);
+                targetInfo.SetActive(true);
 
-                }
+                NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<TentacleController>().ActivateTentacle(hit);
             }
             else
             {
                 HideInfoUI();
+                NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<TentacleController>().NoContactTentacle();
             }
         }
     }

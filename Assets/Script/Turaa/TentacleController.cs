@@ -24,64 +24,48 @@ public class TentacleController : NetworkBehaviour
     public NetworkVariable<float> TentacleScaleY => tentacleScaleY;
 
     public GameObject TargetPlayer { get => targetPlayer; set => targetPlayer = value; }
-    
+
 
     void Start()
     {
-        ContactTentacleServerRpc();
+        NoContactTentacleServerRpc();
     }
 
     void Update()
     {
-        if (IsOwner && Input.GetMouseButtonDown(0)&&!IsRedStop)
-        {
-            ActivateTentacle();
-        }
         if (IsOwner && TargetPlayer != null)
         {
             KeepTentacle();
         }
-        // 触手の同期情報を反映
         SyncTentacle();
     }
 
-    public void ActivateTentacle()
+    public void ActivateTentacle(RaycastHit2D hit)
     {
-        
+        ContactTentacleServerRpc();
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+        activeTentacle.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 5);
+        TargetPlayer = hit.collider.gameObject;
 
-        if (hit.collider != null && hit.collider.CompareTag("CharacterClick"))
-        {
-            UnContactTentacleServerRpc();
+        // クライアントで計算
+        Vector3 targetPosition = TargetPlayer.transform.position;
+        targetPosition.z = activeTentacle.transform.position.z;
 
-            activeTentacle.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 5);
-            TargetPlayer = hit.collider.gameObject;
+        Vector3 direction = targetPosition - activeTentacle.transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        float distance = direction.magnitude;
+        float spriteHeight = activeTentacle.GetComponent<SpriteRenderer>().sprite.bounds.size.y;
 
-            // クライアントで計算
-            Vector3 targetPosition = TargetPlayer.transform.position;
-            targetPosition.z = activeTentacle.transform.position.z;
+        Quaternion calculatedRotation = Quaternion.Euler(0, 0, angle - 90);
+        float calculatedScaleY = distance / spriteHeight;
 
-            Vector3 direction = targetPosition - activeTentacle.transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            float distance = direction.magnitude;
-            float spriteHeight = activeTentacle.GetComponent<SpriteRenderer>().sprite.bounds.size.y;
+        // 計算結果をサーバーに送信
+        UpdateTentacleDataServerRpc(activeTentacle.transform.position, calculatedRotation, calculatedScaleY);
+    }
 
-            Quaternion calculatedRotation = Quaternion.Euler(0, 0, angle - 90);
-            float calculatedScaleY = distance / spriteHeight;
-
-            // 計算結果をサーバーに送信
-            UpdateTentacleDataServerRpc(activeTentacle.transform.position, calculatedRotation, calculatedScaleY);
-        }
-        else if (EventSystem.current.IsPointerOverGameObject())
-        {
-            Debug.Log("click Info UI");
-        }
-        else
-        {
-            ContactTentacleServerRpc();
-        }
+    public void NoContactTentacle()
+    {
+        NoContactTentacleServerRpc();
     }
     public void KeepTentacle()
     {
@@ -119,19 +103,6 @@ public class TentacleController : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void UnContactTentacleServerRpc()
-    {
-        UnContactTentacleClientRpc();
-    }
-    [ClientRpc]
-    public void UnContactTentacleClientRpc()
-    {
-        inactiveTentacle.SetActive(false);
-        activeTentacle.SetActive(true);
-    }
- 
-
-    [ServerRpc]
     public void ContactTentacleServerRpc()
     {
         ContactTentacleClientRpc();
@@ -139,9 +110,21 @@ public class TentacleController : NetworkBehaviour
     [ClientRpc]
     public void ContactTentacleClientRpc()
     {
+        inactiveTentacle.SetActive(false);
+        activeTentacle.SetActive(true);
+    }
+
+    [ServerRpc]
+    public void NoContactTentacleServerRpc()
+    {
+        NoContactTentacleClientRpc();
+    }
+    [ClientRpc]
+    public void NoContactTentacleClientRpc()
+    {
         inactiveTentacle.SetActive(true);
         activeTentacle.SetActive(false);
         TargetPlayer = null;
     }
-  
+
 }
