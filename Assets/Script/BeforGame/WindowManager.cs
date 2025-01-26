@@ -7,6 +7,7 @@ public class WindowManager : MonoBehaviour
     {
         // ウィンドウサイズを指定する（例: 800×600）
         Screen.SetResolution(800, 640, FullScreenMode.Windowed);
+        Application.targetFrameRate = 60;
     }
 
 

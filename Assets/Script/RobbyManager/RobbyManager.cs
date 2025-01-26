@@ -10,7 +10,6 @@ public class RobbyManager : NetworkBehaviour
     [SerializeField] TextMeshProUGUI timeSettingTMP;
     [SerializeField] GameObject startButton;
     [SerializeField] GameObject[] timeSetButton = new GameObject[4];
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         if (!IsHost)

@@ -1,16 +1,51 @@
+using TMPro;
+using Unity.Netcode;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 
-public class DayManager : MonoBehaviour
+public class DayManager : NetworkBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] TextMeshProUGUI roomSizeTMP;
+    [SerializeField] TextMeshProUGUI aliveSizeTMP;
+    [SerializeField] TextMeshProUGUI timeTMP;
+
+    private int remainingTime;
+
     void Start()
     {
-        
+        roomSizeTMP.text = RoomSetting.CI.RoomSize.ToString();
+        timeTMP.text = RoomSetting.CI.TimeSize.ToString();
+        remainingTime = RoomSetting.CI.TimeSize;
+
+        StartCoroutine(TimerCoroutine());
     }
 
-    // Update is called once per frame
+    private System.Collections.IEnumerator TimerCoroutine()
+    {
+        while (remainingTime > 0)
+        {
+            yield return new WaitForSeconds(1f);
+            remainingTime--;
+            timeTMP.text = remainingTime.ToString();
+        }
+
+        DebugWndow.CI.AddDlList("timeup");
+    }
+
+
     void Update()
     {
-        
+        if (IsHost)
+        {
+            string rs = roomSizeTMP.text;
+            string t = timeTMP.text;
+            UpdateClientRpc(rs, t);
+        }
+    }
+    [ClientRpc]
+    public void UpdateClientRpc(string rs, string t)
+    {
+        roomSizeTMP.text = rs;
+        timeTMP.text = t;
     }
 }
