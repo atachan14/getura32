@@ -62,8 +62,6 @@ public class MatchingEffect : MonoBehaviour
         PullSO(redTarget);
 
         redBoard.SetActive(true);
-        myTuraa.GetComponent<OwnerPlayer>().IsRedStop=true;
-        myTuraa.GetComponent<TentacleController>().IsRedStop=true;
         inputManager.IsRedStop=true;
     }
 
@@ -74,8 +72,6 @@ public class MatchingEffect : MonoBehaviour
         redTarget = null;
 
         redBoard.SetActive(false);
-        myTuraa.GetComponent<OwnerPlayer>().IsRedStop = false;
-        myTuraa.GetComponent<TentacleController>().IsRedStop = false;
         inputManager.IsRedStop = false;
     }
 
@@ -86,7 +82,7 @@ public class MatchingEffect : MonoBehaviour
         foreach (GameObject target in pinkTargetList) PullSO(target);
 
         pinkBoard.SetActive(true);
-        myTuraa.GetComponent<OwnerPlayer>().OnPinkSlow();
+        myTuraa.GetComponent<OwnerPlayer>().OnPinkSlow(targetList.Count);
     }
 
     public void OffPinkEffect()

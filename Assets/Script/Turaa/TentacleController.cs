@@ -9,7 +9,6 @@ public class TentacleController : NetworkBehaviour
     public GameObject activeTentacle;
 
     private GameObject targetPlayer;
-    public bool IsRedStop { get; set; } = false;
 
 
     // Gè‚Ìó‘Ô‚ğ“¯Šú‚·‚é‚½‚ß‚ÌNetworkVariable

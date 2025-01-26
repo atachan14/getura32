@@ -6,16 +6,14 @@ using UnityEngine;
 public class OwnerPlayer : NetworkBehaviour
 {
     [SerializeField] private float speed = 4f;
-    [SerializeField] private float newPink = 0.2f;
-    [SerializeField] private float defaultPink = 1.0f;
+    [SerializeField] private float newPink = 0.6f;
+    private float defaultPink = 1.0f;
     private float pinkRatio = 1f;
 
     private Rigidbody2D rb;
     private Vector3 nextPos;
     private Vector3 direction;
     private bool isMoving = false;
-
-    public bool IsRedStop { get; set; } = false;
     public GameObject partner { get; set; }
 
     void Start()
@@ -35,13 +33,16 @@ public class OwnerPlayer : NetworkBehaviour
 
     void Update()
     {
-   
+
     }
 
 
-    public void OnPinkSlow()
+    public void OnPinkSlow(int count)
     {
-        pinkRatio =newPink;
+        for (int i = 0; i < count; i++)
+        {
+            pinkRatio *= newPink;
+        }
         SendPinkRatioServerRpc(pinkRatio);
     }
     public void OffPinkSlow()
