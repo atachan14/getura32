@@ -6,45 +6,38 @@ using Unity.Collections;
 
 public class NamePlate : NetworkBehaviour
 {
-    private NetworkVariable<FixedString64Bytes> playerName = new(
-        default, // デフォルト値
-        NetworkVariableReadPermission.Everyone,
-        NetworkVariableWritePermission.Server);
-
-    [SerializeField] private  TextMeshProUGUI nameTMP;
+    public NetworkVariable<FixedString64Bytes> TuraaName { get; set; } = new NetworkVariable<FixedString64Bytes>();
+    [SerializeField] private TextMeshProUGUI nameTMP;
 
     void Start()
     {
         if (IsOwner)
         {
-            // ローカルプレイヤーの名前を設定
-            string savedName = PlayerPrefs.GetString("PlayerName", "DefaultName");
-            SetPlayerNameServerRpc(savedName);
+            SetTuraaNameServerRpc(ClientSetting.CI.TuraaName);
         }
     }
     void Update()
     {
-        // ネットワーク変数が更新されたら表示を反映
-        nameTMP.text = playerName.Value.ToString();
+        nameTMP.text = TuraaName.Value.ToString();
     }
-
-    public void SetPlayerName(string newName)
+    [ServerRpc]
+    void SetTuraaNameServerRpc(string newName)
     {
-        playerName.Value = newName; 
+        Debug.Log("namePlate SetTuraaNameServerRpc");
+        TuraaName.Value = newName;
+        nameTMP.text = newName;
+    }
+    public void SetTMP(string newName)
+    {
         nameTMP.text = newName;
     }
 
-    public string GetPlayerName()
+    public string Get()
     {
-        return playerName.Value.ToString();
+        return nameTMP.text;
     }
 
-    // 名前をServerRpcで設定
-    [ServerRpc]
-    void SetPlayerNameServerRpc(string newName)
-    {
-        playerName.Value = newName; 
-    }
 
-  
+
+
 }

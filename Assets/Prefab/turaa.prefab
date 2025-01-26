@@ -235,14 +235,14 @@ Canvas:
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
-  m_OverrideSorting: 0
+  m_OverrideSorting: 1
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!114 &3228065371524083921
 MonoBehaviour:
@@ -266,7 +266,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &1410297465933345001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -620,8 +620,8 @@ GameObject:
   - component: {fileID: 5990460610914336070}
   - component: {fileID: 3443810483980750936}
   - component: {fileID: 6571697458557658280}
-  - component: {fileID: 6188605153877770221}
   - component: {fileID: 980536899576658914}
+  - component: {fileID: 7265637198694391849}
   m_Layer: 0
   m_Name: turaa
   m_TagString: CharacterClick
@@ -757,7 +757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   speed: 5
-  newPink: 0.4
+  newPink: 0.3
   defaultPink: 1
 --- !u!114 &4807617455058861305
 MonoBehaviour:
@@ -879,20 +879,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2.7, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6188605153877770221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8501463007481296686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe9e7bf44bc26a141b51e0886e6d50b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  nameTMP: {fileID: 7329312414969614193}
 --- !u!114 &980536899576658914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -908,6 +894,20 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   inactiveTentacle: {fileID: 857386873991446368}
   activeTentacle: {fileID: 1903377336699644917}
+--- !u!114 &7265637198694391849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8501463007481296686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe9e7bf44bc26a141b51e0886e6d50b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  nameTMP: {fileID: 7329312414969614193}
 --- !u!1 &8860980868835103586
 GameObject:
   m_ObjectHideFlags: 0

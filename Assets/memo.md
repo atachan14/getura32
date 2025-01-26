@@ -1,6 +1,6 @@
 ﻿
 ### 未修正バグ
-
+	- redEffect , pinkEffectのSOがときどきヘン。
 
 ### がっこーでやること。
 	- InputManager

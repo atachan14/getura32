@@ -6,7 +6,6 @@ using UnityEngine;
 public class RoomSize : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI robbySizeTMP;
-    [SerializeField] private RoomSetting RoomSetting;
    
     void Update()
     {
@@ -15,7 +14,7 @@ public class RoomSize : MonoBehaviour
             {
                 int clientCount = NetworkManager.Singleton.ConnectedClients.Count;
                 robbySizeTMP.text = clientCount.ToString();
-                RoomSetting.RoomSize = clientCount;
+                RoomSetting.CI.RoomSize = clientCount;
             }
         }
     }

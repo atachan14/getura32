@@ -6,7 +6,7 @@ public class WindowManager : MonoBehaviour
     void Start()
     {
         // ウィンドウサイズを指定する（例: 800×600）
-        Screen.SetResolution(720, 520, FullScreenMode.Windowed);
+        Screen.SetResolution(800, 640, FullScreenMode.Windowed);
     }
 
 

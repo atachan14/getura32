@@ -38,7 +38,7 @@ public class TargetInfoManager : NetworkBehaviour
     {
         this.targetTuraa = target;
         targetId = target.GetComponent<NetworkObject>().OwnerClientId;
-        nameTMP.text = target.GetComponent<PlayerStatus>().PlayerName.Value.ToString();
+        nameTMP.text = target.GetComponent<NamePlate>().Get();
     }
 
     public void ActiveLoveCall(bool can)

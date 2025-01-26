@@ -34,7 +34,7 @@ public class LovePopupManage : NetworkBehaviour
         this.money = money;
         senderId = senderTuraa.GetComponent<NetworkObject>().OwnerClientId;
 
-        senderNameTMP.text = senderTuraa.GetComponent<PlayerStatus>().PlayerName.Value.ToString();
+        senderNameTMP.text = senderTuraa.GetComponent<NamePlate>().Get();
         DebugWndow.CI.AddDlList($"after SetData.senderId:{senderId},senderName:{senderNameTMP.text}");
     }
     public void OKClick()

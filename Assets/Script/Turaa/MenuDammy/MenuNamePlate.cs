@@ -1,7 +1,9 @@
+using TMPro;
 using UnityEngine;
 
-public class StartButtonManagaer : MonoBehaviour
+public class MenuNamePlate : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI nameTMP;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,8 +16,8 @@ public class StartButtonManagaer : MonoBehaviour
         
     }
 
-    public void StartExe()
+    public void SetTMP(string newName)
     {
-        SLD.SingleLoad(SNM.Opening);
+        nameTMP.text = newName;
     }
 }

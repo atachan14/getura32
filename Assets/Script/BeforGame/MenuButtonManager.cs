@@ -7,14 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class MenuButtonManage : NetworkBehaviour
 {
-    public TMP_InputField nameInputField;
-    public PlayerStatus playerStatus;
-    public NamePlate NamePlate;
+    [SerializeField] TMP_InputField nameInputField;
+    [SerializeField] MenuNamePlate robbyNamePlate;
     public void StartHost()
     {
         NetworkManager.Singleton.StartHost();
+        SLD.SingleLoad(SNM.Robby);
 
-        NetworkManager.Singleton.SceneManager.LoadScene("Robby", LoadSceneMode.Single);
+        //NetworkManager.Singleton.SceneManager.LoadScene("Robby", LoadSceneMode.Single);
     }
 
 
@@ -25,14 +25,10 @@ public class MenuButtonManage : NetworkBehaviour
 
     public void OnSubmitName()
     {
-        Debug.Log("OnSubmitName1 nameInputField.text:" + nameInputField.text);
-        //Debug.Log(" 1NamePlate.DisplayName:" + NamePlate.DisplayName);
-        string playerName = nameInputField.text;  // “ü—Í‚³‚ê‚½–¼‘O‚ðŽæ“¾
-        //NamePlate.DisplayName = playerName;
-        PlayerPrefs.SetString("PlayerName", playerName);
-        //Debug.Log(" 2NamePlate.DisplayName:" + NamePlate.DisplayName);
-        NamePlate.SetPlayerName(playerName);
-        Debug.Log("NamePlate.GetName" + NamePlate.GetPlayerName());
+        string TuraaName = nameInputField.text;  // “ü—Í‚³‚ê‚½–¼‘O‚ðŽæ“¾
+        ClientSetting.CI.TuraaName = TuraaName;
+        robbyNamePlate.SetTMP(TuraaName);
+        Debug.Log($"ClientSetting.TuraaName{ClientSetting.CI.TuraaName}");
     }
 
 }

@@ -1,15 +1,16 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class RoomSetting : MonoBehaviour
+public class RoomSetting : NetworkBehaviour
 {
-    private static RoomSetting SI;
+    public static RoomSetting CI;
     public int RoomSize { get; set; }
     public int TimeSize { get; set; }
     public string Stage { get; set; }
 
     private void Awake()
     {
-        SI = this;
+        CI = this;
         DontDestroyOnLoad(this);
     }
 }
