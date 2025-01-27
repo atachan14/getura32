@@ -2,6 +2,12 @@
 ### 未修正バグ
 	- redEffect , pinkEffectのSOがときどきヘン。
 
+### 優先順
+	- matchingAnime & Move
+		- png
+		- animator
+		- move
+
 ### がっこーでやること。
 	- InputManager
 		- OwnerPlayer,Tentacleと合わせてリファクタリング
@@ -37,28 +43,10 @@
 
 ### おうちでやること。
 # 優先順
-
-	- シーン, 偏移
-		- RoomSettingを持ち越してのシーン偏移
-		- day
-		- night
+	-
 
 # リスト
-	- 同期
-		- RoomSettingを持ち越してのシーン偏移
-	- MachingManager
-		- MatchingEffect
-			- MatchingMove
-			- MatchingEffect
-	- RobbyMangager
-		- start
-		- robbySize
-		- timeSetting
-		- stageSelect
 	- steamworks
-
-	- MenuからRobbyへの持ち越し
-
 
 ### 構造案
 	- 同期構造

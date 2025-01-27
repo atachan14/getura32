@@ -9,12 +9,14 @@ public class OwnerPlayer : NetworkBehaviour
     [SerializeField] private float newPink = 0.6f;
     private float defaultPink = 1.0f;
     private float pinkRatio = 1f;
+    [SerializeField] private float stickOffset;
+    private bool hasStickPoint;
 
     private Rigidbody2D rb;
     private Vector3 nextPos;
     private Vector3 direction;
     private bool isMoving = false;
-    public GameObject partner { get; set; }
+    public GameObject Partner { get; set; }
 
     void Start()
     {
@@ -33,29 +35,64 @@ public class OwnerPlayer : NetworkBehaviour
 
     void Update()
     {
-
+        if (Partner != null) StickMove();
     }
 
-
-    public void OnPinkSlow(int count)
+    public void ChangePartner(GameObject newPartner)
     {
-        for (int i = 0; i < count; i++)
+        if (Partner != null)
         {
-            pinkRatio *= newPink;
+            DebugWndow.CI.AddDlList($"Change.Partner Partner != null Partner:{Partner.GetComponent<NamePlate>().Get()}");
+            ulong oldPartnerId = Partner.GetComponent<NetworkObject>().OwnerClientId;
+            ChangePartnerPartnerServerRpc(oldPartnerId);
         }
-        SendPinkRatioServerRpc(pinkRatio);
-    }
-    public void OffPinkSlow()
-    {
-        pinkRatio = defaultPink;
-        SendPinkRatioServerRpc(pinkRatio);
+        Partner = newPartner;
     }
     [ServerRpc]
-    void SendPinkRatioServerRpc(float pinkRatio)
+    public void ChangePartnerPartnerServerRpc(ulong oldPartnerId)
     {
-        this.pinkRatio = pinkRatio;
+        DebugWndow.CI.AddDlList($"changePPSR");
+        ChangePartnerPartnerClientRpc(oldPartnerId);
     }
 
+    [ClientRpc]
+    public void ChangePartnerPartnerClientRpc(ulong oldPartnerId)
+    {
+        DebugWndow.CI.AddDlList($"changePPCR my:{NetworkManager.Singleton.LocalClientId} , old:{oldPartnerId}");
+        DebugWndow.CI.AddDlList($"Partner is {Partner == null}");
+
+        if (NetworkManager.Singleton.LocalClientId == oldPartnerId)
+        {
+            DebugWndow.CI.AddDlList($"befor ChangePPCRpc.Partner:{Partner.GetComponent<NamePlate>().Get()}");
+            Partner = null;
+            DebugWndow.CI.AddDlList($"after ChangePPCRpc.Partner:{Partner.GetComponent<NamePlate>().Get()}");
+        }
+    }
+
+    void StickMove()
+    {
+        Vector3 distance = Partner.transform.position - transform.position;
+        if (distance.magnitude > 10f)
+        {
+            hasStickPoint = false;
+            SetNextPosServerRpc(Partner.transform.position);
+        }
+        else if(!hasStickPoint)
+        {
+            Vector3 midpoint = (transform.position + Partner.transform.position) / 2;
+            hasStickPoint = true;
+            if (transform.position.x > Partner.transform.position.x)
+            {
+                midpoint.x += stickOffset;
+                
+            }
+            else
+            {
+                midpoint.x -= stickOffset;
+            }
+            SetNextPosServerRpc(midpoint);
+        }
+    }
 
     void FixedUpdate()
     {
@@ -65,8 +102,14 @@ public class OwnerPlayer : NetworkBehaviour
         }
     }
 
+    public void ClickMove(Vector3 worldPosition)
+    {
+        DebugWndow.CI.AddDlList($"ClickMove:{Partner==null}");
+        if (Partner == null) SetNextPosServerRpc(worldPosition);
+    }
+
     [ServerRpc]
-    public void ClickMoveServerRpc(Vector3 worldPosition)
+    public void SetNextPosServerRpc(Vector3 worldPosition)
     {
         nextPos = worldPosition;
         isMoving = true;
@@ -86,7 +129,26 @@ public class OwnerPlayer : NetworkBehaviour
         if (Vector3.Distance(transform.position, nextPos) < 0.1f)
         {
             transform.position = nextPos;
-            isMoving = false;
+            if (!hasStickPoint) isMoving = false;
         }
+    }
+
+    public void OnPinkSlow(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            pinkRatio *= newPink;
+        }
+        SendPinkRatioServerRpc(pinkRatio);
+    }
+    public void OffPinkSlow()
+    {
+        pinkRatio = defaultPink;
+        SendPinkRatioServerRpc(pinkRatio);
+    }
+    [ServerRpc]
+    void SendPinkRatioServerRpc(float pinkRatio)
+    {
+        this.pinkRatio = pinkRatio;
     }
 }

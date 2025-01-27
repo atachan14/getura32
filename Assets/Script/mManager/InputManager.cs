@@ -7,15 +7,16 @@ using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] private DebugWndow debugUI;
-
     [SerializeField] private QolEffect QolEffect;
-    [SerializeField] private GameObject targetInfo; // UIの親オブジェクト
+    [SerializeField] private GameObject targetInfo;
     [SerializeField] private TargetInfoManager targetInfoScript;
     [SerializeField] private Camera myCamera;
     private bool isTakeCamera;
     private GameObject targetPlayer;
     private float scroll;
+
+    OwnerPlayer ownerPlayer;
+    TentacleController tentacleController;
     public bool IsRedStop { get; set; } = false;
 
 
@@ -26,6 +27,9 @@ public class InputManager : MonoBehaviour
     void Start()
     {
         targetInfo.SetActive(false);
+        GameObject myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.GameObject();
+        ownerPlayer = myTuraa.GetComponent<OwnerPlayer>();
+        tentacleController = myTuraa.GetComponent<TentacleController>();
     }
 
     void Update()
@@ -59,7 +63,7 @@ public class InputManager : MonoBehaviour
         worldPosition.z = 0;
 
         QolEffect.ClickMove(worldPosition);
-        NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<OwnerPlayer>().ClickMoveServerRpc(worldPosition);
+        ownerPlayer.ClickMove(worldPosition);
     }
 
     void OpenInfo()
@@ -79,12 +83,12 @@ public class InputManager : MonoBehaviour
                 targetInfoScript.SetTarget(targetPlayer);
                 targetInfo.SetActive(true);
 
-                NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<TentacleController>().ActivateTentacle(hit);
+                tentacleController.ActivateTentacle(hit);
             }
             else
             {
                 HideInfoUI();
-                NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<TentacleController>().NoContactTentacle();
+                tentacleController.NoContactTentacle();
             }
         }
     }

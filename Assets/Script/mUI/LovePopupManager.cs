@@ -1,5 +1,6 @@
 using TMPro;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -35,6 +36,7 @@ public class LovePopupManage : NetworkBehaviour
     {
         SendOKServerRpc(senderId);
         loveCallsManage.ClearLoveCallList();
+        NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<OwnerPlayer>().ChangePartner(senderTuraa);
     }
     [ServerRpc(RequireOwnership = false)]
     void SendOKServerRpc(ulong targetId)
@@ -56,7 +58,7 @@ public class LovePopupManage : NetworkBehaviour
     }
     public void NGClick()
     {
-       
+
         DebugWndow.CI.AddDlList($"NGClick.senderId:{senderId}");
         SendNGServerRpc(senderId);
         loveCallsManage.RemoveLoveCallList(senderTuraa);
@@ -75,7 +77,7 @@ public class LovePopupManage : NetworkBehaviour
         DebugWndow.CI.AddDlList($"NGClickClientRpc.targetId:{targetId}");
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-           targetInfo.ReceiveNG();
+            targetInfo.ReceiveNG();
         }
     }
     public void BlockClick()
@@ -83,7 +85,7 @@ public class LovePopupManage : NetworkBehaviour
 
     }
 
-    
 
-    
+
+
 }

@@ -13,7 +13,6 @@ public class TargetInfoManager : NetworkBehaviour
     [SerializeField] private MatchingEffect mEffect;
     [SerializeField] private LoveCallsManage loveCalls;
 
-    private GameObject myTuraa;
     private GameObject targetTuraa;
     private ulong myId;
     ulong targetId;
@@ -23,7 +22,6 @@ public class TargetInfoManager : NetworkBehaviour
     void Start()
     {
         myId = NetworkManager.Singleton.LocalClientId;
-        myTuraa = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().gameObject;
         loveCallButton.SetActive(true);
         loveCallCansellButton.SetActive(false);
     }
@@ -41,7 +39,7 @@ public class TargetInfoManager : NetworkBehaviour
         nameTMP.text = target.GetComponent<NamePlate>().Get();
     }
 
-    public void ActiveLoveCall(bool can)
+    public void ChangeLoveCallButton(bool can)
     {
         loveCallButton.SetActive(can);
         loveCallCansellButton.SetActive(!can);
@@ -51,7 +49,7 @@ public class TargetInfoManager : NetworkBehaviour
     {
 
         mEffect.OnRedEffect(targetTuraa);
-        ActiveLoveCall(false);
+        ChangeLoveCallButton(false);
 
         LoveCallServerRpc(targetId, myId, tribute);
     }
@@ -75,7 +73,7 @@ public class TargetInfoManager : NetworkBehaviour
     {
         LoveCallCansellServerRpc(targetId, myId);
         mEffect.OffRedEffect();
-        ActiveLoveCall(true);
+        ChangeLoveCallButton(true);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -95,12 +93,13 @@ public class TargetInfoManager : NetworkBehaviour
     public void ReceiveOK()
     {
         mEffect.OffRedEffect();
-        ActiveLoveCall(true);
+        NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<OwnerPlayer>().ChangePartner(targetTuraa);
+        ChangeLoveCallButton(true);
     }
     public void ReceiveNG()
     {
         mEffect.OffRedEffect();
-        ActiveLoveCall(true);
+        ChangeLoveCallButton(true);
     }
 
 }
