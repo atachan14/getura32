@@ -13,11 +13,14 @@ public class DayManager : NetworkBehaviour
 
     void Start()
     {
-        roomSizeTMP.text = RoomSetting.CI.RoomSize.ToString();
-        timeTMP.text = RoomSetting.CI.TimeSize.ToString();
-        remainingTime = RoomSetting.CI.TimeSize;
+        if (IsHost)
+        {
+            roomSizeTMP.text = RoomSetting.CI.RoomSize.ToString();
+            timeTMP.text = RoomSetting.CI.TimeSize.ToString();
+            remainingTime = RoomSetting.CI.TimeSize;
 
-        StartCoroutine(TimerCoroutine());
+            StartCoroutine(TimerCoroutine());
+        }
     }
 
     private System.Collections.IEnumerator TimerCoroutine()
@@ -29,6 +32,12 @@ public class DayManager : NetworkBehaviour
             timeTMP.text = remainingTime.ToString();
         }
 
+        TimeUpClientRpc();
+        
+    }
+    [ClientRpc]
+    public void TimeUpClientRpc()
+    {
         DebugWndow.CI.AddDlList("timeup");
     }
 

@@ -32,8 +32,17 @@ public class RobbyManager : NetworkBehaviour
     {
         RoomSetting.CI.RoomSize = int.Parse(robbySizeTMP.text);
         RoomSetting.CI.TimeSize = int.Parse(timeSettingTMP.text);
+        SaveInputModeClientRpc();
         SLD.SingleLoad(SNM.Opening);
     }
+
+    [ClientRpc]
+    public void SaveInputModeClientRpc()
+    {
+        PlayerPrefs.SetInt("F8", InputManager.CI.F8 ? 1 : 0);
+        PlayerPrefs.SetInt("F9", InputManager.CI.F9 ? 1 : 0);
+    }
+
     [ServerRpc]
     void timeChangeServerRpc(int value)
     {

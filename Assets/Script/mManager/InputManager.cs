@@ -4,14 +4,15 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager CI;
     [SerializeField] private QolEffect QolEffect;
     [SerializeField] private GameObject targetInfo;
     [SerializeField] private TargetInfoManager targetInfoScript;
     [SerializeField] private Camera myCamera;
-    private bool isTakeCamera;
     private GameObject targetPlayer;
     private float scroll;
 
@@ -23,10 +24,18 @@ public class InputManager : MonoBehaviour
     private NetworkObject myTuraa;
 
     [SerializeField] private CameraController cameraController;
-    private bool fixedCamera = false;
+    public bool F8 { get; set; }
+
+    public bool F9 { get; set; } = false;
+
     void Start()
     {
+        CI = this;
         targetInfo.SetActive(false);
+
+        F8 = PlayerPrefs.GetInt("F8", 0) == 1;
+        F9 = PlayerPrefs.GetInt("F9", 0) == 1;
+
         GameObject myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.GameObject();
         ownerPlayer = myTuraa.GetComponent<OwnerPlayer>();
         tentacleController = myTuraa.GetComponent<TentacleController>();
@@ -34,11 +43,14 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F8)) isTakeCamera = !isTakeCamera;
-        if (Input.GetKey(KeyCode.Space) || isTakeCamera) TakeCamera();
+        if (EventSystem.current.currentSelectedGameObject != null 
+            && EventSystem.current.currentSelectedGameObject.GetComponent<InputField>()) return;
 
-        if (!fixedCamera && !isTakeCamera) SelectMoveCamera();
-        if (Input.GetKeyDown(KeyCode.F9)) fixedCamera = !fixedCamera;
+        if (Input.GetKeyDown(KeyCode.F8)) F8 = !F8;
+        if (Input.GetKey(KeyCode.Space) || F8) TakeCamera();
+
+        if (!F9 && !F8) SelectMoveCamera();
+        if (Input.GetKeyDown(KeyCode.F9)) F9 = !F9;
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0f) ZoomCamera(scroll);

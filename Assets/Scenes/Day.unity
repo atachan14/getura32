@@ -583,6 +583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a61fe20cc5c7daf4abf301efb7ddb73c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   roomSizeTMP: {fileID: 2272327807277183088}
   aliveSizeTMP: {fileID: 0}
   timeTMP: {fileID: 1917645204605750411}
