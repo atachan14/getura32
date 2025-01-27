@@ -43,7 +43,7 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        if (EventSystem.current.currentSelectedGameObject != null 
+        if (EventSystem.current.currentSelectedGameObject != null
             && EventSystem.current.currentSelectedGameObject.GetComponent<InputField>()) return;
 
         if (Input.GetKeyDown(KeyCode.F8)) F8 = !F8;
@@ -106,8 +106,8 @@ public class InputManager : MonoBehaviour
     }
     void ZoomCamera(float scroll)
     {
-        myCamera.orthographicSize -= scroll * 2f;// 値を調整しつつズーム
-        myCamera.orthographicSize = Mathf.Clamp(myCamera.orthographicSize, 2f, 14f); // 最小/最大値制限
+        myCamera.orthographicSize -= scroll * 2f;
+        myCamera.orthographicSize = Mathf.Clamp(myCamera.orthographicSize, 2f, 14f);
     }
 
     void TakeCamera()
@@ -122,7 +122,6 @@ public class InputManager : MonoBehaviour
     }
     void HideInfoUI()
     {
-        // UIを非表示
         targetInfo.SetActive(false);
         targetPlayer = null;
     }

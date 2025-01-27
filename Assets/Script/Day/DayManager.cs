@@ -1,5 +1,6 @@
 using TMPro;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI.Table;
 
@@ -16,11 +17,27 @@ public class DayManager : NetworkBehaviour
         if (IsHost)
         {
             roomSizeTMP.text = RoomSetting.CI.RoomSize.ToString();
+            aliveSizeTMP.text = CountAlive().ToString();
             timeTMP.text = RoomSetting.CI.TimeSize.ToString();
             remainingTime = RoomSetting.CI.TimeSize;
 
             StartCoroutine(TimerCoroutine());
         }
+    }
+
+    int CountAlive()
+    {
+        int aliveCount = 0;
+        foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
+        {
+            GameObject turaa = client.PlayerObject.GameObject();
+
+            if (turaa != null && turaa.GetComponent<OwnerPlayer>().IsAlive)
+            {
+                aliveCount++;
+            }
+        }
+        return aliveCount;
     }
 
     private System.Collections.IEnumerator TimerCoroutine()
@@ -33,14 +50,13 @@ public class DayManager : NetworkBehaviour
         }
 
         TimeUpClientRpc();
-        
+
     }
     [ClientRpc]
     public void TimeUpClientRpc()
     {
         DebugWndow.CI.AddDlList("timeup");
     }
-
 
     void Update()
     {

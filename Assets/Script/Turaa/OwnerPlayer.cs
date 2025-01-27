@@ -17,6 +17,7 @@ public class OwnerPlayer : NetworkBehaviour
     private Vector3 direction;
     private bool isMoving = false;
     public GameObject Partner { get; set; }
+    public bool IsAlive { get; set; } = true;
 
     void Start()
     {
