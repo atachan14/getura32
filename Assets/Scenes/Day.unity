@@ -916,7 +916,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   roomSizeTMP: {fileID: 2272327807277183088}
-  aliveSizeTMP: {fileID: 0}
+  aliveSizeTMP: {fileID: 894381881}
   timeTMP: {fileID: 1917645204605750411}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
