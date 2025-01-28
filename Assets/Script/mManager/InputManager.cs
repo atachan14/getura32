@@ -92,8 +92,9 @@ public class InputManager : MonoBehaviour
             {
                 targetPlayer = hit.collider.gameObject;
 
-                targetInfoScript.SetTarget(targetPlayer);
                 targetInfo.SetActive(true);
+                targetInfoScript.SetTarget(targetPlayer);
+                
 
                 tentacleController.ActivateTentacle(hit);
             }

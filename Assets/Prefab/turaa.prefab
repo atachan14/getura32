@@ -757,8 +757,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   speed: 5
-  newPink: 0.6
-  stickOffset: 0
+  newPinkLate: 0.7
+  stickOffset: 1.5
+  stickDistance: 1.5
 --- !u!114 &4807617455058861305
 MonoBehaviour:
   m_ObjectHideFlags: 0

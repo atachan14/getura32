@@ -20,17 +20,17 @@ public class DebugWndow : MonoBehaviour
     }
     private void Update()
     {
-        debugText.text = string.Join("\n", dlList);
-
+       
     }
 
     public void AddDlList(string value)
     {
         dlList.Add(value);
 
-        if (dlList.Count > 25)
+        if (dlList.Count > 20)
         {
             dlList.RemoveAt(0);
         }
+        debugText.text = string.Join("\n", dlList);
     }
 }

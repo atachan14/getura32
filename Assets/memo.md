@@ -1,6 +1,9 @@
 ﻿
 ### 未修正バグ
-	- redEffect , pinkEffectのSOがときどきヘン。
+	- 二回Clickしないとtentacle出ない。
+	- hasStickPointらへんでSplitしてるのに離れないバグ。
+	- （治った？）redEffect , pinkEffectのSOがときどきヘン。
+	- 
 
 ### 優先順
 	- matchingAnime & Move

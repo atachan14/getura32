@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class OwnerPlayer : NetworkBehaviour
 {
-    [SerializeField] private float speed = 4f;
-    [SerializeField] private float newPink = 0.6f;
-    private float defaultPink = 1.0f;
+    [SerializeField] private float speed = 5f;
+    [SerializeField] private float newPinkLate = 0.7f;
+    private float defaultPink = 1f;
     private float pinkRatio = 1f;
-    [SerializeField] private float stickOffset;
+    [SerializeField] private float stickOffset = 3f;
+    [SerializeField] private float stickDistance = 6f;
     private bool hasStickPoint;
 
     private Rigidbody2D rb;
@@ -36,56 +38,21 @@ public class OwnerPlayer : NetworkBehaviour
 
     void Update()
     {
-        if (Partner != null) StickMove();
     }
 
-    public void ChangePartner(GameObject newPartner)
-    {
-        if (Partner != null)
-        {
-            DebugWndow.CI.AddDlList($"Change.Partner Partner != null Partner:{Partner.GetComponent<NamePlate>().Get()}");
-            ulong oldPartnerId = Partner.GetComponent<NetworkObject>().OwnerClientId;
-            ChangePartnerPartnerServerRpc(oldPartnerId);
-        }
-        Partner = newPartner;
-    }
-    [ServerRpc]
-    public void ChangePartnerPartnerServerRpc(ulong oldPartnerId)
-    {
-        DebugWndow.CI.AddDlList($"changePPSR");
-        ChangePartnerPartnerClientRpc(oldPartnerId);
-    }
+    
 
-    [ClientRpc]
-    public void ChangePartnerPartnerClientRpc(ulong oldPartnerId)
-    {
-        DebugWndow.CI.AddDlList($"changePPCR my:{NetworkManager.Singleton.LocalClientId} , old:{oldPartnerId}");
-        DebugWndow.CI.AddDlList($"Partner is {Partner == null}");
-
-        if (NetworkManager.Singleton.LocalClientId == oldPartnerId)
-        {
-            DebugWndow.CI.AddDlList($"befor ChangePPCRpc.Partner:{Partner.GetComponent<NamePlate>().Get()}");
-            Partner = null;
-            DebugWndow.CI.AddDlList($"after ChangePPCRpc.Partner:{Partner.GetComponent<NamePlate>().Get()}");
-        }
-    }
-
-    void StickMove()
+    public void StickMove(GameObject Partner)
     {
         Vector3 distance = Partner.transform.position - transform.position;
-        if (distance.magnitude > 10f)
-        {
-            hasStickPoint = false;
-            SetNextPosServerRpc(Partner.transform.position);
-        }
-        else if(!hasStickPoint)
+
+        if (distance.magnitude > 3f)
         {
             Vector3 midpoint = (transform.position + Partner.transform.position) / 2;
             hasStickPoint = true;
             if (transform.position.x > Partner.transform.position.x)
             {
                 midpoint.x += stickOffset;
-                
             }
             else
             {
@@ -105,7 +72,7 @@ public class OwnerPlayer : NetworkBehaviour
 
     public void ClickMove(Vector3 worldPosition)
     {
-        DebugWndow.CI.AddDlList($"ClickMove:{Partner==null}");
+        DebugWndow.CI.AddDlList($"ClickMove partnerIsNot:{Partner == null}");
         if (Partner == null) SetNextPosServerRpc(worldPosition);
     }
 
@@ -138,7 +105,7 @@ public class OwnerPlayer : NetworkBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            pinkRatio *= newPink;
+            pinkRatio *= newPinkLate;
         }
         SendPinkRatioServerRpc(pinkRatio);
     }

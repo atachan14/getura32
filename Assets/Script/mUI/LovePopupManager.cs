@@ -30,13 +30,12 @@ public class LovePopupManage : NetworkBehaviour
         senderId = senderTuraa.GetComponent<NetworkObject>().OwnerClientId;
 
         senderNameTMP.text = senderTuraa.GetComponent<NamePlate>().Get();
-        DebugWndow.CI.AddDlList($"after SetData.senderId:{senderId},senderName:{senderNameTMP.text}");
     }
     public void OKClick()
     {
         SendOKServerRpc(senderId);
-        loveCallsManage.ClearLoveCallList();
-        NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<OwnerPlayer>().ChangePartner(senderTuraa);
+        loveCallsManage.RemoveLoveCallList(senderTuraa);
+        MatchingEffect.CI.ChangePartner(senderTuraa);
     }
     [ServerRpc(RequireOwnership = false)]
     void SendOKServerRpc(ulong targetId)

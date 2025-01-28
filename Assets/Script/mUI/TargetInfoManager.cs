@@ -8,48 +8,57 @@ public class TargetInfoManager : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI nameTMP;
     [SerializeField] private GameObject loveCallButton;
-    [SerializeField] private GameObject loveCallCansellButton;
+    [SerializeField] private GameObject cansellButton;
+    [SerializeField] private GameObject splitButton;
+    private GameObject[] buttons;
 
     [SerializeField] private MatchingEffect mEffect;
     [SerializeField] private LoveCallsManage loveCalls;
 
     private GameObject targetTuraa;
+    private GameObject myTuraa;
     private ulong myId;
     ulong targetId;
     private int tribute = 0;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    enum ButtonMode
+    {
+        LoveCall,
+        Cansell,
+        Split
+    }
+
+    private void Awake()
+    {
+        buttons = new GameObject[] { loveCallButton, cansellButton, splitButton };
+    }
     void Start()
     {
         myId = NetworkManager.Singleton.LocalClientId;
-        loveCallButton.SetActive(true);
-        loveCallCansellButton.SetActive(false);
+        myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
+        ChangeLoveCallButton(loveCallButton);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void SetTarget(GameObject target)
     {
-        this.targetTuraa = target;
+        if (targetTuraa == target || myTuraa == target) return;
+        targetTuraa = target;
         targetId = target.GetComponent<NetworkObject>().OwnerClientId;
         nameTMP.text = target.GetComponent<NamePlate>().Get();
+        if (mEffect.Partner.GetComponent<NetworkObject>().OwnerClientId == targetId) { ChangeLoveCallButton(splitButton); } else { ChangeLoveCallButton(loveCallButton); };
     }
 
-    public void ChangeLoveCallButton(bool can)
+    public void ChangeLoveCallButton(GameObject bm)
     {
-        loveCallButton.SetActive(can);
-        loveCallCansellButton.SetActive(!can);
+        foreach (GameObject button in buttons)
+        {
+            button.SetActive(button == bm);
+        }
     }
 
     public void LoveCall()
     {
-
         mEffect.OnRedEffect(targetTuraa);
-        ChangeLoveCallButton(false);
+        ChangeLoveCallButton(cansellButton);
 
         LoveCallServerRpc(targetId, myId, tribute);
     }
@@ -57,15 +66,19 @@ public class TargetInfoManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void LoveCallServerRpc(ulong targetId, ulong senderId, int money)
     {
+        DebugWndow.CI.AddDlList($"LoveCallServerRpc:{targetId},{senderId},{money}");
+
         LoveCallClientRpc(targetId, senderId, money);
     }
 
     [ClientRpc]
     public void LoveCallClientRpc(ulong targetId, ulong senderId, int money)
     {
+        DebugWndow.CI.AddDlList("crpc");
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-           loveCalls.ReceiveLoveCall(senderId, money);
+            DebugWndow.CI.AddDlList("crpc2");
+            loveCalls.ReceiveLoveCall(senderId, money);
         }
     }
 
@@ -73,7 +86,7 @@ public class TargetInfoManager : NetworkBehaviour
     {
         LoveCallCansellServerRpc(targetId, myId);
         mEffect.OffRedEffect();
-        ChangeLoveCallButton(true);
+        ChangeLoveCallButton(loveCallButton);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -81,7 +94,6 @@ public class TargetInfoManager : NetworkBehaviour
     {
         LoveCallCansellClientRpc(targetId, senderId);
     }
-
     [ClientRpc]
     public void LoveCallCansellClientRpc(ulong targetId, ulong senderId)
     {
@@ -90,16 +102,23 @@ public class TargetInfoManager : NetworkBehaviour
             loveCalls.ReceiveLoveCallCansell(senderId);
         }
     }
+    public void Split()
+    {
+        Split();
+        ChangeLoveCallButton(loveCallButton);
+    }
+
+
     public void ReceiveOK()
     {
         mEffect.OffRedEffect();
-        NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<OwnerPlayer>().ChangePartner(targetTuraa);
-        ChangeLoveCallButton(true);
+        mEffect.ChangePartner(targetTuraa);
+        ChangeLoveCallButton(splitButton);
     }
     public void ReceiveNG()
     {
         mEffect.OffRedEffect();
-        ChangeLoveCallButton(true);
+        ChangeLoveCallButton(loveCallButton);
     }
 
 }

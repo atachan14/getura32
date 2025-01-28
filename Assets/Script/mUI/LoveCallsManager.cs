@@ -58,7 +58,6 @@ public class LoveCallsManage : MonoBehaviour
             mEffect.OffPinkEffect();
         }
     }
-
     void ResetLovePopups()
     {
         foreach (GameObject popup in LovePopups) popup.SetActive(false);
@@ -72,6 +71,7 @@ public class LoveCallsManage : MonoBehaviour
 
     public void ReceiveLoveCall(ulong senderId, int money)
     {
+        DebugWndow.CI.AddDlList("ReceiveLoveCall");
         GameObject senderTuraa = NetworkManager.Singleton.ConnectedClients[senderId].PlayerObject.gameObject;
         AddLoveCallList(senderTuraa, money);
     }
