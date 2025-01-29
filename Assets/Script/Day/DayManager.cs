@@ -48,14 +48,12 @@ public class DayManager : NetworkBehaviour
             remainingTime--;
             timeTMP.text = remainingTime.ToString();
         }
-
         TimeUpClientRpc();
-
     }
     [ClientRpc]
     public void TimeUpClientRpc()
     {
-        DebugWndow.CI.AddDlList("timeup");
+        DebLog.CI.AddDlList("timeup");
     }
 
     void Update()

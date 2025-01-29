@@ -20,14 +20,14 @@ public class ChatDisplay : MonoBehaviour
     {
         if (inputColor == Color.blue)
         {
-            DebugWndow.CI.AddDlList($"OnSubmitChat:{inputField.text}");
+            DebLog.CI.AddDlList($"OnSubmitChat:{inputField.text}");
             ChatManager.CI.AddBlue(inputField.text, inputColor);
         }
         inputField.text = "";
     }
     public void UpdateChatDisplay()
     {
-        DebugWndow.CI.AddDlList($"UpdateChatDisplay");
+        DebLog.CI.AddDlList($"UpdateChatDisplay");
         for (int i = 0; i < ChatItemList.Count; i++)
         {
             RectTransform chatItemRect = ChatItemList[i].GetComponent<RectTransform>();

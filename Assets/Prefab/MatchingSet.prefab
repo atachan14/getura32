@@ -2165,9 +2165,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetInfo: {fileID: 8946328193812959706}
   inputManager: {fileID: 8643620223384852756}
+  purpleBoard: {fileID: 6191559416858968353}
   redBoard: {fileID: 7921540504924411686}
-  purpleBoard: {fileID: 0}
-  stickEffectPrefab: {fileID: 0}
+  stickEffectPrefab: {fileID: 2901203729677153397, guid: 0afd8d75379e0ea4cb0821f3c9591d0f, type: 3}
 --- !u!1 &2197187815530809622
 GameObject:
   m_ObjectHideFlags: 0

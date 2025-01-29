@@ -25,43 +25,33 @@ public class LovePopupManage : NetworkBehaviour
 
     public void SetData(GameObject senderTuraa, int money)
     {
-        DebugWndow.CI.AddDlList($"SetData:{senderTuraa.GetComponent<NetworkObject>().OwnerClientId}, {money}");
         this.senderTuraa = senderTuraa;
         this.money = money;
         senderId = senderTuraa.GetComponent<NetworkObject>().OwnerClientId;
 
-        DebugWndow.CI.AddDlList("jiji");
         senderNameTMP.text = senderTuraa.GetComponent<NamePlate>().Get();
-        DebugWndow.CI.AddDlList("SetData End");
     }
     public void OKClick()
     {
         SendOKServerRpc(senderId);
         loveCallsManage.RemoveLoveCallList(senderTuraa);
-        MatchingEffect.CI.ChangePartner(senderTuraa);
+        PartnerManager.C.ChangePartnerServerRpc(NetworkManager.Singleton.LocalClientId,senderId);
     }
     [ServerRpc(RequireOwnership = false)]
     void SendOKServerRpc(ulong targetId)
     {
-        SendOKClientRpc(targetId);
+        targetInfo.ReceiveOKClientRpc(targetId);
     }
 
-    [ClientRpc]
-    void SendOKClientRpc(ulong targetId)
-    {
-        if (NetworkManager.Singleton.LocalClientId == targetId)
-        {
-            targetInfo.ReceiveOK();
-        }
-    }
-    public void NegClick()
+    
+    public void WisClick()
     {
 
     }
     public void NGClick()
     {
 
-        DebugWndow.CI.AddDlList($"NGClick.senderId:{senderId}");
+        DebLog.CI.AddDlList($"NGClick.senderId:{senderId}");
         SendNGServerRpc(senderId);
         loveCallsManage.RemoveLoveCallList(senderTuraa);
 
@@ -69,14 +59,14 @@ public class LovePopupManage : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     void SendNGServerRpc(ulong targetId)
     {
-        DebugWndow.CI.AddDlList($"NGClickSeverRpc.targetId:{targetId}");
+        DebLog.CI.AddDlList($"NGClickSeverRpc.targetId:{targetId}");
         SendNGClientRpc(targetId);
     }
 
     [ClientRpc]
     void SendNGClientRpc(ulong targetId)
     {
-        DebugWndow.CI.AddDlList($"NGClickClientRpc.targetId:{targetId}");
+        DebLog.CI.AddDlList($"NGClickClientRpc.targetId:{targetId}");
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
             targetInfo.ReceiveNG();

@@ -24,21 +24,21 @@ public class InputManager : MonoBehaviour
     private NetworkObject myTuraa;
 
     [SerializeField] private CameraController cameraController;
-    public bool F8 { get; set; }
+    public bool F8 { get; set; } 
 
-    public bool F9 { get; set; } = false;
+    public bool F9 { get; set; } 
 
     void Start()
     {
         CI = this;
         targetInfo.SetActive(false);
 
-        F8 = PlayerPrefs.GetInt("F8", 0) == 1;
-        F9 = PlayerPrefs.GetInt("F9", 0) == 0;
+        F8 = PlayerPrefs.GetInt("F8", 0) == 0;
+        F9 = PlayerPrefs.GetInt("F9", 0) == 1;
 
         GameObject myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.GameObject();
         ownerPlayer = myTuraa.GetComponent<OwnerPlayer>();
-        //tentacleController = myTuraa.GetComponent<TentacleController>();
+        tentacleController = myTuraa.GetComponent<TentacleController>();
     }
 
     void Update()
@@ -94,11 +94,13 @@ public class InputManager : MonoBehaviour
 
                 targetInfo.SetActive(true);
                 targetInfoScript.SetTarget(targetPlayer);
+                DebLog.CI.AddDlList("afterSetTarget");
+                tentacleController.ActivateTentacle(targetPlayer);
             }
             else
             {
                 HideInfoUI();
-                
+                tentacleController.NoContactTentacle();
             }
         }
     }

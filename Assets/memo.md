@@ -1,6 +1,5 @@
 ﻿
 ### 未修正バグ
-	- 二回Clickしないとtentacle出ない。
 	- hasStickPointらへんでSplitしてるのに離れないバグ。
 	- （治った？）redEffect , pinkEffectのSOがときどきヘン。
 	- 

@@ -6,18 +6,17 @@ using UnityEngine;
 
 public class OwnerPlayer : NetworkBehaviour
 {
+    [SerializeField] MatchingStatus mStatus;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float newPinkLate = 0.7f;
     private float defaultPink = 1f;
     private float pinkRatio = 1f;
     [SerializeField] private float stickOffset = 3f;
-    private bool hasStickPoint;
 
     private Rigidbody2D rb;
     private Vector3 nextPos;
     private Vector3 direction;
     private bool isMoving = false;
-    public GameObject Partner { get; set; }
     public bool IsAlive { get; set; } = true;
 
     void Start()
@@ -37,19 +36,21 @@ public class OwnerPlayer : NetworkBehaviour
 
     void Update()
     {
+        if (mStatus.PartnerTuraa != null)
+        {
+            StickMove();
+        }
     }
 
-    
-
-    public void StickMove(GameObject Partner)
+    public void StickMove()
     {
-        Vector3 distance = Partner.transform.position - transform.position;
+        
+        Vector3 distance = mStatus.PartnerTuraa.transform.position - transform.position;
 
-        if (distance.magnitude > 3f)
+        if (distance.magnitude > 2f)
         {
-            Vector3 midpoint = (transform.position + Partner.transform.position) / 2;
-            hasStickPoint = true;
-            if (transform.position.x > Partner.transform.position.x)
+            Vector3 midpoint = (transform.position + mStatus.PartnerTuraa.transform.position) / 2;
+            if (transform.position.x > mStatus.PartnerTuraa.transform.position.x)
             {
                 midpoint.x += stickOffset;
             }
@@ -71,8 +72,8 @@ public class OwnerPlayer : NetworkBehaviour
 
     public void ClickMove(Vector3 worldPosition)
     {
-        DebugWndow.CI.AddDlList($"ClickMove partnerIsNot:{Partner == null}");
-        if (Partner == null) SetNextPosServerRpc(worldPosition);
+        DebLog.CI.AddDlList($"ClickMove partnerIsNot:{mStatus.PartnerTuraa == null}");
+        if (mStatus.PartnerTuraa == null) SetNextPosServerRpc(worldPosition);
     }
 
     [ServerRpc]
@@ -96,7 +97,7 @@ public class OwnerPlayer : NetworkBehaviour
         if (Vector3.Distance(transform.position, nextPos) < 0.1f)
         {
             transform.position = nextPos;
-            if (!hasStickPoint) isMoving = false;
+            isMoving = false;
         }
     }
 

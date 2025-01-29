@@ -11,22 +11,20 @@ public class MatchingEffect : MonoBehaviour
     [SerializeField] private TargetInfoManager targetInfo;
     [SerializeField] private InputManager inputManager;
 
+    [SerializeField] private GameObject purpleBoard;
     [SerializeField] private GameObject redBoard;
+    [SerializeField] private GameObject stickEffectPrefab;
+
+    private List<GameObject> purpleTargetList;
     private GameObject redTarget;
 
-    [SerializeField] private GameObject purpleBoard;
-    private List<GameObject> purpleTargetList;
-
-    [SerializeField] private GameObject stickEffectPrefab;
-    public GameObject Partner { get; set; }
-
     private GameObject myTuraa;
+    private MatchingStatus mStatus;
 
     private void Awake()
     {
-        CI= this;
+        CI = this;
     }
-
     void Start()
     {
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
@@ -45,40 +43,14 @@ public class MatchingEffect : MonoBehaviour
 
     void Update()
     {
-        if (Partner != null) myTuraa.GetComponent<OwnerPlayer>().StickMove(Partner);
+
     }
 
-    public void ChangePartner(GameObject newPartner)
-    {
-        if (Partner != null)
-        {
-            ulong oldPartnerId = Partner.GetComponent<NetworkObject>().OwnerClientId;
-            SplitServerRpc(oldPartnerId);
-        }
-        Partner = newPartner;
-    }
+   
 
-    public void Split()
-    {
-        ulong oldPartnerId = Partner.GetComponent<NetworkObject>().OwnerClientId;
-        SplitServerRpc(oldPartnerId);
-        Partner = null;
-    }
+  
 
-    [ServerRpc]
-    public void SplitServerRpc(ulong NTRId)
-    {
-        SplitClientRpc(NTRId);
-    }
-
-    [ClientRpc]
-    public void SplitClientRpc(ulong NTRId)
-    {
-        if (NetworkManager.Singleton.LocalClientId == NTRId)
-        {
-            Partner = null;
-        }
-    }
+ 
 
 
     public void OnRedEffect(GameObject target)
@@ -88,7 +60,7 @@ public class MatchingEffect : MonoBehaviour
         PullSO(redTarget);
 
         redBoard.SetActive(true);
-        inputManager.IsRedStop=true;
+        inputManager.IsRedStop = true;
     }
 
     public void OffRedEffect()
@@ -126,7 +98,7 @@ public class MatchingEffect : MonoBehaviour
         SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
-            sprite.sortingOrder += 10; 
+            sprite.sortingOrder += 10;
         }
     }
 

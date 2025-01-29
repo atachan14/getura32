@@ -14,10 +14,11 @@ public class TargetInfoManager : NetworkBehaviour
 
     [SerializeField] private MatchingEffect mEffect;
     [SerializeField] private LoveCallsManage loveCalls;
-    
+
     private GameObject myTuraa;
     private ulong myId;
     private TentacleController tentacleController;
+    private MatchingStatus mStatus;
 
     private GameObject targetTuraa;
     ulong targetId;
@@ -32,18 +33,19 @@ public class TargetInfoManager : NetworkBehaviour
         myId = NetworkManager.Singleton.LocalClientId;
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
         tentacleController = myTuraa.GetComponent<TentacleController>();
+        mStatus = myTuraa.GetComponent<MatchingStatus>();
         ChangeLoveCallButton(pinkInfo);
     }
     public void SetTarget(GameObject target)
     {
         if (targetTuraa == target || myTuraa == target) return;
+        DebLog.CI.AddDlList("SetTarget return after");
         targetTuraa = target;
         targetId = target.GetComponent<NetworkObject>().OwnerClientId;
         nameTMP.text = target.GetComponent<NamePlate>().Get();
-        tentacleController.ActivateTentacle(target);
-        if (mEffect.Partner.GetComponent<NetworkObject>().OwnerClientId == targetId) { ChangeLoveCallButton(stickInfo); } else { ChangeLoveCallButton(pinkInfo); };
-
-        
+        DebLog.CI.AddDlList($"mStatus==null:{mStatus == null}");
+        if (mStatus.PartnerId != null && mStatus.PartnerId == targetId) { ChangeLoveCallButton(stickInfo); } else { ChangeLoveCallButton(pinkInfo); };
+        DebLog.CI.AddDlList("SetTarget End");
     }
 
     public void ChangeLoveCallButton(GameObject bm)
@@ -65,7 +67,7 @@ public class TargetInfoManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void LoveCallServerRpc(ulong targetId, ulong senderId, int money)
     {
-        DebugWndow.CI.AddDlList($"LoveCallServerRpc:{targetId},{senderId},{money}");
+        DebLog.CI.AddDlList($"LoveCallServerRpc:{targetId},{senderId},{money}");
 
         LoveCallClientRpc(targetId, senderId, money);
     }
@@ -73,10 +75,10 @@ public class TargetInfoManager : NetworkBehaviour
     [ClientRpc]
     public void LoveCallClientRpc(ulong targetId, ulong senderId, int money)
     {
-        DebugWndow.CI.AddDlList("crpc");
+        DebLog.CI.AddDlList("crpc");
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            DebugWndow.CI.AddDlList("crpc2");
+            DebLog.CI.AddDlList("crpc2");
             loveCalls.ReceiveLoveCall(senderId, money);
         }
     }
@@ -103,16 +105,17 @@ public class TargetInfoManager : NetworkBehaviour
     }
     public void Split()
     {
-        mEffect.Split();
+        PartnerManager.C.SplitPartnerServerRpc(myId);
         ChangeLoveCallButton(pinkInfo);
     }
-
-
-    public void ReceiveOK()
+    [ClientRpc]
+    public void ReceiveOKClientRpc(ulong targetId)
     {
-        mEffect.OffRedEffect();
-        mEffect.ChangePartner(targetTuraa);
-        ChangeLoveCallButton(stickInfo);
+        if (NetworkManager.Singleton.LocalClientId == targetId)
+        {
+            mEffect.OffRedEffect();
+            ChangeLoveCallButton(stickInfo);
+        }
     }
     public void ReceiveNG()
     {

@@ -7,11 +7,9 @@ public class TentacleController : NetworkBehaviour
 {
     public GameObject inactiveTentacle;
     public GameObject activeTentacle;
-
     private GameObject targetPlayer;
 
 
-    // 触手の状態を同期するためのNetworkVariable
     private readonly NetworkVariable<Vector3> tentaclePosition = new NetworkVariable<Vector3>();
     private readonly NetworkVariable<Quaternion> tentacleRotation = new NetworkVariable<Quaternion>();
     private readonly NetworkVariable<float> tentacleScaleY = new NetworkVariable<float>();
@@ -41,7 +39,9 @@ public class TentacleController : NetworkBehaviour
 
     public void ActivateTentacle(GameObject target)
     {
+        DebLog.CI.AddDlList("ActivateTentacle");
         ContactTentacleServerRpc();
+        DebLog.CI.AddDlList("ActivateTentacle after ContactTentaSRPC");
 
         activeTentacle.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 5);
         TargetPlayer = target;
@@ -60,6 +60,8 @@ public class TentacleController : NetworkBehaviour
 
         // 計算結果をサーバーに送信
         UpdateTentacleDataServerRpc(activeTentacle.transform.position, calculatedRotation, calculatedScaleY);
+        DebLog.CI.AddDlList("ActivateTentacle end");
+
     }
 
     public void NoContactTentacle()

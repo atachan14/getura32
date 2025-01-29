@@ -622,6 +622,7 @@ GameObject:
   - component: {fileID: 6571697458557658280}
   - component: {fileID: 980536899576658914}
   - component: {fileID: 7265637198694391849}
+  - component: {fileID: 6792717017788070989}
   m_Layer: 0
   m_Name: turaa
   m_TagString: CharacterClick
@@ -756,10 +757,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  mStatus: {fileID: 6792717017788070989}
   speed: 5
   newPinkLate: 0.7
   stickOffset: 1.5
-  stickDistance: 1.5
 --- !u!114 &4807617455058861305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -909,6 +910,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   nameTMP: {fileID: 7329312414969614193}
+--- !u!114 &6792717017788070989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8501463007481296686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1346e1c7b9fb6fb4f90f37b922515ad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8860980868835103586
 GameObject:
   m_ObjectHideFlags: 0

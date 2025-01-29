@@ -14,7 +14,7 @@ public class LoveCallsManage : MonoBehaviour
 
     public void AddLoveCallList(GameObject senderTuraa, int money)
     {
-        DebugWndow.CI.AddDlList("AddLoveCallList");
+        DebLog.CI.AddDlList("AddLoveCallList");
         loveCallList.Add((senderTuraa, money));
         ShowLovePopups();
     }
@@ -34,16 +34,16 @@ public class LoveCallsManage : MonoBehaviour
     void ShowLovePopups()
     {
         ResetLovePopups();
-        DebugWndow.CI.AddDlList("ShowLovePopups");
+        DebLog.CI.AddDlList("ShowLovePopups");
         List<GameObject> senderTuraaList = new();
         for (int i = 0; i < loveCallList.Count; i++)
         {
             senderTuraaList.Add(loveCallList[i].senderTuraa);
             if (i < 4)
             {
-                DebugWndow.CI.AddDlList("beforSetActive");
+                DebLog.CI.AddDlList("beforSetActive");
                 LovePopups[i].SetActive(true);
-                DebugWndow.CI.AddDlList("afterSetActive");
+                DebLog.CI.AddDlList("afterSetActive");
                 SetupLovePopups(i);
             }
             else if (4 <= i)
@@ -68,14 +68,14 @@ public class LoveCallsManage : MonoBehaviour
 
     void SetupLovePopups(int i)
     {
-        DebugWndow.CI.AddDlList("SetupLovePopups");
+        DebLog.CI.AddDlList("SetupLovePopups");
         LovePopupManage lovePopupManager = LovePopups[i].GetComponent<LovePopupManage>();
         lovePopupManager.SetData(loveCallList[i].senderTuraa, loveCallList[i].money);
     }
 
     public void ReceiveLoveCall(ulong senderId, int money)
     {
-        DebugWndow.CI.AddDlList("ReceiveLoveCall");
+        DebLog.CI.AddDlList("ReceiveLoveCall");
         GameObject senderTuraa = NetworkManager.Singleton.ConnectedClients[senderId].PlayerObject.gameObject;
         AddLoveCallList(senderTuraa, money);
     }

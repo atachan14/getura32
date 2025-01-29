@@ -26,8 +26,6 @@ public class RobbyManager : NetworkBehaviour
             robbySizeTMP.text = clientCount.ToString();
         }
     }
-
-
     public void StartExe()
     {
         RoomSetting.CI.RoomSize = int.Parse(robbySizeTMP.text);
