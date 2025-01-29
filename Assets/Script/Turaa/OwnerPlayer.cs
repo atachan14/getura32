@@ -72,7 +72,7 @@ public class OwnerPlayer : NetworkBehaviour
 
     public void ClickMove(Vector3 worldPosition)
     {
-        DebLog.CI.AddDlList($"ClickMove partnerIsNot:{mStatus.PartnerTuraa == null}");
+        DebLog.C.AddDlList($"ClickMove partnerIsNot:{mStatus.PartnerTuraa == null}");
         if (mStatus.PartnerTuraa == null) SetNextPosServerRpc(worldPosition);
     }
 

@@ -31,13 +31,13 @@ public class ChatManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void AddBlueServerRpc(string senderName, string value, Color senderColor)
     {
-        DebLog.CI.AddDlList($"AddBlueServerRpc:{senderName} , {value} ,{senderColor}");
+        DebLog.C.AddDlList($"AddBlueServerRpc:{senderName} , {value} ,{senderColor}");
         AddBlueClientRpc(senderName, value, senderColor);
     }
     [ClientRpc]
     public void AddBlueClientRpc(string senderName, string value, Color senderColor)
     {
-        DebLog.CI.AddDlList($"AddBlueClientRpc:{senderName} , {value} ,{senderColor}");
+        DebLog.C.AddDlList($"AddBlueClientRpc:{senderName} , {value} ,{senderColor}");
 
         GameObject chatItem = GenerateChatItem(senderName, value, senderColor);
         ChatDisplay.CI.ChatItemList.Insert(0, chatItem);
@@ -58,7 +58,7 @@ public class ChatManager : NetworkBehaviour
                 break;
             }
         }
-        DebLog.CI.AddDlList($"GenerateChatItem naka");
+        DebLog.C.AddDlList($"GenerateChatItem naka");
         chatItem.GetComponent<ChatItem>().SenderName.color = senderColor;
         chatItem.GetComponent<ChatItem>().Value.color = senderColor;
         return chatItem;

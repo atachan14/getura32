@@ -2,6 +2,7 @@ using NUnit.Framework.Internal;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 using static UnityEngine.Rendering.DebugUI;
 
 public class TargetInfoManager : NetworkBehaviour
@@ -24,6 +25,7 @@ public class TargetInfoManager : NetworkBehaviour
     ulong targetId;
     private int tribute = 0;
 
+
     private void Awake()
     {
         infos = new GameObject[] { pinkInfo, redInfo, stickInfo };
@@ -34,21 +36,35 @@ public class TargetInfoManager : NetworkBehaviour
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
         tentacleController = myTuraa.GetComponent<TentacleController>();
         mStatus = myTuraa.GetComponent<MatchingStatus>();
-        ChangeLoveCallButton(pinkInfo);
+        ChangeInfoType(pinkInfo);
     }
-    public void SetTarget(GameObject target)
+
+    private void Update()
     {
-        if (targetTuraa == target || myTuraa == target) return;
-        DebLog.CI.AddDlList("SetTarget return after");
+        SelectType();
+    }
+    public bool SetTarget(GameObject target)
+    {
+        if (myTuraa == target) return false;
+        if (targetTuraa != null && targetTuraa == target) return true;
+
         targetTuraa = target;
         targetId = target.GetComponent<NetworkObject>().OwnerClientId;
         nameTMP.text = target.GetComponent<NamePlate>().Get();
-        DebLog.CI.AddDlList($"mStatus==null:{mStatus == null}");
-        if (mStatus.PartnerId != null && mStatus.PartnerId == targetId) { ChangeLoveCallButton(stickInfo); } else { ChangeLoveCallButton(pinkInfo); };
-        DebLog.CI.AddDlList("SetTarget End");
+
+        DebLog.C.AddDlList("SetTarget End");
+        return true;
+
     }
 
-    public void ChangeLoveCallButton(GameObject bm)
+    void SelectType()
+    {
+        if (mStatus.IsRed) { ChangeInfoType(redInfo); }
+        else if (mStatus.PartnerId != null && mStatus.PartnerId == targetId) { ChangeInfoType(stickInfo); }
+        else { ChangeInfoType(pinkInfo); };
+    }
+
+    public void ChangeInfoType(GameObject bm)
     {
         foreach (GameObject button in infos)
         {
@@ -59,7 +75,7 @@ public class TargetInfoManager : NetworkBehaviour
     public void LoveCall()
     {
         mEffect.OnRedEffect(targetTuraa);
-        ChangeLoveCallButton(redInfo);
+      mStatus.IsRed = true;
 
         LoveCallServerRpc(targetId, myId, tribute);
     }
@@ -67,7 +83,7 @@ public class TargetInfoManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void LoveCallServerRpc(ulong targetId, ulong senderId, int money)
     {
-        DebLog.CI.AddDlList($"LoveCallServerRpc:{targetId},{senderId},{money}");
+        DebLog.C.AddDlList($"LoveCallServerRpc:{targetId},{senderId},{money}");
 
         LoveCallClientRpc(targetId, senderId, money);
     }
@@ -75,10 +91,10 @@ public class TargetInfoManager : NetworkBehaviour
     [ClientRpc]
     public void LoveCallClientRpc(ulong targetId, ulong senderId, int money)
     {
-        DebLog.CI.AddDlList("crpc");
+        DebLog.C.AddDlList("crpc");
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            DebLog.CI.AddDlList("crpc2");
+            DebLog.C.AddDlList("crpc2");
             loveCalls.ReceiveLoveCall(senderId, money);
         }
     }
@@ -87,7 +103,7 @@ public class TargetInfoManager : NetworkBehaviour
     {
         LoveCallCansellServerRpc(targetId, myId);
         mEffect.OffRedEffect();
-        ChangeLoveCallButton(pinkInfo);
+        mStatus.IsRed = false;
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -106,7 +122,7 @@ public class TargetInfoManager : NetworkBehaviour
     public void Split()
     {
         PartnerManager.C.SplitPartnerServerRpc(myId);
-        ChangeLoveCallButton(pinkInfo);
+        //ChangeInfoType(pinkInfo);
     }
     [ClientRpc]
     public void ReceiveOKClientRpc(ulong targetId)
@@ -114,13 +130,14 @@ public class TargetInfoManager : NetworkBehaviour
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
             mEffect.OffRedEffect();
-            ChangeLoveCallButton(stickInfo);
+            mStatus.IsRed = false;
+            //ChangeInfoType(stickInfo);
         }
     }
     public void ReceiveNG()
     {
         mEffect.OffRedEffect();
-        ChangeLoveCallButton(pinkInfo);
+        mStatus.IsRed = false;
     }
 
 }

@@ -5,23 +5,28 @@ using Unity.Netcode;
 
 public class PartnerManager : NetworkBehaviour
 {
-    public static PartnerManager S;
     public static PartnerManager C;
     List<(ulong p0, ulong p1)> pairIdList = new();
 
     ulong myId;
     ulong? partnerId;
     GameObject myTuraa;
+    MatchingStatus mStatus;
     public GameObject PartnerTuraa { get; set; }
     void Awake()
     {
-        if (IsHost) S = this;
         C = this;
+    }
+    private void Start()
+    {
         myId = NetworkManager.Singleton.LocalClientId;
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
+        mStatus = myTuraa.GetComponent<MatchingStatus>();
     }
 
-    [ServerRpc]
+
+
+    [ServerRpc(RequireOwnership = false)]
     public void ChangePartnerServerRpc(ulong newId0, ulong newId1)
     {
         RemoveOldPartner(newId0, newId1);
@@ -34,9 +39,10 @@ public class PartnerManager : NetworkBehaviour
         pairIdList.RemoveAll(p => p.p0 == p0 || p.p1 == p0 || p.p0 == p1 || p.p1 == p1);
     }
 
-    [ServerRpc]
-    public void SplitPartnerServerRpc(ulong splitId) 
+    [ServerRpc(RequireOwnership = false)]
+    public void SplitPartnerServerRpc(ulong splitId)
     {
+        DebLog.C.AddDlList("SplitPartnerServerRpc");
         RemoveSplitPartner(splitId);
         ClientUpdate();
 
@@ -49,11 +55,11 @@ public class PartnerManager : NetworkBehaviour
     void ClientUpdate()
     {
         ResetPartnerClientRpc();
-        foreach ((ulong p0,ulong p1) pairId in pairIdList )
+        foreach ((ulong p0, ulong p1) pairId in pairIdList)
         {
-            updatePartnerClientRpc(pairId.p0, pairId.p1);
+            UpdatePartnerClientRpc(pairId.p0, pairId.p1);
         }
-        UpdateMatchingStatus();
+        UpdateMatchingStatusClientRpc();
     }
 
     [ClientRpc]
@@ -64,16 +70,22 @@ public class PartnerManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void updatePartnerClientRpc(ulong p0, ulong p1)
+    public void UpdatePartnerClientRpc(ulong p0, ulong p1)
     {
+        DebLog.C.AddDlList("UpdatePartnerClientRpc");
         if (myId == p0) partnerId = p1;
         if (myId == p1) partnerId = p0;
         PartnerTuraa = NetworkManager.Singleton.ConnectedClients[(ulong)partnerId].PlayerObject.gameObject;
-    }
+        DebLog.C.AddDlList($"UpdatePartnerClientRpc partnerId:{partnerId}");
 
-    void UpdateMatchingStatus()
+    }
+    [ClientRpc]
+    void UpdateMatchingStatusClientRpc()
     {
-        myTuraa.GetComponent<MatchingStatus>().PartnerTuraa = PartnerTuraa;
-        myTuraa.GetComponent<MatchingStatus>().PartnerId = partnerId;
+        DebLog.C.AddDlList($"UpdateMatchingStatus1 mStatus==null:{mStatus == null}");
+        mStatus.PartnerTuraa = PartnerTuraa;
+        mStatus.PartnerId = partnerId;
+        DebLog.C.AddDlList("UpdateMatchingStatus2");
+
     }
 }

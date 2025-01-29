@@ -53,7 +53,7 @@ public class DayManager : NetworkBehaviour
     [ClientRpc]
     public void TimeUpClientRpc()
     {
-        DebLog.CI.AddDlList("timeup");
+        DebLog.C.AddDlList("timeup");
     }
 
     void Update()

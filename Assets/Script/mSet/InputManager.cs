@@ -33,8 +33,8 @@ public class InputManager : MonoBehaviour
         CI = this;
         targetInfo.SetActive(false);
 
-        F8 = PlayerPrefs.GetInt("F8", 0) == 0;
-        F9 = PlayerPrefs.GetInt("F9", 0) == 1;
+        F8 = PlayerPrefs.GetInt("F8", 1) == 0;
+        F9 = PlayerPrefs.GetInt("F9", 0) == 0;
 
         GameObject myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.GameObject();
         ownerPlayer = myTuraa.GetComponent<OwnerPlayer>();
@@ -73,6 +73,7 @@ public class InputManager : MonoBehaviour
     void ClickMove(Vector3 worldPosition)
     {
         worldPosition.z = 0;
+        DebLog.C.AddDlList("clickmove");
 
         QolEffect.ClickMove(worldPosition);
         ownerPlayer.ClickMove(worldPosition);
@@ -92,10 +93,11 @@ public class InputManager : MonoBehaviour
             {
                 targetPlayer = hit.collider.gameObject;
 
-                targetInfo.SetActive(true);
-                targetInfoScript.SetTarget(targetPlayer);
-                DebLog.CI.AddDlList("afterSetTarget");
                 tentacleController.ActivateTentacle(targetPlayer);
+                
+                targetInfo.SetActive(targetInfoScript.SetTarget(targetPlayer));
+                DebLog.C.AddDlList("afterSetTarget");
+                
             }
             else
             {
