@@ -11,7 +11,6 @@ public class OwnerPlayer : NetworkBehaviour
     private float defaultPink = 1f;
     private float pinkRatio = 1f;
     [SerializeField] private float stickOffset = 3f;
-    [SerializeField] private float stickDistance = 6f;
     private bool hasStickPoint;
 
     private Rigidbody2D rb;

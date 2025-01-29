@@ -14,6 +14,7 @@ public class LoveCallsManage : MonoBehaviour
 
     public void AddLoveCallList(GameObject senderTuraa, int money)
     {
+        DebugWndow.CI.AddDlList("AddLoveCallList");
         loveCallList.Add((senderTuraa, money));
         ShowLovePopups();
     }
@@ -33,14 +34,16 @@ public class LoveCallsManage : MonoBehaviour
     void ShowLovePopups()
     {
         ResetLovePopups();
-
+        DebugWndow.CI.AddDlList("ShowLovePopups");
         List<GameObject> senderTuraaList = new();
         for (int i = 0; i < loveCallList.Count; i++)
         {
             senderTuraaList.Add(loveCallList[i].senderTuraa);
             if (i < 4)
             {
+                DebugWndow.CI.AddDlList("beforSetActive");
                 LovePopups[i].SetActive(true);
+                DebugWndow.CI.AddDlList("afterSetActive");
                 SetupLovePopups(i);
             }
             else if (4 <= i)
@@ -65,6 +68,7 @@ public class LoveCallsManage : MonoBehaviour
 
     void SetupLovePopups(int i)
     {
+        DebugWndow.CI.AddDlList("SetupLovePopups");
         LovePopupManage lovePopupManager = LovePopups[i].GetComponent<LovePopupManage>();
         lovePopupManager.SetData(loveCallList[i].senderTuraa, loveCallList[i].money);
     }

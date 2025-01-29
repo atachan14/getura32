@@ -25,11 +25,14 @@ public class LovePopupManage : NetworkBehaviour
 
     public void SetData(GameObject senderTuraa, int money)
     {
+        DebugWndow.CI.AddDlList($"SetData:{senderTuraa.GetComponent<NetworkObject>().OwnerClientId}, {money}");
         this.senderTuraa = senderTuraa;
         this.money = money;
         senderId = senderTuraa.GetComponent<NetworkObject>().OwnerClientId;
 
+        DebugWndow.CI.AddDlList("jiji");
         senderNameTMP.text = senderTuraa.GetComponent<NamePlate>().Get();
+        DebugWndow.CI.AddDlList("SetData End");
     }
     public void OKClick()
     {

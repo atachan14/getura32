@@ -34,11 +34,11 @@ public class InputManager : MonoBehaviour
         targetInfo.SetActive(false);
 
         F8 = PlayerPrefs.GetInt("F8", 0) == 1;
-        F9 = PlayerPrefs.GetInt("F9", 0) == 1;
+        F9 = PlayerPrefs.GetInt("F9", 0) == 0;
 
         GameObject myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.GameObject();
         ownerPlayer = myTuraa.GetComponent<OwnerPlayer>();
-        tentacleController = myTuraa.GetComponent<TentacleController>();
+        //tentacleController = myTuraa.GetComponent<TentacleController>();
     }
 
     void Update()
@@ -94,14 +94,11 @@ public class InputManager : MonoBehaviour
 
                 targetInfo.SetActive(true);
                 targetInfoScript.SetTarget(targetPlayer);
-                
-
-                tentacleController.ActivateTentacle(hit);
             }
             else
             {
                 HideInfoUI();
-                tentacleController.NoContactTentacle();
+                
             }
         }
     }
@@ -125,6 +122,7 @@ public class InputManager : MonoBehaviour
     {
         targetInfo.SetActive(false);
         targetPlayer = null;
+        tentacleController.NoContactTentacle();
     }
 
     void ToMoveCamera(Vector3 direction)

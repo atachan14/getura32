@@ -7,36 +7,32 @@ using static UnityEngine.Rendering.DebugUI;
 public class TargetInfoManager : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI nameTMP;
-    [SerializeField] private GameObject loveCallButton;
-    [SerializeField] private GameObject cansellButton;
-    [SerializeField] private GameObject splitButton;
-    private GameObject[] buttons;
+    [SerializeField] private GameObject pinkInfo;
+    [SerializeField] private GameObject redInfo;
+    [SerializeField] private GameObject stickInfo;
+    private GameObject[] infos;
 
     [SerializeField] private MatchingEffect mEffect;
     [SerializeField] private LoveCallsManage loveCalls;
-
-    private GameObject targetTuraa;
+    
     private GameObject myTuraa;
     private ulong myId;
+    private TentacleController tentacleController;
+
+    private GameObject targetTuraa;
     ulong targetId;
     private int tribute = 0;
 
-    enum ButtonMode
-    {
-        LoveCall,
-        Cansell,
-        Split
-    }
-
     private void Awake()
     {
-        buttons = new GameObject[] { loveCallButton, cansellButton, splitButton };
+        infos = new GameObject[] { pinkInfo, redInfo, stickInfo };
     }
     void Start()
     {
         myId = NetworkManager.Singleton.LocalClientId;
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
-        ChangeLoveCallButton(loveCallButton);
+        tentacleController = myTuraa.GetComponent<TentacleController>();
+        ChangeLoveCallButton(pinkInfo);
     }
     public void SetTarget(GameObject target)
     {
@@ -44,12 +40,15 @@ public class TargetInfoManager : NetworkBehaviour
         targetTuraa = target;
         targetId = target.GetComponent<NetworkObject>().OwnerClientId;
         nameTMP.text = target.GetComponent<NamePlate>().Get();
-        if (mEffect.Partner.GetComponent<NetworkObject>().OwnerClientId == targetId) { ChangeLoveCallButton(splitButton); } else { ChangeLoveCallButton(loveCallButton); };
+        tentacleController.ActivateTentacle(target);
+        if (mEffect.Partner.GetComponent<NetworkObject>().OwnerClientId == targetId) { ChangeLoveCallButton(stickInfo); } else { ChangeLoveCallButton(pinkInfo); };
+
+        
     }
 
     public void ChangeLoveCallButton(GameObject bm)
     {
-        foreach (GameObject button in buttons)
+        foreach (GameObject button in infos)
         {
             button.SetActive(button == bm);
         }
@@ -58,7 +57,7 @@ public class TargetInfoManager : NetworkBehaviour
     public void LoveCall()
     {
         mEffect.OnRedEffect(targetTuraa);
-        ChangeLoveCallButton(cansellButton);
+        ChangeLoveCallButton(redInfo);
 
         LoveCallServerRpc(targetId, myId, tribute);
     }
@@ -86,7 +85,7 @@ public class TargetInfoManager : NetworkBehaviour
     {
         LoveCallCansellServerRpc(targetId, myId);
         mEffect.OffRedEffect();
-        ChangeLoveCallButton(loveCallButton);
+        ChangeLoveCallButton(pinkInfo);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -104,8 +103,8 @@ public class TargetInfoManager : NetworkBehaviour
     }
     public void Split()
     {
-        Split();
-        ChangeLoveCallButton(loveCallButton);
+        mEffect.Split();
+        ChangeLoveCallButton(pinkInfo);
     }
 
 
@@ -113,12 +112,12 @@ public class TargetInfoManager : NetworkBehaviour
     {
         mEffect.OffRedEffect();
         mEffect.ChangePartner(targetTuraa);
-        ChangeLoveCallButton(splitButton);
+        ChangeLoveCallButton(stickInfo);
     }
     public void ReceiveNG()
     {
         mEffect.OffRedEffect();
-        ChangeLoveCallButton(loveCallButton);
+        ChangeLoveCallButton(pinkInfo);
     }
 
 }

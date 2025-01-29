@@ -14,8 +14,8 @@ public class MatchingEffect : MonoBehaviour
     [SerializeField] private GameObject redBoard;
     private GameObject redTarget;
 
-    [SerializeField] private GameObject pinkBoard;
-    private List<GameObject> pinkTargetList;
+    [SerializeField] private GameObject purpleBoard;
+    private List<GameObject> purpleTargetList;
 
     [SerializeField] private GameObject stickEffectPrefab;
     public GameObject Partner { get; set; }
@@ -30,8 +30,8 @@ public class MatchingEffect : MonoBehaviour
     void Start()
     {
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
-        SetupBoard(redBoard);
-        SetupBoard(pinkBoard);
+        //SetupBoard(redBoard);
+        //SetupBoard(pinkBoard);
     }
 
     void SetupBoard(GameObject board)
@@ -79,13 +79,6 @@ public class MatchingEffect : MonoBehaviour
             Partner = null;
         }
     }
-    //public void NTRed()
-    //{
-
-    //    DebugWndow.CI.AddDlList($"befor NTRed. isNot :{Partner == null}");
-       
-    //    DebugWndow.CI.AddDlList($"after NTRed. isNot :{Partner == null}");
-    //}
 
 
     public void OnRedEffect(GameObject target)
@@ -110,21 +103,21 @@ public class MatchingEffect : MonoBehaviour
 
     public void OnPinkEffect(List<GameObject> targetList)
     {
-        pinkTargetList = targetList;
+        purpleTargetList = targetList;
         PullSO(myTuraa);
-        foreach (GameObject target in pinkTargetList) PullSO(target);
+        foreach (GameObject target in purpleTargetList) PullSO(target);
 
-        pinkBoard.SetActive(true);
+        purpleBoard.SetActive(true);
         myTuraa.GetComponent<OwnerPlayer>().OnPinkSlow(targetList.Count);
     }
 
     public void OffPinkEffect()
     {
         ReturnSO(myTuraa);
-        foreach (GameObject target in pinkTargetList) ReturnSO(target);
-        pinkTargetList.Clear();
+        foreach (GameObject target in purpleTargetList) ReturnSO(target);
+        purpleTargetList.Clear();
 
-        pinkBoard.SetActive(false);
+        purpleBoard.SetActive(false);
         myTuraa.GetComponent<OwnerPlayer>().OffPinkSlow();
     }
 

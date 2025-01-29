@@ -39,12 +39,12 @@ public class TentacleController : NetworkBehaviour
         SyncTentacle();
     }
 
-    public void ActivateTentacle(RaycastHit2D hit)
+    public void ActivateTentacle(GameObject target)
     {
         ContactTentacleServerRpc();
 
         activeTentacle.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 5);
-        TargetPlayer = hit.collider.gameObject;
+        TargetPlayer = target;
 
         // クライアントで計算
         Vector3 targetPosition = TargetPlayer.transform.position;
