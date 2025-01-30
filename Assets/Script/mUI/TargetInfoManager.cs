@@ -4,6 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 using static UnityEngine.Rendering.DebugUI;
 
 public class TargetInfoManager : NetworkBehaviour
@@ -46,16 +47,19 @@ public class TargetInfoManager : NetworkBehaviour
     private void Update()
     {
         SelectType();
+        
     }
     public bool SetTarget(GameObject target)
     {
         if (myTuraa == target) return false;
         if (targetTuraa != null && targetTuraa == target) return true;
         DebuLog.C.AddDlList("SetTarget ifPass");
-        targetTuraa = target;
-        targetId = target.GetComponent<NetworkObject>().OwnerClientId;
 
-        topInfo.SetTopInfo(targetId, target.GetComponent<NamePlate>());
+        targetId = target.GetComponent<NetworkObject>().OwnerClientId;
+        targetTuraa = target;
+
+        if (targetTuraa != null) topInfo.SetTopInfo(targetId, targetTuraa.GetComponent<NamePlate>());
+
 
         DebuLog.C.AddDlList("SetTarget End");
         return true;
@@ -76,7 +80,7 @@ public class TargetInfoManager : NetworkBehaviour
         }
 
         if (bm == stickInfo) { triBtnObject.SetActive(false); } else { triBtnObject.SetActive(true); }
-        if (bm == redInfo) { TopInfo.C.SetMinusForRed(); } else { TopInfo.C.IsRed = false; }
+        if (bm == redInfo) { TopInfo.C.SetMinusForRed(); } 
 
     }
 
@@ -91,7 +95,6 @@ public class TargetInfoManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void LoveCallServerRpc(ulong targetId, ulong senderId, int money)
     {
-
         LoveCallClientRpc(targetId, senderId, money);
     }
 
@@ -109,6 +112,7 @@ public class TargetInfoManager : NetworkBehaviour
         LoveCallCansellServerRpc(targetId, myId);
         mEffect.OffRedEffect();
         mStatus.IsRed = false;
+        TopInfo.C.ReleaseMinusForRed();
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -128,6 +132,7 @@ public class TargetInfoManager : NetworkBehaviour
     {
         PartnerManager.C.SplitPartnerServerRpc(myId);
         //ChangeInfoType(pinkInfo);
+        TopInfo.C.ReleaseMinusForRed();
     }
     [ClientRpc]
     public void ReceiveOKClientRpc(ulong targetId)
@@ -137,12 +142,14 @@ public class TargetInfoManager : NetworkBehaviour
             mEffect.OffRedEffect();
             mStatus.IsRed = false;
             //ChangeInfoType(stickInfo);
+            TopInfo.C.ReleaseMinusForRed();
         }
     }
     public void ReceiveNG()
     {
         mEffect.OffRedEffect();
         mStatus.IsRed = false;
+        TopInfo.C.ReleaseMinusForRed();
     }
 
 }

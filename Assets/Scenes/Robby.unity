@@ -529,6 +529,22 @@ PrefabInstance:
       propertyPath: m_text
       value: request
       objectReference: {fileID: 0}
+    - target: {fileID: 741186086979505606, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 741186086979505606, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 741186086979505606, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 741186086979505606, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 1265609913666247969, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
       propertyPath: m_Color.b
       value: 0.38042897
@@ -630,8 +646,24 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4320294657188981058, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320294657188981058, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320294657188981058, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320294657188981058, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
       propertyPath: m_fontSizeBase
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4320294657188981058, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4434678051840465359, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
       propertyPath: m_Transition
@@ -693,6 +725,22 @@ PrefabInstance:
       propertyPath: minusTogle
       value: 
       objectReference: {fileID: 366675044}
+    - target: {fileID: 6126409990058798863, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: 'triBtnImages.Array.data[0]'
+      value: 
+      objectReference: {fileID: 366675047}
+    - target: {fileID: 6126409990058798863, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: 'triBtnImages.Array.data[1]'
+      value: 
+      objectReference: {fileID: 819698030}
+    - target: {fileID: 6126409990058798863, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: 'triBtnImages.Array.data[2]'
+      value: 
+      objectReference: {fileID: 963297475}
+    - target: {fileID: 6126409990058798863, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: 'triBtnImages.Array.data[3]'
+      value: 
+      objectReference: {fileID: 385530869}
     - target: {fileID: 6126409990058798863, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
       propertyPath: 'tributeButtons.Array.data[0]'
       value: 

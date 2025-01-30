@@ -7,7 +7,7 @@ using System.Data.SqlTypes;
 public class PartnerManager : NetworkBehaviour
 {
     public static PartnerManager C;
-    List<(ulong p0, ulong p1,int tribute)> pairIdList = new();
+    List<(ulong p0, ulong p1, int tribute)> pairIdList = new();
 
     ulong myId;
     ulong? partnerId;
@@ -30,10 +30,10 @@ public class PartnerManager : NetworkBehaviour
 
 
     [ServerRpc(RequireOwnership = false)]
-    public void ChangePartnerServerRpc(ulong newId0, ulong newId1,int tribute)
+    public void ChangePartnerServerRpc(ulong newId0, ulong newId1, int tribute)
     {
         RemoveOldPartner(newId0, newId1);
-        pairIdList.Add((newId0, newId1,tribute));
+        pairIdList.Add((newId0, newId1, tribute));
         ClientUpdate();
     }
 
@@ -60,7 +60,7 @@ public class PartnerManager : NetworkBehaviour
         ResetPartnerClientRpc();
         foreach ((ulong p0, ulong p1, int tribute) pairId in pairIdList)
         {
-            UpdateThisFieldClientRpc(pairId.p0, pairId.p1,pairId.tribute);
+            UpdateThisFieldClientRpc(pairId.p0, pairId.p1, pairId.tribute);
         }
         UpdateMatchingStatusClientRpc();
     }
@@ -76,10 +76,10 @@ public class PartnerManager : NetworkBehaviour
     public void UpdateThisFieldClientRpc(ulong p0, ulong p1, int tribute)
     {
         DebuLog.C.AddDlList("UpdatePartnerClientRpc");
-        if (myId == p0) { partnerId = p1; this.isP0 = true; }
-        if (myId == p1) { partnerId = p0; this.isP0 = false; }
+        if (myId == p0) { partnerId = p1; this.isP0 = true; DebuLog.C.AddDlList("me p0"); }
+        if (myId == p1) { partnerId = p0; this.isP0 = false; DebuLog.C.AddDlList("me p1"); }
         PartnerTuraa = NetworkManager.Singleton.ConnectedClients[(ulong)partnerId].PlayerObject.gameObject;
-        this.tribute=tribute;
+        this.tribute = tribute;
 
         DebuLog.C.AddDlList($"UpdatePartnerClientRpc partnerId:{partnerId}");
 
@@ -91,7 +91,9 @@ public class PartnerManager : NetworkBehaviour
         mStatus.PartnerTuraa = PartnerTuraa;
         mStatus.PartnerId = partnerId;
         mStatus.IsP0 = this.isP0;
-        TopInfo.tributeDict[(ulong)partnerId] = tribute;
+        if (isP0) TopInfo.tributeDict[(ulong)partnerId] = -1 * tribute;
+        if (!isP0) TopInfo.tributeDict[(ulong)partnerId] =  tribute;
+        TopInfo.C.ShowStickTributeTMP();
         DebuLog.C.AddDlList("UpdateMatchingStatus2");
 
     }

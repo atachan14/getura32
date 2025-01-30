@@ -46,13 +46,6 @@ public class MatchingEffect : MonoBehaviour
 
     }
 
-   
-
-  
-
- 
-
-
     public void OnRedEffect(GameObject target)
     {
         redTarget = target;
