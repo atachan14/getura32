@@ -42,7 +42,7 @@ public class PartnerManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void SplitPartnerServerRpc(ulong splitId)
     {
-        DebLog.C.AddDlList("SplitPartnerServerRpc");
+        DebuLog.C.AddDlList("SplitPartnerServerRpc");
         RemoveSplitPartner(splitId);
         ClientUpdate();
 
@@ -72,20 +72,20 @@ public class PartnerManager : NetworkBehaviour
     [ClientRpc]
     public void UpdatePartnerClientRpc(ulong p0, ulong p1)
     {
-        DebLog.C.AddDlList("UpdatePartnerClientRpc");
+        DebuLog.C.AddDlList("UpdatePartnerClientRpc");
         if (myId == p0) partnerId = p1;
         if (myId == p1) partnerId = p0;
         PartnerTuraa = NetworkManager.Singleton.ConnectedClients[(ulong)partnerId].PlayerObject.gameObject;
-        DebLog.C.AddDlList($"UpdatePartnerClientRpc partnerId:{partnerId}");
+        DebuLog.C.AddDlList($"UpdatePartnerClientRpc partnerId:{partnerId}");
 
     }
     [ClientRpc]
     void UpdateMatchingStatusClientRpc()
     {
-        DebLog.C.AddDlList($"UpdateMatchingStatus1 mStatus==null:{mStatus == null}");
+        DebuLog.C.AddDlList($"UpdateMatchingStatus1 mStatus==null:{mStatus == null}");
         mStatus.PartnerTuraa = PartnerTuraa;
         mStatus.PartnerId = partnerId;
-        DebLog.C.AddDlList("UpdateMatchingStatus2");
+        DebuLog.C.AddDlList("UpdateMatchingStatus2");
 
     }
 }

@@ -2,9 +2,9 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 
-public class DebLog : MonoBehaviour
+public class DebuLog : MonoBehaviour
 {
-    public static DebLog C;
+    public static DebuLog C;
     public TMP_Text debugText;
     private List<string> dlList = new();
 

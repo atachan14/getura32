@@ -14,7 +14,8 @@ public class TargetInfoManager : NetworkBehaviour
 
     [SerializeField] private MatchingEffect mEffect;
     [SerializeField] private LoveCallsManage loveCalls;
-    [SerializeField] tributeButtons tributeButtons;
+    [SerializeField] GameObject triBtnObject;
+    [SerializeField] TopInfo topInfo;
 
     private GameObject myTuraa;
     private ulong myId;
@@ -23,7 +24,6 @@ public class TargetInfoManager : NetworkBehaviour
 
     private GameObject targetTuraa;
     ulong targetId;
-    private int tribute = 0;
 
 
     private void Awake()
@@ -51,11 +51,10 @@ public class TargetInfoManager : NetworkBehaviour
         targetTuraa = target;
         targetId = target.GetComponent<NetworkObject>().OwnerClientId;
 
-        tributeButtons.SetTopInfo(targetId,target.GetComponent<NamePlate>());
+        topInfo.SetTopInfo(targetId, target.GetComponent<NamePlate>());
 
-        DebLog.C.AddDlList("SetTarget End");
+        DebuLog.C.AddDlList("SetTarget End");
         return true;
-
     }
 
     void SelectType()
@@ -71,20 +70,21 @@ public class TargetInfoManager : NetworkBehaviour
         {
             button.SetActive(button == bm);
         }
+        if (bm == stickInfo) { triBtnObject.SetActive(false); } else { triBtnObject.SetActive(true); }
     }
 
     public void LoveCall()
     {
         mEffect.OnRedEffect(targetTuraa);
-      mStatus.IsRed = true;
+        mStatus.IsRed = true;
 
-        LoveCallServerRpc(targetId, myId, tribute);
+        LoveCallServerRpc(targetId, myId, topInfo.Tribute);
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void LoveCallServerRpc(ulong targetId, ulong senderId, int money)
     {
-        DebLog.C.AddDlList($"LoveCallServerRpc:{targetId},{senderId},{money}");
+        DebuLog.C.AddDlList($"LoveCallServerRpc:{targetId},{senderId},{money}");
 
         LoveCallClientRpc(targetId, senderId, money);
     }
@@ -92,10 +92,10 @@ public class TargetInfoManager : NetworkBehaviour
     [ClientRpc]
     public void LoveCallClientRpc(ulong targetId, ulong senderId, int money)
     {
-        DebLog.C.AddDlList("crpc");
+        DebuLog.C.AddDlList("crpc");
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            DebLog.C.AddDlList("crpc2");
+            DebuLog.C.AddDlList("crpc2");
             loveCalls.ReceiveLoveCall(senderId, money);
         }
     }

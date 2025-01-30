@@ -73,7 +73,7 @@ public class InputManager : MonoBehaviour
     void ClickMove(Vector3 worldPosition)
     {
         worldPosition.z = 0;
-        DebLog.C.AddDlList("clickmove");
+        DebuLog.C.AddDlList("clickmove");
 
         QolEffect.ClickMove(worldPosition);
         ownerPlayer.ClickMove(worldPosition);
@@ -96,7 +96,7 @@ public class InputManager : MonoBehaviour
                 tentacleController.ActivateTentacle(targetPlayer);
                 
                 targetInfo.SetActive(targetInfoScript.SetTarget(targetPlayer));
-                DebLog.C.AddDlList("afterSetTarget");
+                DebuLog.C.AddDlList("afterSetTarget");
                 
             }
             else

@@ -39,9 +39,9 @@ public class TentacleController : NetworkBehaviour
 
     public void ActivateTentacle(GameObject target)
     {
-        DebLog.C.AddDlList("ActivateTentacle");
+        DebuLog.C.AddDlList("ActivateTentacle");
         ContactTentacleServerRpc();
-        DebLog.C.AddDlList("ActivateTentacle after ContactTentaSRPC");
+        DebuLog.C.AddDlList("ActivateTentacle after ContactTentaSRPC");
 
         activeTentacle.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 5);
         TargetPlayer = target;
@@ -60,7 +60,7 @@ public class TentacleController : NetworkBehaviour
 
         // 計算結果をサーバーに送信
         UpdateTentacleDataServerRpc(activeTentacle.transform.position, calculatedRotation, calculatedScaleY);
-        DebLog.C.AddDlList("ActivateTentacle end");
+        DebuLog.C.AddDlList("ActivateTentacle end");
 
     }
 
