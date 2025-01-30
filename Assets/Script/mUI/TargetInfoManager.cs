@@ -7,7 +7,6 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class TargetInfoManager : NetworkBehaviour
 {
-    [SerializeField] private TextMeshProUGUI nameTMP;
     [SerializeField] private GameObject pinkInfo;
     [SerializeField] private GameObject redInfo;
     [SerializeField] private GameObject stickInfo;
@@ -15,6 +14,7 @@ public class TargetInfoManager : NetworkBehaviour
 
     [SerializeField] private MatchingEffect mEffect;
     [SerializeField] private LoveCallsManage loveCalls;
+    [SerializeField] tributeButtons tributeButtons;
 
     private GameObject myTuraa;
     private ulong myId;
@@ -50,7 +50,8 @@ public class TargetInfoManager : NetworkBehaviour
 
         targetTuraa = target;
         targetId = target.GetComponent<NetworkObject>().OwnerClientId;
-        nameTMP.text = target.GetComponent<NamePlate>().Get();
+
+        tributeButtons.SetTopInfo(targetId,target.GetComponent<NamePlate>());
 
         DebLog.C.AddDlList("SetTarget End");
         return true;

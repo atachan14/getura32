@@ -32,7 +32,7 @@ public class LovePopupManage : NetworkBehaviour
         this.money = money;
         senderId = senderTuraa.GetComponent<NetworkObject>().OwnerClientId;
 
-        senderNameTMP.text = senderTuraa.GetComponent<NamePlate>().Get();
+        senderNameTMP.text = senderTuraa.GetComponent<NamePlate>().GetName();
     }
     public void OKClick()
     {

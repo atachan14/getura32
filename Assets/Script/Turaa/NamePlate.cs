@@ -32,7 +32,7 @@ public class NamePlate : NetworkBehaviour
         nameTMP.text = newName;
     }
 
-    public string Get()
+    public string GetName()
     {
         return nameTMP.text;
     }
