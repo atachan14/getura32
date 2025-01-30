@@ -89,7 +89,7 @@ public class TargetInfoManager : NetworkBehaviour
         mEffect.OnRedEffect(targetTuraa);
         mStatus.IsRed = true;
 
-        LoveCallServerRpc(targetId, myId, topInfo.Tribute);
+        LoveCallServerRpc(targetId, myId, topInfo.GetTribute());
     }
 
     [ServerRpc(RequireOwnership = false)]

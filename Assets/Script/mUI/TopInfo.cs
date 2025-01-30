@@ -20,7 +20,6 @@ public class TopInfo : MonoBehaviour
     public static Dictionary<ulong, int> tributeDict = new();
 
     public bool P0 { get; set; } = false;
-    public int Tribute { get; set; }
     public bool IsRed { get; set; }
 
     private void Awake()
@@ -55,9 +54,9 @@ public class TopInfo : MonoBehaviour
         IsRed = false;
     }
 
-    public void OnClickOneK() { if (isMinus) { Tribute -= 1000; } else { Tribute += 1000; } ShowTributeTMP(); }
-    public void OnClickFiveK() { if (isMinus) { Tribute -= 5000; } else { Tribute += 5000; } ShowTributeTMP(); }
-    public void OnClickTenK() { if (isMinus) { Tribute -= 10000; } else { Tribute += 10000; } ShowTributeTMP(); }
+    public void OnClickOneK() { if (isMinus) { tributeDict[targetId] -= 1000; } else { tributeDict[targetId] += 1000; } ShowTributeTMP(); }
+    public void OnClickFiveK() { if (isMinus) { tributeDict[targetId] -= 5000; } else { tributeDict[targetId] += 5000; } ShowTributeTMP(); }
+    public void OnClickTenK() { if (isMinus) { tributeDict[targetId] -= 10000; } else { tributeDict[targetId] += 10000; } ShowTributeTMP(); }
 
 
 
@@ -65,13 +64,14 @@ public class TopInfo : MonoBehaviour
     {
         targetId = id;
         targetNameTMP.text = targetNP.GetName();
-        Tribute = tributeDict.GetValueOrDefault(targetId, 0);
+        
         ShowTributeTMP();
     }
 
-
     void ShowTributeTMP()
     {
+        int tribute = tributeDict.GetValueOrDefault(targetId, 0);
+
         DebuLog.C.AddDlList($"ShowTributeTMP:{MatchingStatus.C != null},{MatchingStatus.C.PartnerId != null}");
         if (MatchingStatus.C.PartnerId != null && targetId == MatchingStatus.C.PartnerId)
         {
@@ -81,19 +81,20 @@ public class TopInfo : MonoBehaviour
 
         DebuLog.C.AddDlList("ShowTributeTMP nullPass");
 
-        if (Tribute == 0) { triTypeTMP.text = ""; tributeTMP.text = ""; }
-        if (Tribute > 0) { triTypeTMP.text = "give"; tributeTMP.text = Tribute.ToString(); triTypeTMP.color = new Color(0.5f, 0.6f, 1f); tributeTMP.color = new Color(0.5f, 0.6f, 1f); }
-        if (Tribute < 0) { triTypeTMP.text = "reqest"; tributeTMP.text = (-1 * Tribute).ToString(); triTypeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f); tributeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f); }
-        tributeDict[targetId] = Tribute;
+        if (tribute == 0) { triTypeTMP.text = ""; tributeTMP.text = ""; }
+        if (tribute > 0) { triTypeTMP.text = "give"; tributeTMP.text = tribute.ToString(); triTypeTMP.color = new Color(0.5f, 0.6f, 1f); tributeTMP.color = new Color(0.5f, 0.6f, 1f); }
+        if (tribute < 0) { triTypeTMP.text = "reqest"; tributeTMP.text = (-1 * tribute).ToString(); triTypeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f); tributeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f); }
+        tributeDict[targetId] = tribute;
     }
 
     public void ShowStickTributeTMP()
     {
+        int tribute = tributeDict.GetValueOrDefault(targetId, 0);
         DebuLog.C.AddDlList("ShowStickTributeTMP nullPass");
-        if (Tribute == 0) { triTypeTMP.text = ""; tributeTMP.text = ""; }
-        else if (Tribute < 0)
+        if (tribute == 0) { triTypeTMP.text = ""; tributeTMP.text = ""; }
+        else if (tribute < 0)
         {
-            tributeTMP.text = (-1 * Tribute).ToString();
+            tributeTMP.text = (-1 * tribute).ToString();
             //if (isp0)
             //{
             tributeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f);
@@ -107,9 +108,9 @@ public class TopInfo : MonoBehaviour
             //    triTypeTMP.color = new Color(0.5f, 0.6f, 1f);
             //}
         }
-        else if (Tribute > 0)
+        else if (tribute > 0)
         {
-            tributeTMP.text = Tribute.ToString();
+            tributeTMP.text = tribute.ToString();
             //if (isp0)
             //{
             triTypeTMP.color = new Color(0.5f, 0.6f, 1f);
@@ -123,6 +124,11 @@ public class TopInfo : MonoBehaviour
             //    triTypeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f);
             //}
         }
-        tributeDict[targetId] = Tribute;
+        tributeDict[targetId] = tribute;
+    }
+
+    public int GetTribute()
+    {
+        return tributeDict[targetId];
     }
 }
