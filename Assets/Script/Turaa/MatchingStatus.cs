@@ -1,7 +1,9 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class MatchingStatus : MonoBehaviour
+public class MatchingStatus : NetworkBehaviour
 {
+    public static MatchingStatus C;
     public bool IsPink { get; set; }
     public bool IsRed { get; set; }
     public bool IsStick { get; set; }
@@ -10,13 +12,16 @@ public class MatchingStatus : MonoBehaviour
 
     public GameObject PartnerTuraa { get; set; }
     public ulong? PartnerId { get; set; }
+    public bool IsP0 {  get; set; }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Awake()
+    {
+        
+    }
     void Start()
     {
-
+        if (IsOwner) C = this;
     }
-    // Update is called once per frame
     void Update()
     {
        

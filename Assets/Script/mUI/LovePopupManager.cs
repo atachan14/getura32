@@ -50,7 +50,7 @@ public class LovePopupManage : NetworkBehaviour
         SendOKServerRpc(senderId);
         loveCallsManage.RemoveLoveCallList(senderTuraa);
         DebuLog.C.AddDlList($"OKClick:{myId},{senderId}");
-        partnerManager.ChangePartnerServerRpc(myId, senderId);
+        partnerManager.ChangePartnerServerRpc(myId, senderId,money);
     }
     [ServerRpc(RequireOwnership = false)]
     void SendOKServerRpc(ulong targetId)

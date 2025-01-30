@@ -882,6 +882,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 560828814}
     - target: {fileID: 8946328193812959706, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: minusTogle
+      value: 
+      objectReference: {fileID: 366675044}
+    - target: {fileID: 8946328193812959706, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: triBtnObject
+      value: 
+      objectReference: {fileID: 179782699}
+    - target: {fileID: 8946328193812959706, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
       propertyPath: topInfoObject
       value: 
       objectReference: {fileID: 179782699}

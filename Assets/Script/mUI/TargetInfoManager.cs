@@ -3,10 +3,12 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 
 public class TargetInfoManager : NetworkBehaviour
 {
+    public static TargetInfoManager C;
     [SerializeField] private GameObject pinkInfo;
     [SerializeField] private GameObject redInfo;
     [SerializeField] private GameObject stickInfo;
@@ -15,6 +17,7 @@ public class TargetInfoManager : NetworkBehaviour
     [SerializeField] private MatchingEffect mEffect;
     [SerializeField] private LoveCallsManage loveCalls;
     [SerializeField] GameObject triBtnObject;
+    [SerializeField] Image minusImage;
     [SerializeField] TopInfo topInfo;
 
     private GameObject myTuraa;
@@ -28,6 +31,7 @@ public class TargetInfoManager : NetworkBehaviour
 
     private void Awake()
     {
+        C = this;
         infos = new GameObject[] { pinkInfo, redInfo, stickInfo };
     }
     void Start()
@@ -47,7 +51,7 @@ public class TargetInfoManager : NetworkBehaviour
     {
         if (myTuraa == target) return false;
         if (targetTuraa != null && targetTuraa == target) return true;
-
+        DebuLog.C.AddDlList("SetTarget ifPass");
         targetTuraa = target;
         targetId = target.GetComponent<NetworkObject>().OwnerClientId;
 
@@ -70,7 +74,10 @@ public class TargetInfoManager : NetworkBehaviour
         {
             button.SetActive(button == bm);
         }
+
         if (bm == stickInfo) { triBtnObject.SetActive(false); } else { triBtnObject.SetActive(true); }
+        if (bm == redInfo) { TopInfo.C.SetMinusForRed(); } else { TopInfo.C.IsRed = false; }
+
     }
 
     public void LoveCall()
@@ -84,7 +91,6 @@ public class TargetInfoManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void LoveCallServerRpc(ulong targetId, ulong senderId, int money)
     {
-        DebuLog.C.AddDlList($"LoveCallServerRpc:{targetId},{senderId},{money}");
 
         LoveCallClientRpc(targetId, senderId, money);
     }
@@ -92,10 +98,8 @@ public class TargetInfoManager : NetworkBehaviour
     [ClientRpc]
     public void LoveCallClientRpc(ulong targetId, ulong senderId, int money)
     {
-        DebuLog.C.AddDlList("crpc");
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            DebuLog.C.AddDlList("crpc2");
             loveCalls.ReceiveLoveCall(senderId, money);
         }
     }
