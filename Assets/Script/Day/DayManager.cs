@@ -114,6 +114,8 @@ public class DayManager : NetworkBehaviour
 
             yield return w;
         }
+        yield return new WaitForSeconds(5f);
+        SLD.SingleLoad(SNM.Night);
     }
 
 
