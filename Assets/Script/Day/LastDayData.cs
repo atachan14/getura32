@@ -9,6 +9,7 @@ public class LastDayData : MonoBehaviour
     private void Awake()
     {
         C = this;
+        DontDestroyOnLoad(this);
     }
     void Start()
     {

@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using TMPro;
 using Unity.Netcode;
 using Unity.VisualScripting;
@@ -78,11 +80,12 @@ public class DayManager : NetworkBehaviour
         //Å™MatchingSetégÇ¶ÇÈ
         //Å´MatchingSetè¡Ç∑
 
-        TimeUpClientRpc();
+        StopForTimeUpClientRpc();
+        StartCoroutine(TuraaLeave());
 
 
     }
-  
+
 
     void SavePairIdList()
     {
@@ -91,9 +94,27 @@ public class DayManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    void TimeUpClientRpc()
+    void StopForTimeUpClientRpc()
     {
         DebuLog.C.AddDlList("timeup");
         otherThenCamera.SetActive(false);
     }
+
+    IEnumerator TuraaLeave()
+    {
+        WaitForSeconds w = new WaitForSeconds(2f);
+        foreach ((ulong p0, ulong p1, int tribute) t in LastDayData.C.PairIdList)
+        {
+            Vector3 direction = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0f).normalized;
+            GameObject p0 = NetworkManager.Singleton.ConnectedClients[t.p0].PlayerObject.gameObject;
+            p0.GetComponent<TimeUpLeave>().OnP0Leave(direction);
+
+            GameObject p1 = NetworkManager.Singleton.ConnectedClients[t.p1].PlayerObject.gameObject;
+            p0.GetComponent<TimeUpLeave>().OnP1Leave(p0);
+
+            yield return w;
+        }
+    }
+
+
 }
