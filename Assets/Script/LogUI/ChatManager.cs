@@ -20,24 +20,26 @@ public class ChatManager : NetworkBehaviour
 
     void Start()
     {
-        myName = ClientSetting.CI.TuraaName;
+        //myName = ClientSetting.CI.TuraaName;
+        myName = PlayerPrefs.GetString("TuraaName");
     }
 
     public void AddBlue(string value, Color senderColor)
     {
+        //DebuLog.C.AddDlList($"AddBlueServerRpc:{myName} , {value} ,{senderColor}");
         AddBlueServerRpc(myName, value, senderColor);
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void AddBlueServerRpc(string senderName, string value, Color senderColor)
     {
-        DebuLog.C.AddDlList($"AddBlueServerRpc:{senderName} , {value} ,{senderColor}");
+        //DebuLog.C.AddDlList($"AddBlueServerRpc:{senderName} , {value} ,{senderColor}");
         AddBlueClientRpc(senderName, value, senderColor);
     }
     [ClientRpc]
     public void AddBlueClientRpc(string senderName, string value, Color senderColor)
     {
-        DebuLog.C.AddDlList($"AddBlueClientRpc:{senderName} , {value} ,{senderColor}");
+        //DebuLog.C.AddDlList($"AddBlueClientRpc:{senderName} , {value} ,{senderColor}");
 
         GameObject chatItem = GenerateChatItem(senderName, value, senderColor);
         ChatDisplay.CI.ChatItemList.Insert(0, chatItem);
@@ -58,7 +60,7 @@ public class ChatManager : NetworkBehaviour
                 break;
             }
         }
-        DebuLog.C.AddDlList($"GenerateChatItem naka");
+        //DebuLog.C.AddDlList($"GenerateChatItem naka");
         chatItem.GetComponent<ChatItem>().SenderName.color = senderColor;
         chatItem.GetComponent<ChatItem>().Value.color = senderColor;
         return chatItem;

@@ -21,12 +21,13 @@ public class DayManager : NetworkBehaviour
             timeTMP.text = RoomSetting.CI.TimeSize.ToString();
             remainingTime = RoomSetting.CI.TimeSize;
 
+            SetupRoomInfoClientRpc(timeTMP.text, roomSizeTMP.text, aliveSizeTMP.text);
             StartCoroutine(TimerCoroutine());
         }
     }
-
     int CountAlive()
     {
+        if (!IsHost) DebuLog.C.AddDlList("!IsHost! CountAlive ");
         int aliveCount = 0;
         foreach (var client in NetworkManager.Singleton.ConnectedClientsList)
         {
@@ -39,36 +40,43 @@ public class DayManager : NetworkBehaviour
         }
         return aliveCount;
     }
+    [ClientRpc]
+    public void SetupRoomInfoClientRpc(string t, string rs, string aliveSize)
+    {
+        timeTMP.text = t;
+        roomSizeTMP.text = rs;
+        aliveSizeTMP.text = aliveSize;
+    }
+
 
     private System.Collections.IEnumerator TimerCoroutine()
     {
+        if (!IsHost) DebuLog.C.AddDlList("!IsHost! TimerCoroutine ");
         while (remainingTime > 0)
         {
             yield return new WaitForSeconds(1f);
             remainingTime--;
             timeTMP.text = remainingTime.ToString();
+            UpdateTimeClientRpc(timeTMP.text);
         }
-        TimeUpClientRpc();
-    }
-    [ClientRpc]
-    public void TimeUpClientRpc()
-    {
-        DebuLog.C.AddDlList("timeup");
+        AfterTimeUpFlow();
     }
 
-    void Update()
-    {
-        if (IsHost)
-        {
-            string rs = roomSizeTMP.text;
-            string t = timeTMP.text;
-            UpdateClientRpc(rs, t);
-        }
-    }
     [ClientRpc]
-    public void UpdateClientRpc(string rs, string t)
+    public void UpdateTimeClientRpc(string t)
     {
-        roomSizeTMP.text = rs;
         timeTMP.text = t;
+    }
+
+    public void AfterTimeUpFlow()
+    {
+        if (!IsHost) DebuLog.C.AddDlList("!IsHost! AfterTimeUpFlow ");
+        TimeUpClientRpc();
+    }
+
+    [ClientRpc]
+    void TimeUpClientRpc()
+    {
+        DebuLog.C.AddDlList("timeup");
     }
 }

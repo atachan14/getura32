@@ -14,7 +14,6 @@ public class MenuButtonManage : NetworkBehaviour
         NetworkManager.Singleton.StartHost();
         SLD.SingleLoad(SNM.Robby);
 
-        //NetworkManager.Singleton.SceneManager.LoadScene("Robby", LoadSceneMode.Single);
     }
 
 
@@ -25,10 +24,11 @@ public class MenuButtonManage : NetworkBehaviour
 
     public void OnSubmitName()
     {
-        string TuraaName = nameInputField.text;  // “ü—Í‚³‚ê‚½–¼‘O‚ðŽæ“¾
-        ClientSetting.CI.TuraaName = TuraaName;
+        string TuraaName = nameInputField.text; 
+        //ClientSetting.CI.TuraaName = TuraaName;
+        PlayerPrefs.SetString("TuraaName", TuraaName);
         robbyNamePlate.SetTMP(TuraaName);
-        Debug.Log($"ClientSetting.TuraaName{ClientSetting.CI.TuraaName}");
+        //Debug.Log($"ClientSetting.TuraaName{ClientSetting.CI.TuraaName}");
     }
 
 }

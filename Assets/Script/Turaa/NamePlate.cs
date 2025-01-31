@@ -13,7 +13,7 @@ public class NamePlate : NetworkBehaviour
     {
         if (IsOwner)
         {
-            SetTuraaNameServerRpc(ClientSetting.CI.TuraaName);
+            SetTuraaNameServerRpc(PlayerPrefs.GetString("TuraaName"));
         }
     }
     void Update()
