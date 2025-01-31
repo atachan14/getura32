@@ -18,10 +18,7 @@ public class DebuLog : MonoBehaviour
         dlList.Add("Debug");
         Debug.Log("dlList.Count:" + dlList.Count);
     }
-    private void Update()
-    {
-       
-    }
+  
 
     public void AddDlList(string value)
     {

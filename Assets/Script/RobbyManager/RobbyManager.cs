@@ -37,8 +37,8 @@ public class RobbyManager : NetworkBehaviour
     [ClientRpc]
     public void SaveInputModeClientRpc()
     {
-        PlayerPrefs.SetInt("F8", InputManager.CI.F8 ? 1 : 0);
-        PlayerPrefs.SetInt("F9", InputManager.CI.F9 ? 1 : 0);
+        PlayerPrefs.SetInt("F8", InputManager.CI.F8 ? 0 : 1);
+        PlayerPrefs.SetInt("F9", InputManager.CI.F9 ? 0 : 1);
     }
 
     [ServerRpc]

@@ -7,7 +7,7 @@ using System.Data.SqlTypes;
 public class PartnerManager : NetworkBehaviour
 {
     public static PartnerManager C;
-    List<(ulong p0, ulong p1, int tribute)> pairIdList = new();
+    public List<(ulong p0, ulong p1, int tribute)> PairIdList { get; set; } = new();
 
     ulong myId;
     ulong? partnerId;
@@ -33,13 +33,13 @@ public class PartnerManager : NetworkBehaviour
     public void ChangePartnerServerRpc(ulong newId0, ulong newId1, int tribute)
     {
         RemoveOldPartner(newId0, newId1);
-        pairIdList.Add((newId0, newId1, tribute));
+        PairIdList.Add((newId0, newId1, tribute));
         ClientUpdate();
     }
 
     void RemoveOldPartner(ulong p0, ulong p1)
     {
-        pairIdList.RemoveAll(p => p.p0 == p0 || p.p1 == p0 || p.p0 == p1 || p.p1 == p1);
+        PairIdList.RemoveAll(p => p.p0 == p0 || p.p1 == p0 || p.p0 == p1 || p.p1 == p1);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -52,13 +52,13 @@ public class PartnerManager : NetworkBehaviour
     }
     void RemoveSplitPartner(ulong splitId)
     {
-        pairIdList.RemoveAll(p => p.p0 == splitId || p.p1 == splitId);
+        PairIdList.RemoveAll(p => p.p0 == splitId || p.p1 == splitId);
     }
 
     void ClientUpdate()
     {
         ResetPartnerClientRpc();
-        foreach ((ulong p0, ulong p1, int tribute) pairId in pairIdList)
+        foreach ((ulong p0, ulong p1, int tribute) pairId in PairIdList)
         {
             UpdateThisFieldClientRpc(pairId.p0, pairId.p1, pairId.tribute);
         }

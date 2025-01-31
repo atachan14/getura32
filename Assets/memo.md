@@ -182,3 +182,8 @@
 				- GameSize（右上 , 生存人数/参加人数）
 				- Time（中上 , 制限時間）
 				- 未定
+
+### daysaveの流れ
+	- [Scene]Day
+		LastDayData
+	- [Scene]Night

@@ -33,7 +33,7 @@ public class InputManager : MonoBehaviour
         CI = this;
         targetInfo.SetActive(false);
 
-        F8 = PlayerPrefs.GetInt("F8", 1) == 0;
+        F8 = PlayerPrefs.GetInt("F8", 0) == 0;
         F9 = PlayerPrefs.GetInt("F9", 0) == 0;
 
         GameObject myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.GameObject();

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using Unity.VisualScripting;
@@ -9,8 +10,9 @@ public class DayManager : NetworkBehaviour
     [SerializeField] TextMeshProUGUI roomSizeTMP;
     [SerializeField] TextMeshProUGUI aliveSizeTMP;
     [SerializeField] TextMeshProUGUI timeTMP;
-
     private int remainingTime;
+
+    [SerializeField] GameObject otherThenCamera;
 
     void Start()
     {
@@ -71,12 +73,27 @@ public class DayManager : NetworkBehaviour
     public void AfterTimeUpFlow()
     {
         if (!IsHost) DebuLog.C.AddDlList("!IsHost! AfterTimeUpFlow ");
+        SavePairIdList();
+
+        //Å™MatchingSetégÇ¶ÇÈ
+        //Å´MatchingSetè¡Ç∑
+
         TimeUpClientRpc();
+
+
+    }
+  
+
+    void SavePairIdList()
+    {
+        LastDayData.C.PairIdList = PartnerManager.C.PairIdList;
+        DebuLog.C.AddDlList($"SavePairIdList[{string.Join(", ", LastDayData.C.PairIdList)}]");
     }
 
     [ClientRpc]
     void TimeUpClientRpc()
     {
         DebuLog.C.AddDlList("timeup");
+        otherThenCamera.SetActive(false);
     }
 }

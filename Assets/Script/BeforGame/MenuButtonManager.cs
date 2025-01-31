@@ -29,6 +29,10 @@ public class MenuButtonManage : NetworkBehaviour
         PlayerPrefs.SetString("TuraaName", TuraaName);
         robbyNamePlate.SetTMP(TuraaName);
         //Debug.Log($"ClientSetting.TuraaName{ClientSetting.CI.TuraaName}");
+
+        //Debug
+        PlayerPrefs.SetInt("F8", 1);
+        PlayerPrefs.SetInt("F9", 0);
     }
 
 }
