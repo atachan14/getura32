@@ -19,6 +19,10 @@ public static class SLD
     {
         SceneManager.LoadScene(name.ToString());
     }
+    public static void ClientAdditiveLoad(SNM name)
+    {
+        SceneManager.LoadScene(name.ToString(), LoadSceneMode.Additive);
+    }
 
     public static void SingleLoad(SNM name)
     {

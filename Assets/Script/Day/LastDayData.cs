@@ -5,6 +5,7 @@ public class LastDayData : MonoBehaviour
 {
     public static LastDayData C;
     public List<(ulong p0, ulong p1, int tribute)> PairIdList { get; set; } = new();
+    public Dictionary<ulong,Vector3> TuraaPosDict { get; set; } =new();
 
     private void Awake()
     {

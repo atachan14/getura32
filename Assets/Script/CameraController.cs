@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public static CameraController C;
     public float ScrollSize = 10;
     private bool isMoving = false;
-    // Start is called before the first frame update
-    void Start()
-    {
+    float duration = 0.2f;
+    float elapsed = 0f;
 
+    Vector3 nightPos = new Vector3(1000, 1000, -100);
+
+    private void Awake()
+    {
+        C = this;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void MoveCamera(Vector3 direction)
     {
@@ -28,22 +28,27 @@ public class CameraController : MonoBehaviour
 
     private IEnumerator MoveCameraSmoothly(Vector3 direction)
     {
-        isMoving = true; // 移動中フラグをオン
-        Vector3 startPosition = transform.position; // 開始位置
-        Vector3 targetPosition = startPosition + direction * ScrollSize; // 目標位置
-        float duration = 0.2f; // 移動にかける時間
-        float elapsed = 0f;
+        isMoving = true; 
+        Vector3 startPosition = transform.position; 
+        Vector3 targetPosition = startPosition + direction * ScrollSize; 
 
-        // 0.5秒かけて移動
         while (elapsed < duration)
         {
-            elapsed += Time.deltaTime; // 経過時間を更新
-            float t = elapsed / duration; // 経過時間の割合
-            transform.position = Vector3.Lerp(startPosition, targetPosition, t); // 線形補間で移動
+            elapsed += Time.deltaTime; 
+            float t = elapsed / duration; 
+            transform.position = Vector3.Lerp(startPosition, targetPosition, t); 
             yield return null; // フレームごとに待機
         }
 
         transform.position = targetPosition; // 最終位置を補正
-        isMoving = false; // 移動中フラグをオフ
+        isMoving = false; 
+    }
+
+    public void NightCamera()
+    {
+        DebuLog.C.AddDlList($"NightCamera befor:{transform.position}");
+        transform.position = nightPos;
+        GetComponent<Camera>().orthographicSize = 15;
+        DebuLog.C.AddDlList($"NightCamera after:{transform.position}");
     }
 }

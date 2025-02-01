@@ -34,6 +34,12 @@ public class TimeUpLeave : NetworkBehaviour
     }
     void P1Leave()
     {
-        transform.position += (p0.transform.position-transform.position).normalized * speed * Time.deltaTime;
+        transform.position += (p0.transform.position - transform.position).normalized * speed * Time.deltaTime;
+    }
+
+    public void StopLeave()
+    {
+        IsP0Leaving = false;
+        IsP1Leaving = false;
     }
 }

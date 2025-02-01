@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using TMPro;
 using Unity.Netcode;
@@ -15,6 +16,7 @@ public class DayManager : NetworkBehaviour
     private int remainingTime;
 
     [SerializeField] GameObject otherThenCamera;
+    bool isNight = false;
 
     void Start()
     {
@@ -81,7 +83,7 @@ public class DayManager : NetworkBehaviour
         //Å´MatchingSetè¡Ç∑
 
         StopForTimeUpClientRpc();
-        StartCoroutine(TuraaLeave());
+        StartCoroutine(TuraasLeaveColutin());
 
 
     }
@@ -100,22 +102,51 @@ public class DayManager : NetworkBehaviour
         otherThenCamera.SetActive(false);
     }
 
-    IEnumerator TuraaLeave()
+    IEnumerator TuraasLeaveColutin()
     {
         WaitForSeconds w = new WaitForSeconds(2f);
         foreach ((ulong p0, ulong p1, int tribute) t in LastDayData.C.PairIdList)
         {
             Vector3 direction = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0f).normalized;
             GameObject p0 = NetworkManager.Singleton.ConnectedClients[t.p0].PlayerObject.gameObject;
-            p0.GetComponent<TimeUpLeave>().OnP0Leave(direction);
-
             GameObject p1 = NetworkManager.Singleton.ConnectedClients[t.p1].PlayerObject.gameObject;
+
+            LastDayData.C.TuraaPosDict[t.p0] = (p0.transform.position);
+            LastDayData.C.TuraaPosDict[t.p1] = (p1.transform.position);
+
+            p0.GetComponent<TimeUpLeave>().OnP0Leave(direction);
             p0.GetComponent<TimeUpLeave>().OnP1Leave(p0);
 
             yield return w;
         }
-        yield return new WaitForSeconds(5f);
-        SLD.SingleLoad(SNM.Night);
+        yield return new WaitForSeconds(3f);
+        StopLeave();
+        PairGoNight();
+    }
+
+    void StopLeave()
+    {
+        foreach (var client in NetworkManager.Singleton.ConnectedClients) 
+        {
+            client.Value.PlayerObject.gameObject.GetComponent<TimeUpLeave>().StopLeave(); 
+        }
+    }
+
+    void PairGoNight()
+    {
+        foreach (ulong id in LastDayData.C.TuraaPosDict.Keys) { PairGoNightClientRpc(id); }
+        if (!isNight) DebuLog.C.AddDlList("DyningAction");
+    }
+
+    [ClientRpc]
+    void PairGoNightClientRpc(ulong id)
+    {
+        DebuLog.C.AddDlList($"PairGoNightClientRpc{id},{NetworkManager.Singleton.LocalClientId}");
+        if (id == NetworkManager.Singleton.LocalClientId)
+        {
+            NightManager.C.NightStart();
+            isNight = true;
+        }
     }
 
 

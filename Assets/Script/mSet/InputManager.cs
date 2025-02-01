@@ -12,9 +12,9 @@ public class InputManager : MonoBehaviour
     [SerializeField] private QolEffect QolEffect;
     [SerializeField] private GameObject targetInfo;
     [SerializeField] private TargetInfoManager targetInfoScript;
-    [SerializeField] private Camera myCamera;
     private GameObject targetPlayer;
     private float scroll;
+    Camera myCamera;
 
     OwnerPlayer ownerPlayer;
     TentacleController tentacleController;
@@ -22,8 +22,6 @@ public class InputManager : MonoBehaviour
 
 
     private NetworkObject myTuraa;
-
-    [SerializeField] private CameraController cameraController;
     public bool F8 { get; set; } 
 
     public bool F9 { get; set; } 
@@ -39,6 +37,7 @@ public class InputManager : MonoBehaviour
         GameObject myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.GameObject();
         ownerPlayer = myTuraa.GetComponent<OwnerPlayer>();
         tentacleController = myTuraa.GetComponent<TentacleController>();
+        myCamera = CameraController.C.GetComponent<Camera>();
     }
 
     void Update()
@@ -108,6 +107,7 @@ public class InputManager : MonoBehaviour
     }
     void ZoomCamera(float scroll)
     {
+       
         myCamera.orthographicSize -= scroll * 2f;
         myCamera.orthographicSize = Mathf.Clamp(myCamera.orthographicSize, 2f, 14f);
     }
@@ -131,7 +131,7 @@ public class InputManager : MonoBehaviour
 
     void ToMoveCamera(Vector3 direction)
     {
-        cameraController.MoveCamera(direction);
+        CameraController.C.MoveCamera(direction);
     }
 
 
