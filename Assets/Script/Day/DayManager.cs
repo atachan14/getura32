@@ -22,14 +22,20 @@ public class DayManager : NetworkBehaviour
     {
         if (IsHost)
         {
-            roomSizeTMP.text = RoomSetting.CI.RoomSize.ToString();
-            aliveSizeTMP.text = CountAlive().ToString();
-            timeTMP.text = RoomSetting.CI.TimeSize.ToString();
-            remainingTime = RoomSetting.CI.TimeSize;
-
-            SetupRoomInfoClientRpc(timeTMP.text, roomSizeTMP.text, aliveSizeTMP.text);
-            StartCoroutine(TimerCoroutine());
+            
+            StartTurn();
         }
+    }
+
+    public void StartTurn()
+    {
+        roomSizeTMP.text = RoomSetting.CI.RoomSize.ToString();
+        aliveSizeTMP.text = CountAlive().ToString();
+        timeTMP.text = RoomSetting.CI.TimeSize.ToString();
+        remainingTime = RoomSetting.CI.TimeSize;
+
+        SetupRoomInfoClientRpc(timeTMP.text, roomSizeTMP.text, aliveSizeTMP.text);
+        StartCoroutine(TimerCoroutine());
     }
     int CountAlive()
     {
