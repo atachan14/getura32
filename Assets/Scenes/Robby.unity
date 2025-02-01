@@ -481,6 +481,18 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 160177298
       objectReference: {fileID: 0}
+    - target: {fileID: 2924591301897030610, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: m_Color.b
+      value: 0.9528302
+      objectReference: {fileID: 0}
+    - target: {fileID: 2924591301897030610, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: m_Color.g
+      value: 0.8656361
+      objectReference: {fileID: 0}
+    - target: {fileID: 2924591301897030610, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
+      propertyPath: m_Color.r
+      value: 0.62473303
+      objectReference: {fileID: 0}
     - target: {fileID: 4308593268725915505, guid: 0ee7d5095413a3542b10fa5efbab1e78, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2581578826

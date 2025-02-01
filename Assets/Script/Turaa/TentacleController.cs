@@ -10,9 +10,9 @@ public class TentacleController : NetworkBehaviour
     private GameObject targetPlayer;
 
 
-    private readonly NetworkVariable<Vector3> tentaclePosition = new NetworkVariable<Vector3>();
-    private readonly NetworkVariable<Quaternion> tentacleRotation = new NetworkVariable<Quaternion>();
-    private readonly NetworkVariable<float> tentacleScaleY = new NetworkVariable<float>();
+    private readonly NetworkVariable<Vector3> tentaclePosition = new();
+    private readonly NetworkVariable<Quaternion> tentacleRotation = new();
+    private readonly NetworkVariable<float> tentacleScaleY = new();
 
     public NetworkVariable<Vector3> TentaclePosition => tentaclePosition;
 

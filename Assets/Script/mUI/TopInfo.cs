@@ -62,6 +62,7 @@ public class TopInfo : MonoBehaviour
 
     public void SetTopInfo(ulong id, NamePlate targetNP)
     {
+        DebuLog.C.AddDlList($"SetTopInfo");
         targetId = id;
         targetNameTMP.text = targetNP.GetName();
         
@@ -70,6 +71,7 @@ public class TopInfo : MonoBehaviour
 
     void ShowTributeTMP()
     {
+        DebuLog.C.AddDlList($"ShowTributeTMP");
         int tribute = tributeDict.GetValueOrDefault(targetId, 0);
 
         DebuLog.C.AddDlList($"ShowTributeTMP:{MatchingStatus.C != null},{MatchingStatus.C.PartnerId != null}");
