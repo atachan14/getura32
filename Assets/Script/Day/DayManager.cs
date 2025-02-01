@@ -87,8 +87,6 @@ public class DayManager : NetworkBehaviour
 
 
     }
-
-
     void SavePairIdList()
     {
         LastDayData.C.PairIdList = PartnerManager.C.PairIdList;
@@ -104,7 +102,7 @@ public class DayManager : NetworkBehaviour
 
     IEnumerator TuraasLeaveColutin()
     {
-        WaitForSeconds w = new WaitForSeconds(2f);
+        WaitForSeconds w = new(2f);
         foreach ((ulong p0, ulong p1, int tribute) t in LastDayData.C.PairIdList)
         {
             Vector3 direction = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0f).normalized;

@@ -1,4 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 public class NightManager : NetworkBehaviour
@@ -11,35 +14,34 @@ public class NightManager : NetworkBehaviour
     bool isLeftWalking = false;
     bool isIntoWalking = false;
 
-    Vector3 leftWalkSpeed = new Vector3(-0.01f, 0, 0);
-    float intoInvisibleSpeed = 0.01f;
-    Vector3 intoRightUpSpeed = new Vector3(0.1f, 0.1f, 0);
+    Vector3 leftWalkSpeed = new(-4f, 0, 0);
+    float intoInvisibleSpeed = 0.5f;
+    Vector3 intoRightUpSpeed = new(1f, 1f, 0);
 
     private void Awake()
     {
-        C= this;
+        C = this;
     }
 
     void Start()
     {
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
         mySps = myTuraa.GetComponentsInChildren<SpriteRenderer>();
-        partnerSps = MatchingStatus.C.PartnerTuraa.GetComponentsInChildren<SpriteRenderer>();
-
-        
+        //partnerSps = MatchingStatus.C.PartnerTuraa.GetComponentsInChildren<SpriteRenderer>();
     }
     private void Update()
     {
-        //if (isLeftWalking) LeftWalk();
-        //if (isIntoWalking) IntoWalk();
+        if (isLeftWalking) LeftWalk();
+        if (isIntoWalking) IntoWalk();
     }
     public void NightStart()
     {
         DebuLog.C.AddDlList($"NightStart:{transform.position}");
+        CameraController.C.NightCamera();
         OtherPartnerInvisible();
         PairVisible();
-        //isLeftWalking = true;
-        DebuLog.C.AddDlList($"isLeftWalking=true");
+        StartCoroutine(OnLeftWalking());
+        DebuLog.C.AddDlList($"StartCoroutine OnLeftWalking");
     }
     void OtherPartnerInvisible()
     {
@@ -51,36 +53,46 @@ public class NightManager : NetworkBehaviour
 
     void PairVisible()
     {
-        CameraController.C.NightCamera();
-        OneVisible(myTuraa,-5f);
-        OneVisible(MatchingStatus.C.PartnerTuraa,5f);
-       
+        
+        OneVisible(myTuraa, 0f);
+        OneVisible(MatchingStatus.C.PartnerTuraa, 1f);
+
         DebuLog.C.AddDlList($"pairVisible end");
     }
 
-    void OneVisible(GameObject turaa,float offset)
+    void OneVisible(GameObject turaa, float offset)
     {
         turaa.SetActive(true);
+        turaa.GetComponent<NetworkTransform>().enabled = false;
         turaa.GetComponent<Rigidbody2D>().simulated = false;
-        turaa.transform.position = new Vector3(1020f, 995f, -11);
-        turaa.GetComponent<Rigidbody2D>().simulated = true;
+        turaa.transform.position = new Vector3(1020f + offset, 995f, -11);
+        //turaa.GetComponent<Rigidbody2D>().simulated = true;
+    }
+
+    IEnumerator OnLeftWalking()
+    {
+        yield return new WaitForSeconds(2f);
+        isLeftWalking = true;
+        DebuLog.C.AddDlList($"isLeftWalking:{isLeftWalking}");
+        DebuLog.C.AddDlList($"IntoWalk() called on {NetworkManager.Singleton.LocalClientId}");
     }
 
     void LeftWalk()
     {
-        myTuraa.transform.position += leftWalkSpeed * Time.deltaTime; ;
-        MatchingStatus.C.PartnerTuraa.transform.position += leftWalkSpeed * Time.deltaTime; ;
+        myTuraa.transform.position += leftWalkSpeed * Time.deltaTime;
+        MatchingStatus.C.PartnerTuraa.transform.position += leftWalkSpeed * Time.deltaTime;
         if (myTuraa.transform.position.x < 998f)
         {
             isLeftWalking = false;
             isIntoWalking = true;
             DebuLog.C.AddDlList($"isIntoWalking=true");
+            partnerSps = MatchingStatus.C.PartnerTuraa.GetComponentsInChildren<SpriteRenderer>();
+            DebuLog.C.AddDlList($"partnerSps.Length:{partnerSps.Length}");
         }
     }
 
     void IntoWalk()
     {
-        
         IntoInvisible(mySps);
         IntoInvisible(partnerSps);
         IntoRightUp(myTuraa);

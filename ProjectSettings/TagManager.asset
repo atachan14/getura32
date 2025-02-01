@@ -6,6 +6,9 @@ TagManager:
   tags:
   - CharacterClick
   - InfoUI
+  - Ball
+  - Eye
+  - Leg
   layers:
   - Default
   - TransparentFX

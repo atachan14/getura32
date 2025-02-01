@@ -386,7 +386,7 @@ GameObject:
   - component: {fileID: 987935083701857081}
   - component: {fileID: 4449623845005161915}
   m_Layer: 0
-  m_Name: Eye
+  m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -936,6 +936,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef9f2ca5aab10b44b957ab53c243ce18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  speed: 7
 --- !u!1 &8860980868835103586
 GameObject:
   m_ObjectHideFlags: 0
@@ -947,7 +949,7 @@ GameObject:
   - component: {fileID: 2622431331647002748}
   - component: {fileID: 6652936714051701658}
   m_Layer: 0
-  m_Name: Eyelib
+  m_Name: Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

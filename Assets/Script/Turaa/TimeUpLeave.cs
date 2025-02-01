@@ -34,7 +34,8 @@ public class TimeUpLeave : NetworkBehaviour
     }
     void P1Leave()
     {
-        transform.position += (p0.transform.position - transform.position).normalized * speed * Time.deltaTime;
+        if ((transform.position - p0.transform.position).magnitude < 3f) return;
+        transform.position += (p0.transform.position - transform.position).normalized * speed * 1.3f * Time.deltaTime;
     }
 
     public void StopLeave()
