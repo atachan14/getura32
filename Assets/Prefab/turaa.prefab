@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5661531036070393381}
   m_Layer: 5
   m_Name: LovePoint
-  m_TagString: CharacterClick
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -893,8 +893,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.7}
-  m_Size: {x: 1.5, y: 3}
+  m_Offset: {x: 0, y: -0.3}
+  m_Size: {x: 2, y: 3.5}
   m_Direction: 0
 --- !u!114 &3233107752504255013
 MonoBehaviour:
@@ -908,7 +908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4102734170
+  GlobalObjectIdHash: 3092954044
   InScenePlacedSourceGlobalObjectIdHash: 578380149
   DeferredDespawnTick: 0
   Ownership: 1

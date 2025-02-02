@@ -5,9 +5,9 @@ using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 
-public class NightStager : NetworkBehaviour
+public class NightManager : NetworkBehaviour
 {
-    public static NightStager C;
+    public static NightManager C;
     GameObject myTuraa;
     SpriteRenderer[] mySps;
     SpriteRenderer[] partnerSps;
@@ -38,28 +38,26 @@ public class NightStager : NetworkBehaviour
         if (isLeftWalking) LeftWalk();
         if (isIntoWalking) IntoWalk();
     }
-    public void NightStaging()
+    public void NightStart()
     {
         DebuLog.C.AddDlList($"NightStart:{transform.position}");
         CameraController.C.NightCamera();
-        InNight();
+        OtherPartnerInvisible();
         PairVisible();
         StartCoroutine(OnLeftWalking());
         DebuLog.C.AddDlList($"StartCoroutine OnLeftWalking");
     }
-   
-    void InNight()
+    void OtherPartnerInvisible()
     {
         foreach (var client in NetworkManager.Singleton.ConnectedClients)
         {
             client.Value.PlayerObject.gameObject.SetActive(false);
-            client.Value.PlayerObject.gameObject.GetComponent<NetworkTransform>().enabled = false;
-            client.Value.PlayerObject.gameObject.GetComponent<Rigidbody2D>().simulated = false;
         }
     }
 
     void PairVisible()
     {
+        
         OneVisible(myTuraa, 0f);
         OneVisible(MatchingStatus.C.PartnerTuraa, 1.3f);
 
@@ -69,6 +67,8 @@ public class NightStager : NetworkBehaviour
     void OneVisible(GameObject turaa, float offset)
     {
         turaa.SetActive(true);
+        turaa.GetComponent<NetworkTransform>().enabled = false;
+        turaa.GetComponent<Rigidbody2D>().simulated = false;
         turaa.transform.position = new Vector3(1015f + offset, 995f, -11);
         //turaa.GetComponent<Rigidbody2D>().simulated = true;
     }
@@ -116,7 +116,7 @@ public class NightStager : NetworkBehaviour
         }
         if (sps[0].color.a == 0) DebuLog.C.AddDlList($"intoInvisi end");
     }
-
+    
     void IntoInvisibleTMP(TextMeshProUGUI[] tmps)
     {
         foreach (TextMeshProUGUI tmp in tmps)
@@ -126,20 +126,13 @@ public class NightStager : NetworkBehaviour
             if (color.a < 0) { color.a = 0; isIntoWalking = false; }
             tmp.color = color;
         }
-        if (tmps[0].color.a == 0) IntoHotel();
+        if (tmps[0].color.a == 0) DebuLog.C.AddDlList($"intoInvisi end");
     }
 
     void IntoRightUp(GameObject turaa)
     {
         turaa.transform.position += intoRightUpSpeed * Time.deltaTime; ;
     }
-
-    void IntoHotel()
-    {
-        isIntoWalking = false ;
-        NightCalcer.C.NightCalcStart();
-    }
-
 
 
 }
