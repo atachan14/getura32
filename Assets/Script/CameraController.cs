@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -10,7 +11,7 @@ public class CameraController : MonoBehaviour
     float duration = 0.2f;
     float elapsed = 0f;
 
-    Vector3 nightPos = new Vector3(1000, 1000, -100);
+    Vector3 nightPos = new(1000, 1000, -100);
 
     private void Awake()
     {
@@ -50,5 +51,13 @@ public class CameraController : MonoBehaviour
         transform.position = nightPos;
         GetComponent<Camera>().orthographicSize = 10;
         DebuLog.C.AddDlList($"NightCamera after:{transform.position}");
+    }
+
+    public void DayCamera()
+    {
+        DebuLog.C.AddDlList($"DayCamera befor:{transform.position}");
+        transform.position = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<TimeUpLeave>().DayPos;
+        GetComponent<Camera>().orthographicSize = 15;
+        DebuLog.C.AddDlList($"DayCamera after:{transform.position}");
     }
 }

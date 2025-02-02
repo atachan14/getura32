@@ -20,22 +20,31 @@ public class DayManager : NetworkBehaviour
 
     void Start()
     {
-        if (IsHost)
-        {
-            
-            StartTurn();
-        }
+        StartCoroutine("StartTurnStart");
+        
+    }
+
+    IEnumerator StartTurnStart()
+    {
+        yield return new WaitForSeconds(5f);
+        StartTurn();
     }
 
     public void StartTurn()
     {
-        roomSizeTMP.text = RoomSetting.CI.RoomSize.ToString();
-        aliveSizeTMP.text = CountAlive().ToString();
-        timeTMP.text = RoomSetting.CI.TimeSize.ToString();
-        remainingTime = RoomSetting.CI.TimeSize;
+        DebuLog.C.AddDlList($"StartTurn IsHost:{IsHost} , IsClient:{IsClient}");
+        DebuLog.C.AddDlList($"StartTurn ClientId:{NetworkManager.Singleton.LocalClientId}");
+        if (IsHost)
+        {
+            DebuLog.C.AddDlList("StartTurn IsHost");
+            roomSizeTMP.text = RoomSetting.CI.RoomSize.ToString();
+            aliveSizeTMP.text = CountAlive().ToString();
+            timeTMP.text = RoomSetting.CI.TimeSize.ToString();
+            remainingTime = RoomSetting.CI.TimeSize;
 
-        SetupRoomInfoClientRpc(timeTMP.text, roomSizeTMP.text, aliveSizeTMP.text);
-        StartCoroutine(TimerCoroutine());
+            SetupRoomInfoClientRpc(timeTMP.text, roomSizeTMP.text, aliveSizeTMP.text);
+            StartCoroutine(TimerCoroutine());
+        }
     }
     int CountAlive()
     {
@@ -95,8 +104,8 @@ public class DayManager : NetworkBehaviour
     }
     void SavePairIdList()
     {
-        LastDayData.C.PairIdList = PartnerManager.C.PairIdList;
-        DebuLog.C.AddDlList($"SavePairIdList[{string.Join(", ", LastDayData.C.PairIdList)}]");
+        LastDayData.S.PairIdList = PartnerManager.C.PairIdList;
+        DebuLog.C.AddDlList($"SavePairIdList[{string.Join(", ", LastDayData.S.PairIdList)}]");
     }
 
     [ClientRpc]
@@ -109,17 +118,18 @@ public class DayManager : NetworkBehaviour
     IEnumerator TuraasLeaveColutin()
     {
         WaitForSeconds w = new(2f);
-        foreach ((ulong p0, ulong p1, int tribute) t in LastDayData.C.PairIdList)
+        foreach ((ulong p0, ulong p1, int tribute) t in LastDayData.S.PairIdList)
         {
             Vector3 direction = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0f).normalized;
             GameObject p0 = NetworkManager.Singleton.ConnectedClients[t.p0].PlayerObject.gameObject;
             GameObject p1 = NetworkManager.Singleton.ConnectedClients[t.p1].PlayerObject.gameObject;
 
-            LastDayData.C.TuraaPosDict[t.p0] = (p0.transform.position);
-            LastDayData.C.TuraaPosDict[t.p1] = (p1.transform.position);
-
-            p0.GetComponent<TimeUpLeave>().OnP0Leave(direction);
-            p0.GetComponent<TimeUpLeave>().OnP1Leave(p0);
+            TimeUpLeave p0tul = p0.GetComponent<TimeUpLeave>();
+            TimeUpLeave p1tul = p1.GetComponent<TimeUpLeave>();
+            p0tul.DayPos = (p0.transform.position);
+            p1tul.DayPos = (p1.transform.position);
+            p0tul.OnP0Leave(direction);
+            p1tul.OnP1Leave(p0);
 
             yield return w;
         }
@@ -130,15 +140,15 @@ public class DayManager : NetworkBehaviour
 
     void StopLeave()
     {
-        foreach (var client in NetworkManager.Singleton.ConnectedClients) 
+        foreach (var client in NetworkManager.Singleton.ConnectedClients)
         {
-            client.Value.PlayerObject.gameObject.GetComponent<TimeUpLeave>().StopLeave(); 
+            client.Value.PlayerObject.gameObject.GetComponent<TimeUpLeave>().StopLeave();
         }
     }
 
     void PairGoNight()
     {
-        foreach (ulong id in LastDayData.C.TuraaPosDict.Keys) { PairGoNightClientRpc(id); }
+        foreach (ulong id in LastDayData.S.TuraaPosDict.Keys) { PairGoNightClientRpc(id); }
         if (!isNight) DebuLog.C.AddDlList("DyningAction");
     }
 
@@ -148,7 +158,7 @@ public class DayManager : NetworkBehaviour
         DebuLog.C.AddDlList($"PairGoNightClientRpc{id},{NetworkManager.Singleton.LocalClientId}");
         if (id == NetworkManager.Singleton.LocalClientId)
         {
-            NightManager.C.NightStart();
+            NightStager.C.NightStaging();
             isNight = true;
         }
     }

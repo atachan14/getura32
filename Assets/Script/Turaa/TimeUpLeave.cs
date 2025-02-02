@@ -10,10 +10,15 @@ public class TimeUpLeave : NetworkBehaviour
     GameObject p0;
     bool IsP1Leaving = false;
 
+    public Vector3 DayPos { get; set; }
+    bool isSetupComeBacking = false;
+
+
     void Update()
     {
         if (IsP0Leaving) P0Leave();
         if (IsP1Leaving) P1Leave();
+        if (isSetupComeBacking) SetupComeBacking();
     }
 
     public void OnP0Leave(Vector3 direction)
@@ -43,4 +48,19 @@ public class TimeUpLeave : NetworkBehaviour
         IsP0Leaving = false;
         IsP1Leaving = false;
     }
+
+    public void StartSetupComeBack()
+    {
+        Vector3 direction = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0f).normalized;
+        transform.position += direction * 10f;
+        isSetupComeBacking = true;
+    }
+
+    void SetupComeBacking()
+    {
+        Vector3 direction = (DayPos - transform.position).normalized;
+        transform.position += direction * speed * Time.deltaTime;
+        if (transform.position == DayPos) { isSetupComeBacking = false; DebuLog.C.AddDlList("SetupComeBacking end"); }
+    }
+
 }
