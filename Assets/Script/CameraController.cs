@@ -48,7 +48,7 @@ public class CameraController : MonoBehaviour
     {
         DebuLog.C.AddDlList($"NightCamera befor:{transform.position}");
         transform.position = nightPos;
-        GetComponent<Camera>().orthographicSize = 15;
+        GetComponent<Camera>().orthographicSize = 10;
         DebuLog.C.AddDlList($"NightCamera after:{transform.position}");
     }
 }

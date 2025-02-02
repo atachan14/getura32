@@ -28,8 +28,6 @@ public class MatchingEffect : MonoBehaviour
     void Start()
     {
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
-        //SetupBoard(redBoard);
-        //SetupBoard(pinkBoard);
     }
 
     void SetupBoard(GameObject board)

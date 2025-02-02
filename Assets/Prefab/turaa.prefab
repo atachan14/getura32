@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -631,7 +631,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -2}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 30, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8544228970333456849
@@ -908,7 +908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4102734170
+  GlobalObjectIdHash: 3092954044
   InScenePlacedSourceGlobalObjectIdHash: 578380149
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1025,8 +1025,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  inactiveTentacle: {fileID: 0}
+  mStatus: {fileID: 6792717017788070989}
   activeTentacle: {fileID: 1903377336699644917}
+  redAnimeRange: 1
+  redAnimeSpeed: 10
 --- !u!114 &7265637198694391849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1041,6 +1043,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   nameTMP: {fileID: 7329312414969614193}
+  lpTMP: {fileID: 1399508024980186446}
 --- !u!114 &6792717017788070989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1054,7 +1057,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  lpTMP: {fileID: 1399508024980186446}
 --- !u!114 &4584490207940359277
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class NightManager : NetworkBehaviour
     GameObject myTuraa;
     SpriteRenderer[] mySps;
     SpriteRenderer[] partnerSps;
+    TextMeshProUGUI[] myTMP;
+    TextMeshProUGUI[] partnerTMP;
 
     bool isLeftWalking = false;
     bool isIntoWalking = false;
@@ -27,6 +30,7 @@ public class NightManager : NetworkBehaviour
     {
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
         mySps = myTuraa.GetComponentsInChildren<SpriteRenderer>();
+        myTMP = myTuraa.GetComponentsInChildren<TextMeshProUGUI>();
         //partnerSps = MatchingStatus.C.PartnerTuraa.GetComponentsInChildren<SpriteRenderer>();
     }
     private void Update()
@@ -55,7 +59,7 @@ public class NightManager : NetworkBehaviour
     {
         
         OneVisible(myTuraa, 0f);
-        OneVisible(MatchingStatus.C.PartnerTuraa, 1f);
+        OneVisible(MatchingStatus.C.PartnerTuraa, 1.3f);
 
         DebuLog.C.AddDlList($"pairVisible end");
     }
@@ -65,16 +69,14 @@ public class NightManager : NetworkBehaviour
         turaa.SetActive(true);
         turaa.GetComponent<NetworkTransform>().enabled = false;
         turaa.GetComponent<Rigidbody2D>().simulated = false;
-        turaa.transform.position = new Vector3(1020f + offset, 995f, -11);
+        turaa.transform.position = new Vector3(1015f + offset, 995f, -11);
         //turaa.GetComponent<Rigidbody2D>().simulated = true;
     }
 
     IEnumerator OnLeftWalking()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         isLeftWalking = true;
-        DebuLog.C.AddDlList($"isLeftWalking:{isLeftWalking}");
-        DebuLog.C.AddDlList($"IntoWalk() called on {NetworkManager.Singleton.LocalClientId}");
     }
 
     void LeftWalk()
@@ -85,9 +87,9 @@ public class NightManager : NetworkBehaviour
         {
             isLeftWalking = false;
             isIntoWalking = true;
-            DebuLog.C.AddDlList($"isIntoWalking=true");
+
             partnerSps = MatchingStatus.C.PartnerTuraa.GetComponentsInChildren<SpriteRenderer>();
-            DebuLog.C.AddDlList($"partnerSps.Length:{partnerSps.Length}");
+            partnerTMP = MatchingStatus.C.PartnerTuraa.GetComponentsInChildren<TextMeshProUGUI>();
         }
     }
 
@@ -95,6 +97,10 @@ public class NightManager : NetworkBehaviour
     {
         IntoInvisible(mySps);
         IntoInvisible(partnerSps);
+
+        IntoInvisibleTMP(myTMP);
+        IntoInvisibleTMP(partnerTMP);
+
         IntoRightUp(myTuraa);
         IntoRightUp(MatchingStatus.C.PartnerTuraa);
     }
@@ -109,6 +115,18 @@ public class NightManager : NetworkBehaviour
             sp.color = color;
         }
         if (sps[0].color.a == 0) DebuLog.C.AddDlList($"intoInvisi end");
+    }
+    
+    void IntoInvisibleTMP(TextMeshProUGUI[] tmps)
+    {
+        foreach (TextMeshProUGUI tmp in tmps)
+        {
+            Color color = tmp.color;
+            color.a -= intoInvisibleSpeed * Time.deltaTime;
+            if (color.a < 0) { color.a = 0; isIntoWalking = false; }
+            tmp.color = color;
+        }
+        if (tmps[0].color.a == 0) DebuLog.C.AddDlList($"intoInvisi end");
     }
 
     void IntoRightUp(GameObject turaa)

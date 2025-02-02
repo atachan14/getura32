@@ -19,8 +19,7 @@ public class TopInfo : MonoBehaviour
     string type;
     public static Dictionary<ulong, int> tributeDict = new();
 
-    public bool P0 { get; set; } = false;
-    public bool IsRed { get; set; }
+  
 
     private void Awake()
     {
@@ -33,7 +32,7 @@ public class TopInfo : MonoBehaviour
 
     public void OnClickMinusTogle()
     {
-        if (IsRed) return;
+        if (MatchingStatus.C.IsRed) return;
 
         isMinus = !isMinus;
         if (isMinus) { foreach (Image im in triBtnImages) im.color = new Color(248 / 255f, 165 / 255f, 98 / 255f); }
@@ -44,14 +43,12 @@ public class TopInfo : MonoBehaviour
     {
         isMinus = false;
         triBtnImages[0].color = Color.gray;
-        IsRed = true;
     }
 
     public void ReleaseMinusForRed()
     {
-        isMinus = true;
-        triBtnImages[0].color = new Color(248 / 255f, 165 / 255f, 98 / 255f);
-        IsRed = false;
+        OnClickMinusTogle();
+        OnClickMinusTogle();
     }
 
     public void OnClickOneK() { if (isMinus) { tributeDict[targetId] -= 1000; } else { tributeDict[targetId] += 1000; } ShowTributeTMP(); }
@@ -95,34 +92,17 @@ public class TopInfo : MonoBehaviour
         else if (tribute < 0)
         {
             tributeTMP.text = (-1 * tribute).ToString();
-            //if (isp0)
-            //{
             tributeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f);
             triTypeTMP.text = "get";
             triTypeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f);
-            //}
-            //else
-            //{
-            //    tributeTMP.color = new Color(0.5f, 0.6f, 1f);
-            //    triTypeTMP.text = "give";
-            //    triTypeTMP.color = new Color(0.5f, 0.6f, 1f);
-            //}
+        
         }
         else if (tribute > 0)
         {
             tributeTMP.text = tribute.ToString();
-            //if (isp0)
-            //{
-            triTypeTMP.color = new Color(0.5f, 0.6f, 1f);
+            tributeTMP.color = new Color(0.5f, 0.6f, 1f);
             triTypeTMP.text = "give";
             triTypeTMP.color = new Color(0.5f, 0.6f, 1f);
-            //}
-            //else
-            //{
-            //    tributeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f);
-            //    triTypeTMP.text = "get";
-            //    triTypeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f);
-            //}
         }
         tributeDict[targetId] = tribute;
     }

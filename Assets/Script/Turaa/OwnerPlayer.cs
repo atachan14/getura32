@@ -23,10 +23,12 @@ public class OwnerPlayer : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         if (!IsOwner) OtherTuraaSOup();
+        if (IsOwner) tag = "MyTuraa";
     }
 
     void OtherTuraaSOup()
     {
+
         SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
@@ -44,7 +46,7 @@ public class OwnerPlayer : NetworkBehaviour
 
     public void StickMove()
     {
-        
+
         Vector3 distance = mStatus.PartnerTuraa.transform.position - transform.position;
 
         if (distance.magnitude > 2f)

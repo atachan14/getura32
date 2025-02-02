@@ -9,6 +9,7 @@ TagManager:
   - Ball
   - Eye
   - Leg
+  - MyTuraa
   layers:
   - Default
   - TransparentFX

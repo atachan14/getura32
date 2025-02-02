@@ -5,14 +5,18 @@ using UnityEngine;
 
 public class TentacleController : NetworkBehaviour
 {
-    public GameObject inactiveTentacle;
+    [SerializeField] MatchingStatus mStatus;
     public GameObject activeTentacle;
     private GameObject targetPlayer;
+    private bool redAnimeDirection;
+    [SerializeField] float redAnimeRange = 2f;
+    [SerializeField] float redAnimeSpeed = 1f;
 
 
     private readonly NetworkVariable<Vector3> tentaclePosition = new NetworkVariable<Vector3>();
     private readonly NetworkVariable<Quaternion> tentacleRotation = new NetworkVariable<Quaternion>();
     private readonly NetworkVariable<float> tentacleScaleY = new NetworkVariable<float>();
+    private readonly NetworkVariable<float> tentacleScaleX = new NetworkVariable<float>();
 
     public NetworkVariable<Vector3> TentaclePosition => tentaclePosition;
 
@@ -22,6 +26,7 @@ public class TentacleController : NetworkBehaviour
 
     public GameObject TargetPlayer { get => targetPlayer; set => targetPlayer = value; }
 
+    public NetworkVariable<float> TentacleScaleX => tentacleScaleX;
 
     void Start()
     {
@@ -35,6 +40,27 @@ public class TentacleController : NetworkBehaviour
             KeepTentacle();
         }
         SyncTentacle();
+
+        if (IsOwner && mStatus.IsRed) { DebuLog.C.AddDlList($"go redAnime"); RedAnimationServerRpc(); }
+        if (IsOwner && !mStatus.IsRed) { NotRedAnimeServerRpc(); }
+    }
+
+    [ServerRpc]
+    void RedAnimationServerRpc()
+    {
+        DebuLog.C.AddDlList($"RedAnimeServerRpc");
+        if (TentacleScaleX.Value > redAnimeRange) redAnimeDirection = false;
+        if (TentacleScaleX.Value < -1 * redAnimeRange) redAnimeDirection = true;
+
+        if (redAnimeDirection) TentacleScaleX.Value += redAnimeSpeed * Time.deltaTime;
+        if (!redAnimeDirection) TentacleScaleX.Value -= redAnimeSpeed * Time.deltaTime;
+        DebuLog.C.AddDlList($"RedAnimeSRpc{TentacleScaleX.Value}");
+    }
+
+    [ServerRpc]
+    void NotRedAnimeServerRpc()
+    {
+        TentacleScaleX.Value =1f;
     }
 
     public void ActivateTentacle(GameObject target)
@@ -86,18 +112,15 @@ public class TentacleController : NetworkBehaviour
     [ServerRpc]
     public void UpdateTentacleDataServerRpc(Vector3 position, Quaternion rotation, float scaleY)
     {
-        // 計算したデータのみを同期
         TentaclePosition.Value = position;
         TentacleRotation.Value = rotation;
         TentacleScaleY.Value = scaleY;
     }
     public void SyncTentacle()
     {
-        // NetworkVariableの値を反映
-        // 親のワールド座標を基準に触手の座標を更新
         activeTentacle.transform.position = transform.position;
         activeTentacle.transform.rotation = TentacleRotation.Value;
-        activeTentacle.transform.localScale = new Vector3(1, TentacleScaleY.Value, 1);
+        activeTentacle.transform.localScale = new Vector3(TentacleScaleX.Value, TentacleScaleY.Value, 1);
     }
 
     [ServerRpc]
@@ -108,7 +131,6 @@ public class TentacleController : NetworkBehaviour
     [ClientRpc]
     public void ContactTentacleClientRpc()
     {
-        inactiveTentacle.SetActive(false);
         activeTentacle.SetActive(true);
     }
 
@@ -120,7 +142,6 @@ public class TentacleController : NetworkBehaviour
     [ClientRpc]
     public void NoContactTentacleClientRpc()
     {
-        inactiveTentacle.SetActive(true);
         activeTentacle.SetActive(false);
         TargetPlayer = null;
     }

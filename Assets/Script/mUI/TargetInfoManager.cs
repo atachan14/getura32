@@ -51,7 +51,7 @@ public class TargetInfoManager : NetworkBehaviour
     }
     public bool SetTarget(GameObject target)
     {
-        if (myTuraa == target) return false;
+        DebuLog.C.AddDlList("SetTarget Start");
         if (targetTuraa != null && targetTuraa == target) return true;
         DebuLog.C.AddDlList("SetTarget ifPass");
 

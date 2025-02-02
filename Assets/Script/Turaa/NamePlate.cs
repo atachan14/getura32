@@ -6,8 +6,22 @@ using Unity.Collections;
 
 public class NamePlate : NetworkBehaviour
 {
+    [SerializeField] TextMeshProUGUI nameTMP;
+    [SerializeField] TextMeshProUGUI lpTMP;
     public NetworkVariable<FixedString64Bytes> TuraaName { get; set; } = new NetworkVariable<FixedString64Bytes>();
-    [SerializeField] private TextMeshProUGUI nameTMP;
+    
+    private int displayLp;
+    public int DisplayLp
+    {
+        get { return displayLp; }
+        set
+        {
+            displayLp = value;
+            lpTMP.text = value.ToString();
+            float t = Mathf.InverseLerp(0, 100, displayLp);
+            lpTMP.color = Color.Lerp(Color.blue, Color.magenta, t);
+        }
+    }
 
     void Start()
     {
@@ -25,12 +39,8 @@ public class NamePlate : NetworkBehaviour
     {
         Debug.Log("namePlate SetTuraaNameServerRpc");
         TuraaName.Value = newName;
-        nameTMP.text = newName;
     }
-    public void SetTMP(string newName)
-    {
-        nameTMP.text = newName;
-    }
+    
 
     public string GetName()
     {
