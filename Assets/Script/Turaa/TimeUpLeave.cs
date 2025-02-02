@@ -19,6 +19,10 @@ public class TimeUpLeave : NetworkBehaviour
         set => isDay.Value = value;
     }
 
+    public Vector3 DayPos { get; set; }
+    bool isSetupComeBacking = false;
+
+
     void Update()
     {
         if (IsP0Leaving) P0Leave();
@@ -58,7 +62,10 @@ public class TimeUpLeave : NetworkBehaviour
 
     public void StartSetupComeBack()
     {
+<<<<<<< HEAD
         IsDay = true;
+=======
+>>>>>>> d63f20ddf1c1ca6ddbac9f6def105e1c4ea72960
         Vector3 direction = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0f).normalized;
         transform.position += direction * 10f;
         isSetupComeBacking = true;
@@ -70,4 +77,8 @@ public class TimeUpLeave : NetworkBehaviour
         transform.position += direction * speed * Time.deltaTime;
         if (transform.position == DayPos) { isSetupComeBacking = false; DebuLog.C.AddDlList("SetupComeBacking end"); }
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> d63f20ddf1c1ca6ddbac9f6def105e1c4ea72960
 }
