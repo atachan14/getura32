@@ -16,7 +16,6 @@ public class DayManager : NetworkBehaviour
     private int remainingTime;
 
     [SerializeField] GameObject otherThenCamera;
-    bool isNight = false;
 
     void Start()
     {
@@ -115,17 +114,18 @@ public class DayManager : NetworkBehaviour
             GameObject p0 = NetworkManager.Singleton.ConnectedClients[t.p0].PlayerObject.gameObject;
             GameObject p1 = NetworkManager.Singleton.ConnectedClients[t.p1].PlayerObject.gameObject;
 
-            LastDayData.C.TuraaPosDict[t.p0] = (p0.transform.position);
-            LastDayData.C.TuraaPosDict[t.p1] = (p1.transform.position);
-
-            p0.GetComponent<TimeUpLeave>().OnP0Leave(direction);
-            p0.GetComponent<TimeUpLeave>().OnP1Leave(p0);
+            TimeUpLeave p0tul = p0.GetComponent<TimeUpLeave>();
+            TimeUpLeave p1tul = p1.GetComponent<TimeUpLeave>();
+            p0tul.DayPos = (p0.transform.position);
+            p1tul.DayPos = (p1.transform.position);
+            p0tul.OnP0Leave(direction);
+            p1tul.OnP1Leave(p0);
 
             yield return w;
         }
-        yield return new WaitForSeconds(3f);
+        yield return w;
         StopLeave();
-        PairGoNight();
+        LeaverGoNightClientRpc();
     }
 
     void StopLeave()
@@ -136,20 +136,20 @@ public class DayManager : NetworkBehaviour
         }
     }
 
-    void PairGoNight()
-    {
-        foreach (ulong id in LastDayData.C.TuraaPosDict.Keys) { PairGoNightClientRpc(id); }
-        if (!isNight) DebuLog.C.AddDlList("DyningAction");
-    }
+    
 
     [ClientRpc]
-    void PairGoNightClientRpc(ulong id)
+    void LeaverGoNightClientRpc()
     {
-        DebuLog.C.AddDlList($"PairGoNightClientRpc{id},{NetworkManager.Singleton.LocalClientId}");
-        if (id == NetworkManager.Singleton.LocalClientId)
+        DebuLog.C.AddDlList($"LeaverGoNightClientRpc");
+        if (NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<MatchingStatus>().PartnerId!=null)
         {
             NightManager.C.NightStart();
-            isNight = true;
+        }
+        else
+        {
+            DebuLog.C.AddDlList($"LeaverGoNightClientRpc else");
+            AloneManager.C.AloneStart();
         }
     }
 
