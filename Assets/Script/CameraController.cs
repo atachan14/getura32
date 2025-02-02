@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
     float duration = 0.2f;
     float elapsed = 0f;
 
-    Vector3 nightPos = new Vector3(1000, 1000, -100);
+    Vector3 nightPos = new(1000, 1000, -100);
 
     private void Awake()
     {

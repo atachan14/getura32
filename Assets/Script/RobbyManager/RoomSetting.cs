@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class RoomSetting : NetworkBehaviour
+public class RoomSetting : MonoBehaviour
 {
     public static RoomSetting CI;
     public int RoomSize { get; set; }
