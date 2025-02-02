@@ -88,19 +88,21 @@ public class TargetInfoManager : NetworkBehaviour
     {
         mEffect.OnRedEffect(targetTuraa);
         mStatus.IsRed = true;
-
+        DebuLog.C.AddDlList($"LoveCall");
         LoveCallServerRpc(targetId, myId, topInfo.GetTribute());
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void LoveCallServerRpc(ulong targetId, ulong senderId, int money)
     {
+        DebuLog.C.AddDlList($"LoveCall SRpc");
         LoveCallClientRpc(targetId, senderId, money);
     }
 
     [ClientRpc]
     public void LoveCallClientRpc(ulong targetId, ulong senderId, int money)
     {
+        DebuLog.C.AddDlList($"LoveCall CRpc");
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
             loveCalls.ReceiveLoveCall(senderId, money);
