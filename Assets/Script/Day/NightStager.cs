@@ -5,9 +5,9 @@ using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 
-public class NightManager : NetworkBehaviour
+public class NightStager : NetworkBehaviour
 {
-    public static NightManager C;
+    public static NightStager C;
     GameObject myTuraa;
     SpriteRenderer[] mySps;
     SpriteRenderer[] partnerSps;
@@ -126,7 +126,7 @@ public class NightManager : NetworkBehaviour
             if (color.a < 0) { color.a = 0; isIntoWalking = false; }
             tmp.color = color;
         }
-        if (tmps[0].color.a == 0) DebuLog.C.AddDlList($"intoInvisi end");
+        if (tmps[0].color.a == 0) IntoHotel();
     }
 
     void IntoRightUp(GameObject turaa)
@@ -134,5 +134,8 @@ public class NightManager : NetworkBehaviour
         turaa.transform.position += intoRightUpSpeed * Time.deltaTime; ;
     }
 
-
+    void IntoHotel()
+    {
+        NightCalcer.C.StartCalc();
+    }
 }

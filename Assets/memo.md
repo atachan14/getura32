@@ -1,54 +1,47 @@
 ﻿
 ### 未修正バグ
-	- hasStickPointらへんでSplitしてるのに離れないバグ。
-	- （治った？）redEffect , pinkEffectのSOがときどきヘン。
-	- 
+	
 
 ### 優先順
-	- matchingAnime & Move
-		- png
-		- animator
-		- move
 
 ### がっこーでやること。
-	- InputManager
-		- OwnerPlayer,Tentacleと合わせてリファクタリング
-	- TargetInfo
-		- targetNameの色(free, send, receive, other, pair)
-		- tributeButton
-			- [-]
-			- [1000]
-			- [5000]
-			- [10000]
-			- TMP
-		- PleaseTalkAura
-		- CantTalkAura
-	- PlayerStatus
-		- MatchingColor
-	- RobbyMangager
-		- timeSetting
-		- stageSelect
-	- GameManager
-		- SetupLovePoint
-			- CalcLovePoint
+	- CalcLovePoint(C#)
+	- Nameの色(free, send, receive, other, pair)
+		- namePlate
+		- targetName
+		- LovePopup.SenderName
+		- chat
+	- LP表示
+		- targetInfo
+		- lovePopup
+	- PleaseTalkAura
+	- CantTalkAura
 	- turaa
 		- eyeMove
-		- 触手分割SortingOrder
-	- アバター追加
+		- ?触手分割SortingOrder
+	- アバター選択
 	- 背景
 	- アニメ？
-		- LoveCallTentacle
-		- MatchingEffect
+		- Opening
 		- ReceiveNG
 		- Title
-		- Opening
 
 ### おうちでやること。
 # 優先順
-	-
+	- steamworks
+	- daymanager系
 
 # リスト
 	- steamworks
+
+
+### GameManager系案
+	Multi [Day]
+	Server [TimeUp]
+	Local [NightStaging]
+	Local [NightCalcing]
+	SerRpc [ComeBack]
+	Server [DaySetup] 
 
 ### 構造案
 	- 同期構造

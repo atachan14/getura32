@@ -9,16 +9,5 @@ public class LastDayData : MonoBehaviour
     private void Awake()
     {
         C = this;
-        DontDestroyOnLoad(this);
-    }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

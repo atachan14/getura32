@@ -144,7 +144,7 @@ public class DayManager : NetworkBehaviour
         DebuLog.C.AddDlList($"LeaverGoNightClientRpc");
         if (NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<MatchingStatus>().PartnerId!=null)
         {
-            NightManager.C.NightStart();
+            NightStager.C.NightStart();
         }
         else
         {

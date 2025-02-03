@@ -266,6 +266,7 @@ GameObject:
   - component: {fileID: 508098247}
   - component: {fileID: 508098249}
   - component: {fileID: 508098248}
+  - component: {fileID: 508098250}
   m_Layer: 0
   m_Name: NightManager
   m_TagString: Untagged
@@ -327,6 +328,18 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &508098250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508098246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 109c239bf8040b5489b30366a7729223, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &716800190
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1136,6 +1149,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 469525053999302648, guid: 31ff99b29a7640840b4f86130518df72, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8570484900161729274}
+    - targetCorrespondingSourceObject: {fileID: 469525053999302648, guid: 31ff99b29a7640840b4f86130518df72, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8570484900161729275}
   m_SourcePrefab: {fileID: 100100000, guid: 31ff99b29a7640840b4f86130518df72, type: 3}
 --- !u!114 &2272327807277183088 stripped
 MonoBehaviour:
@@ -1182,6 +1198,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0440dbd18b624f544811dbe93a333592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8570484900161729275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6686526155559329607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cf02ed6f0fd64d48acc6a0c11fadc76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

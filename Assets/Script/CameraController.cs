@@ -56,7 +56,10 @@ public class CameraController : MonoBehaviour
     public void DayCamera()
     {
         DebuLog.C.AddDlList($"DayCamera befor:{transform.position}");
-        transform.position = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<TimeUpLeave>().DayPos;
+        Vector3 pos = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<TimeUpLeave>().DayPos;
+      
+        pos.z = -100;
+        transform.position= pos;
         GetComponent<Camera>().orthographicSize = 15;
         DebuLog.C.AddDlList($"DayCamera after:{transform.position}");
     }
