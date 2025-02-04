@@ -15,7 +15,9 @@ public class DieStager : MonoBehaviour
 
     public void DieStaging()
     {
+        DebuLog.C.AddDlList("Start DieStaging");
         transform.localScale /= 2f;
         GetComponent<MatchingStatus>().IsAlive = false;
+        DebuLog.C.AddDlList("End DieStaging");
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public static CameraController C;
-    public float ScrollSize = 10;
+    public float ScrollSize = 4;
     private bool isMoving = false;
     float duration = 0.2f;
     float elapsed = 0f;

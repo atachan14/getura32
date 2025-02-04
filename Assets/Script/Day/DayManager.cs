@@ -10,29 +10,36 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 public class DayManager : NetworkBehaviour
 {
+    public static DayManager S;
     [SerializeField] TextMeshProUGUI roomSizeTMP;
     [SerializeField] TextMeshProUGUI aliveSizeTMP;
     [SerializeField] TextMeshProUGUI timeTMP;
     private int remainingTime;
 
-    [SerializeField] GameObject otherThenCamera;
+    [SerializeField] GameObject mSetObject;
 
+    private void Awake()
+    {
+        S = this;
+    }
     void Start()
     {
         if (IsHost)
         {
-            
+
             StartTurn();
         }
     }
 
     public void StartTurn()
     {
+        if (!IsHost) return;
         roomSizeTMP.text = RoomSetting.CI.RoomSize.ToString();
         aliveSizeTMP.text = CountAlive().ToString();
         timeTMP.text = RoomSetting.CI.TimeSize.ToString();
         remainingTime = RoomSetting.CI.TimeSize;
 
+        GenerateMatchingSetClientRpc();
         SetupRoomInfoClientRpc(timeTMP.text, roomSizeTMP.text, aliveSizeTMP.text);
         StartCoroutine(TimerCoroutine());
     }
@@ -44,13 +51,21 @@ public class DayManager : NetworkBehaviour
         {
             GameObject turaa = client.PlayerObject.GameObject();
 
-            if (turaa != null && turaa.GetComponent<OwnerPlayer>().IsAlive)
+            if (turaa != null && turaa.GetComponent<MatchingStatus>().IsAlive)
             {
                 aliveCount++;
             }
         }
         return aliveCount;
     }
+
+    [ClientRpc]
+    void GenerateMatchingSetClientRpc()
+    {
+        if (NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<MatchingStatus>().IsAlive)
+            mSetObject.SetActive(true);
+    }
+
     [ClientRpc]
     public void SetupRoomInfoClientRpc(string t, string rs, string aliveSize)
     {
@@ -58,6 +73,8 @@ public class DayManager : NetworkBehaviour
         roomSizeTMP.text = rs;
         aliveSizeTMP.text = aliveSize;
     }
+
+
 
 
     private IEnumerator TimerCoroutine()
@@ -103,12 +120,12 @@ public class DayManager : NetworkBehaviour
     void StopForTimeUpClientRpc()
     {
         DebuLog.C.AddDlList("timeup");
-        otherThenCamera.SetActive(false);
+       mSetObject.SetActive(false);
     }
 
     void TentacleSetInvisible()
     {
-        foreach(var client in NetworkManager.Singleton.ConnectedClients)
+        foreach (var client in NetworkManager.Singleton.ConnectedClients)
         {
             client.Value.PlayerObject.gameObject.GetComponent<TentacleController>().NoContactTentacleClientRpc();
         }
@@ -139,19 +156,19 @@ public class DayManager : NetworkBehaviour
 
     void StopLeave()
     {
-        foreach (var client in NetworkManager.Singleton.ConnectedClients) 
+        foreach (var client in NetworkManager.Singleton.ConnectedClients)
         {
-            client.Value.PlayerObject.gameObject.GetComponent<TimeUpLeave>().StopLeave(); 
+            client.Value.PlayerObject.gameObject.GetComponent<TimeUpLeave>().StopLeave();
         }
     }
 
-    
+
 
     [ClientRpc]
     void LeaverGoNightClientRpc()
     {
-        
-        if (NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<MatchingStatus>().PartnerId!=null)
+
+        if (NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<MatchingStatus>().PartnerId != null)
         {
             DayNightController.C.GoToFlow();
             NightStager.C.NightStart();
@@ -159,7 +176,7 @@ public class DayManager : NetworkBehaviour
         else
         {
             DebuLog.C.AddDlList($"GoTo ClientAloneStart");
-            AloneManager.C.ClientAloneStart();
+            DayAlonerManager.C.ClientAloneStart();
         }
     }
 

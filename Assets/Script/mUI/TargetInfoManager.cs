@@ -18,7 +18,6 @@ public class TargetInfoManager : NetworkBehaviour
     [SerializeField] private MatchingEffect mEffect;
     [SerializeField] private LoveCallsManage loveCalls;
     [SerializeField] GameObject triBtnObject;
-    [SerializeField] Image minusImage;
     [SerializeField] TopInfo topInfo;
 
     private GameObject myTuraa;

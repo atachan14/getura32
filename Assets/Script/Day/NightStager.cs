@@ -87,7 +87,7 @@ public class NightStager : NetworkBehaviour
 
     void IntoWalk()
     {
-        TestServerRpc(NetworkManager.Singleton.LocalClientId, 2.1f);
+        //TestServerRpc(NetworkManager.Singleton.LocalClientId, 2.1f);
         IntoInvisible(mySps);
         IntoInvisible(partnerSps);
 
@@ -96,7 +96,7 @@ public class NightStager : NetworkBehaviour
 
         IntoRightUp(myTuraa);
         IntoRightUp(MatchingStatus.C.PartnerTuraa);
-        TestServerRpc(NetworkManager.Singleton.LocalClientId, 2.3f);
+        //TestServerRpc(NetworkManager.Singleton.LocalClientId, 2.3f);
     }
 
     void IntoInvisible(SpriteRenderer[] sps)
@@ -112,17 +112,22 @@ public class NightStager : NetworkBehaviour
 
     void IntoInvisibleTMP(TextMeshProUGUI[] tmps)
     {
-        TestServerRpc(NetworkManager.Singleton.LocalClientId, 2.21f);
+        //TestServerRpc(NetworkManager.Singleton.LocalClientId, 2.21f);
         foreach (TextMeshProUGUI tmp in tmps)
         {
             Color color = tmp.color;
             color.a -= intoInvisibleSpeed * Time.deltaTime;
-            if (color.a < 0) { color.a = 0; isIntoWalking = false; }
+           
+            if (color.a < 0) 
+            { 
+                color.a = 0; 
+                isIntoWalking = false; 
+            }
             tmp.color = color;
         }
         //DebuLog.C.AddDlList($"2.22  IsSpawned: {IsSpawned}, IsOwner: {IsOwner}, IsServer: {IsServer}, IsClient: {IsClient}");
         //TestServerRpc(NetworkManager.Singleton.LocalClientId, 2.22f);
-        if (tmps[0].color.a == 0) IntoHotel();
+        if (!isIntoWalking) IntoHotel();
     }
 
     void IntoRightUp(GameObject turaa)

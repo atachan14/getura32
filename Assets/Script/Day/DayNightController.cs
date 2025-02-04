@@ -13,7 +13,7 @@ public class DayNightController : NetworkBehaviour
     {
         C = this;
     }
-   
+
     public void GoToFlow()
     {
         CameraController.C.NightCamera();
@@ -42,13 +42,13 @@ public class DayNightController : NetworkBehaviour
         ClientComeBackSetActives(); DebuLog.C.AddDlList("befor ComeBackReportServerRpc");
         ComeBackReportServerRpc(); DebuLog.C.AddDlList("after ComeBackReportServerRpc");
         //StartCoroutine(WaitToComeBackReportSRpc());
-       
+
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void TestServerRpc(ulong id)
     {
-        DebuLog.C.AddDlList($"test : {id}");
+        DebuLog.C.AddDlList($"test DayNight : {id}");
     }
 
     //IEnumerator WaitToComeBackReportSRpc()
@@ -73,14 +73,23 @@ public class DayNightController : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void ComeBackReportServerRpc()
     {
-        DebuLog.C.AddDlList($"ComeBackReportSRpc NowNightCount:{NowNightCount} ");
         NowNightCount--;
-
+        DebuLog.C.AddDlList($"ComeBackReportSRpc Id:{NetworkManager.Singleton.LocalClientId}, NowNightCount:{NowNightCount} ");
+       
+        //SeverRpc‘—‚ê‚È‚¢ƒoƒO
         if (NowNightCount == 0)
         {
             DebuLog.C.AddDlList($"ComeBackReportSRpc  true");
             ServerFullReportAfter();
         }
+        else
+        {
+            DebuLog.C.AddDlList("return");
+            return;
+        }
+
+        //StartCoroutine(TempServerFullReportAfter());
+        //ServerFullReportAfter();
     }
 
     void ServerFullReportAfter()
@@ -88,4 +97,11 @@ public class DayNightController : NetworkBehaviour
         DaySetupper.C.ServerNewDayFlow();
     }
 
+    IEnumerator TempServerFullReportAfter()
+    {
+        DebuLog.C.AddDlList("TempServerFull");
+        yield return new WaitForSeconds(3f);
+        DebuLog.C.AddDlList("TempServerFullReportAfter");
+        DaySetupper.C.ServerNewDayFlow();
+    }
 }
