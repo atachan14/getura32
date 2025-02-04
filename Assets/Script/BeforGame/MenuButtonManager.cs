@@ -25,10 +25,8 @@ public class MenuButtonManage : NetworkBehaviour
     public void OnSubmitName()
     {
         string TuraaName = nameInputField.text; 
-        //ClientSetting.CI.TuraaName = TuraaName;
         PlayerPrefs.SetString("TuraaName", TuraaName);
         robbyNamePlate.SetTMP(TuraaName);
-        //Debug.Log($"ClientSetting.TuraaName{ClientSetting.CI.TuraaName}");
 
         //Debug
         PlayerPrefs.SetInt("F8", 1);

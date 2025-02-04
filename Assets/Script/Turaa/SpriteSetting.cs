@@ -49,36 +49,18 @@ public class SpriteSetting : NetworkBehaviour
         }
     }
 
-    void ChangeSprites(int ballIndex,int eyeIndex,int legIndex)
+    void ChangeSprites(int ballIndex, int eyeIndex, int legIndex)
     {
         List<Sprite> ballSps = BallSet.C.SpritesList[ballIndex];
         List<Sprite> EyeSps = EyeSet.C.SpritesList[eyeIndex];
-       // List<Sprite> LegSps = EyeSet.C.SpritesList[legIndex];
+        // List<Sprite> LegSps = EyeSet.C.SpritesList[legIndex];
         SetNewShape(ballParson, ballSps);
         SetNewShape(eyeParson, EyeSps);
         // SetNewShape(legParson, LegSps);
         DebuLog.C.AddDlList($"");
     }
 
-    void ChangeSprite(string type, int index)
-    {
-        switch (type)
-        {
-            case "Ball":
-                List<Sprite> ballSps = BallSet.C.SpritesList[index];
-                SetNewShape(ballParson, ballSps);
-                return;
-            case "Eye":
-                List<Sprite> EyeSps = EyeSet.C.SpritesList[index];
-                SetNewShape(eyeParson, EyeSps);
-                return;
-            case "Leg":
-                List<Sprite> LegSps = EyeSet.C.SpritesList[index];
-                SetNewShape(legParson, LegSps);
-                return;
 
-        }
-    }
 
     public void SetNewShape(GameObject parson, List<Sprite> sps)
     {
@@ -89,10 +71,14 @@ public class SpriteSetting : NetworkBehaviour
                 Destroy(child.gameObject);
             }
         }
+        float offset = 0f;
         foreach (Sprite sp in sps)
         {
-            GameObject newChild = Instantiate(shapeChildPrefab, parson.transform);
+            GameObject newChild = Instantiate(shapeChildPrefab, parson.transform, false);
             newChild.GetComponent<SpriteRenderer>().sprite = sp;
+            newChild.transform.position += new Vector3(0, 0, offset);
+            offset += 0.1f;
+
         }
     }
 }

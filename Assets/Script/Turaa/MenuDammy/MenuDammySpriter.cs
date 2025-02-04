@@ -51,4 +51,9 @@ public class MenuDammySpriter : MonoBehaviour
             newChild.GetComponent<SpriteRenderer>().sprite = sp;
         }
     }
+
+    public void ChangeColor(int select,string color,int value)
+    {
+
+    }
 }
