@@ -13,16 +13,7 @@ public class DayNightController : NetworkBehaviour
     {
         C = this;
     }
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+   
     public void GoToFlow()
     {
         CameraController.C.NightCamera();

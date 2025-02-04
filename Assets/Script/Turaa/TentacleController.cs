@@ -41,7 +41,7 @@ public class TentacleController : NetworkBehaviour
         }
         SyncTentacle();
 
-        if (IsOwner && mStatus.IsRed) { DebuLog.C.AddDlList($"go redAnime"); RedAnimationServerRpc(); }
+        if (IsOwner && mStatus.IsRed) { RedAnimationServerRpc(); }
         if (IsOwner && !mStatus.IsRed) { NotRedAnimeServerRpc(); }
     }
 
