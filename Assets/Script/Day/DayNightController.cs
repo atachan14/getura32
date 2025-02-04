@@ -44,8 +44,10 @@ public class DayNightController : NetworkBehaviour
     }
     public void ClientComeBackFlow()
     {
+        DebuLog.C.AddDlList("start ClientComeBackFlow");
         TestServerRpc(NetworkManager.Singleton.LocalClientId);
         CameraController.C.DayCamera();
+        DebuLog.C.AddDlList("befor ClientComeBackSetActive");
         ClientComeBackSetActives(); DebuLog.C.AddDlList("befor ComeBackReportServerRpc");
         ComeBackReportServerRpc(); DebuLog.C.AddDlList("after ComeBackReportServerRpc");
         //StartCoroutine(WaitToComeBackReportSRpc());

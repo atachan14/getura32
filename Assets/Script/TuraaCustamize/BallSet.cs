@@ -4,7 +4,7 @@ using UnityEngine;
 public class BallSet : MonoBehaviour
 {
     public static BallSet C;
-    [SerializeField] public List<List<Sprite>> SpritesList { get; set; }
+    public List<List<Sprite>> SpritesList { get; set; }
     [SerializeField] List<Sprite> sp0 = new();
     [SerializeField] List<Sprite> sp1 = new();
     [SerializeField] List<Sprite> sp2 = new();

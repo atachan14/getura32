@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 using UnityEngine.EventSystems;
@@ -70,10 +71,22 @@ public class OpenCustamize : MonoBehaviour
 
     void GenerateShapeDisplay(List<List<Sprite>> spsList)
     {
-        customUI.SetActive(true); 
+        customUI.SetActive(true);
+        ResetShapeDisplay();
         thmbnailList = GenerateThmbnailList(spsList);
         SetOnClickIndex();
         LineUpThmbnailList();
+    }
+
+    void ResetShapeDisplay()
+    {
+        foreach (Transform child in shapeDisplay.transform)
+        {
+            if (child != shapeDisplay.transform) // 自身を除いて子オブジェクトを破壊
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 
     List<GameObject> GenerateThmbnailList(List<List<Sprite>> spsList)
@@ -99,9 +112,23 @@ public class OpenCustamize : MonoBehaviour
             tc.AddComponent<Image>();
             tc.GetComponent<Image>().sprite = sp;
             tc.GetComponent<Image>().SetNativeSize();
+            ScaleChousei(tc);
             thmChildren.Insert(0,tc);
         }
         return thmChildren;
+    }
+
+    void ScaleChousei(GameObject tc)
+    {
+        Image img = tc.GetComponent<Image>();
+        RectTransform imgRect = img.GetComponent<RectTransform>();
+
+        // 親の枠内に収めるためのスケール計算
+        float scaleX = 120f /imgRect.rect.width;
+        float scaleY = 130f / imgRect.rect.height;
+        float scale = Mathf.Min(scaleX, scaleY); // はみ出さないように小さい方の比率を適用
+
+        imgRect.localScale = new Vector3(scale, scale, 1f);
     }
     void SetOnClickIndex()
     {
@@ -130,6 +157,6 @@ public class OpenCustamize : MonoBehaviour
         }
         Debug.Log($"OnThumClick{i}");
         menuDammySpriter.ChangeShape(selectPart, spList);
-        
+        PlayerPrefs.SetInt(selectPart, i);
     }
 }

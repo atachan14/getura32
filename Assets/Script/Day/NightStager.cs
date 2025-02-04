@@ -45,6 +45,7 @@ public class NightStager : NetworkBehaviour
         TestServerRpc(NetworkManager.Singleton.LocalClientId, 0);
         PairVisible();
         StartCoroutine(OnLeftWalking());
+        DebuLog.C.AddDlList($"1  IsSpawned: {IsSpawned}, IsOwner: {IsOwner}, IsServer: {IsServer}, IsClient: {IsClient}");
         TestServerRpc(NetworkManager.Singleton.LocalClientId, 1);
     }
 
@@ -80,7 +81,7 @@ public class NightStager : NetworkBehaviour
             partnerSps = MatchingStatus.C.PartnerTuraa.GetComponentsInChildren<SpriteRenderer>();
             partnerTMP = MatchingStatus.C.PartnerTuraa.GetComponentsInChildren<TextMeshProUGUI>();
             TestServerRpc(NetworkManager.Singleton.LocalClientId, 2);
-            //DebuLog.C.AddDlList($"2  IsSpawned: {IsSpawned}, IsOwner: {IsOwner}, IsServer: {IsServer}, IsClient: {IsClient}");
+            DebuLog.C.AddDlList($"2  IsSpawned: {IsSpawned}, IsOwner: {IsOwner}, IsServer: {IsServer}, IsClient: {IsClient}");
         }
     }
 
@@ -119,7 +120,8 @@ public class NightStager : NetworkBehaviour
             if (color.a < 0) { color.a = 0; isIntoWalking = false; }
             tmp.color = color;
         }
-        TestServerRpc(NetworkManager.Singleton.LocalClientId, 2.22f);
+        //DebuLog.C.AddDlList($"2.22  IsSpawned: {IsSpawned}, IsOwner: {IsOwner}, IsServer: {IsServer}, IsClient: {IsClient}");
+        //TestServerRpc(NetworkManager.Singleton.LocalClientId, 2.22f);
         if (tmps[0].color.a == 0) IntoHotel();
     }
 

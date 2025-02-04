@@ -68,6 +68,10 @@ public class TimeUpLeave : NetworkBehaviour
     {
         Vector3 direction = (DayPos - transform.position).normalized;
         transform.position += speed * Time.deltaTime * direction;
-        if ((transform.position- DayPos).magnitude<2f) { isComeBackingToDay = false; DebuLog.C.AddDlList("SetupComeBacking end"); }
+        if ((transform.position - DayPos).magnitude < 2f)
+        {
+            isComeBackingToDay = false;
+            DebuLog.C.AddDlList("SetupComeBacking end");
+        }
     }
 }
