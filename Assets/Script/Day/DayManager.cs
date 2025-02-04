@@ -60,7 +60,7 @@ public class DayManager : NetworkBehaviour
     }
 
 
-    private System.Collections.IEnumerator TimerCoroutine()
+    private IEnumerator TimerCoroutine()
     {
         if (!IsHost) DebuLog.C.AddDlList("!IsHost! TimerCoroutine ");
         while (remainingTime > 0)
@@ -88,6 +88,7 @@ public class DayManager : NetworkBehaviour
         //Å´MatchingSetè¡Ç∑
 
         StopForTimeUpClientRpc();
+        TentacleSetInvisible();
         StartCoroutine(TuraasLeaveColutin());
 
 
@@ -103,6 +104,14 @@ public class DayManager : NetworkBehaviour
     {
         DebuLog.C.AddDlList("timeup");
         otherThenCamera.SetActive(false);
+    }
+
+    void TentacleSetInvisible()
+    {
+        foreach(var client in NetworkManager.Singleton.ConnectedClients)
+        {
+            client.Value.PlayerObject.gameObject.GetComponent<TentacleController>().NoContactTentacleClientRpc();
+        }
     }
 
     IEnumerator TuraasLeaveColutin()
@@ -141,15 +150,16 @@ public class DayManager : NetworkBehaviour
     [ClientRpc]
     void LeaverGoNightClientRpc()
     {
-        DebuLog.C.AddDlList($"LeaverGoNightClientRpc");
+        
         if (NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<MatchingStatus>().PartnerId!=null)
         {
+            DayNightController.C.GoToFlow();
             NightStager.C.NightStart();
         }
         else
         {
-            DebuLog.C.AddDlList($"LeaverGoNightClientRpc else");
-            AloneManager.C.AloneStart();
+            DebuLog.C.AddDlList($"GoTo ClientAloneStart");
+            AloneManager.C.ClientAloneStart();
         }
     }
 

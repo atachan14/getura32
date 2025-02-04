@@ -199,7 +199,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8734193503606515894
 RectTransform:
   m_ObjectHideFlags: 0
@@ -800,6 +800,8 @@ GameObject:
   - component: {fileID: 7265637198694391849}
   - component: {fileID: 6792717017788070989}
   - component: {fileID: 4584490207940359277}
+  - component: {fileID: 6085948085674343843}
+  - component: {fileID: 212864247926143096}
   m_Layer: 0
   m_Name: turaa
   m_TagString: CharacterClick
@@ -908,7 +910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3092954044
+  GlobalObjectIdHash: 4102734170
   InScenePlacedSourceGlobalObjectIdHash: 578380149
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1071,6 +1073,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   speed: 7
+  isDay:
+    m_InternalValue: 1
+--- !u!114 &6085948085674343843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8501463007481296686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ed92607ba0361f45b957fc4ae772dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &212864247926143096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8501463007481296686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2f5fa4a341bc50479218dc53ffb0938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8691917174210839814
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ public class MatchingStatus : NetworkBehaviour
 {
 
     public static MatchingStatus C;
+    public bool IsAlive { get; set; } = true;
     public bool IsPink { get; set; } = false;
     public bool IsRed { get; set; } = false;
     public bool IsStick { get; set; } = false;

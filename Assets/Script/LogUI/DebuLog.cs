@@ -24,7 +24,7 @@ public class DebuLog : MonoBehaviour
     {
         dlList.Add(value);
 
-        if (dlList.Count > 20)
+        if (dlList.Count > 40)
         {
             dlList.RemoveAt(0);
         }

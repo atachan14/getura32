@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class NightCalcer : MonoBehaviour
@@ -12,6 +13,6 @@ public class NightCalcer : MonoBehaviour
 
     public void StartCalc()
     {
-        DaySetupper.C.NewDay();
+        DayNightController.C.ClientComeBackFlow();
     }
 }

@@ -29,38 +29,39 @@ public class CameraController : MonoBehaviour
 
     private IEnumerator MoveCameraSmoothly(Vector3 direction)
     {
-        isMoving = true; 
-        Vector3 startPosition = transform.position; 
-        Vector3 targetPosition = startPosition + direction * ScrollSize; 
+        isMoving = true;
+        Vector3 startPosition = transform.position;
+        Vector3 targetPosition = startPosition + direction * ScrollSize;
 
         while (elapsed < duration)
         {
-            elapsed += Time.deltaTime; 
-            float t = elapsed / duration; 
-            transform.position = Vector3.Lerp(startPosition, targetPosition, t); 
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            transform.position = Vector3.Lerp(startPosition, targetPosition, t);
             yield return null; // フレームごとに待機
         }
 
         transform.position = targetPosition; // 最終位置を補正
-        isMoving = false; 
+        isMoving = false;
     }
 
     public void NightCamera()
     {
-        DebuLog.C.AddDlList($"NightCamera befor:{transform.position}");
         transform.position = nightPos;
         GetComponent<Camera>().orthographicSize = 10;
-        DebuLog.C.AddDlList($"NightCamera after:{transform.position}");
     }
 
     public void DayCamera()
     {
-        DebuLog.C.AddDlList($"DayCamera befor:{transform.position}");
         Vector3 pos = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<TimeUpLeave>().DayPos;
-      
+
         pos.z = -100;
-        transform.position= pos;
+        transform.position = pos;
         GetComponent<Camera>().orthographicSize = 15;
-        DebuLog.C.AddDlList($"DayCamera after:{transform.position}");
+    }
+
+    public void ForcusAloner(ulong id)
+    {
+        transform.position = NetworkManager.Singleton.ConnectedClients[id].PlayerObject.gameObject.transform.position;
     }
 }

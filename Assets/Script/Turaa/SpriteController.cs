@@ -24,7 +24,6 @@ public class SpriteController : MonoBehaviour
             Color color = spr.color;
             color.a = a;
             spr.color = color;
-            DebuLog.C.AddDlList($"ChangeSPRs_A color.a:{spr.color.a}");
         }
     }
 }

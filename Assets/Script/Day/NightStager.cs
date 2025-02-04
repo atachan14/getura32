@@ -16,6 +16,7 @@ public class NightStager : NetworkBehaviour
 
     bool isLeftWalking = false;
     bool isIntoWalking = false;
+    int hotelCount = 0;
 
     Vector3 leftWalkSpeed = new(-4f, 0, 0);
     float intoInvisibleSpeed = 0.5f;
@@ -37,31 +38,20 @@ public class NightStager : NetworkBehaviour
     {
         if (isLeftWalking) LeftWalk();
         if (isIntoWalking) IntoWalk();
+        if (hotelCount == 2) EndStaging();
     }
     public void NightStart()
     {
-        DebuLog.C.AddDlList($"NightStart:{transform.position}");
-        CameraController.C.NightCamera();
-        OtherPartnerInvisible();
+        TestServerRpc(NetworkManager.Singleton.LocalClientId, 0);
         PairVisible();
         StartCoroutine(OnLeftWalking());
-        DebuLog.C.AddDlList($"StartCoroutine OnLeftWalking");
-    }
-    void OtherPartnerInvisible()
-    {
-        foreach (var client in NetworkManager.Singleton.ConnectedClients)
-        {
-            client.Value.PlayerObject.gameObject.SetActive(false);
-        }
+        TestServerRpc(NetworkManager.Singleton.LocalClientId, 1);
     }
 
     void PairVisible()
     {
-        
         OneVisible(myTuraa, 0f);
         OneVisible(MatchingStatus.C.PartnerTuraa, 1.3f);
-
-        DebuLog.C.AddDlList($"pairVisible end");
     }
 
     void OneVisible(GameObject turaa, float offset)
@@ -70,7 +60,6 @@ public class NightStager : NetworkBehaviour
         turaa.GetComponent<NetworkTransform>().enabled = false;
         turaa.GetComponent<Rigidbody2D>().simulated = false;
         turaa.transform.position = new Vector3(1015f + offset, 995f, -11);
-        //turaa.GetComponent<Rigidbody2D>().simulated = true;
     }
 
     IEnumerator OnLeftWalking()
@@ -90,11 +79,14 @@ public class NightStager : NetworkBehaviour
 
             partnerSps = MatchingStatus.C.PartnerTuraa.GetComponentsInChildren<SpriteRenderer>();
             partnerTMP = MatchingStatus.C.PartnerTuraa.GetComponentsInChildren<TextMeshProUGUI>();
+            TestServerRpc(NetworkManager.Singleton.LocalClientId, 2);
+            //DebuLog.C.AddDlList($"2  IsSpawned: {IsSpawned}, IsOwner: {IsOwner}, IsServer: {IsServer}, IsClient: {IsClient}");
         }
     }
 
     void IntoWalk()
     {
+        TestServerRpc(NetworkManager.Singleton.LocalClientId, 2.1f);
         IntoInvisible(mySps);
         IntoInvisible(partnerSps);
 
@@ -103,6 +95,7 @@ public class NightStager : NetworkBehaviour
 
         IntoRightUp(myTuraa);
         IntoRightUp(MatchingStatus.C.PartnerTuraa);
+        TestServerRpc(NetworkManager.Singleton.LocalClientId, 2.3f);
     }
 
     void IntoInvisible(SpriteRenderer[] sps)
@@ -114,11 +107,11 @@ public class NightStager : NetworkBehaviour
             if (color.a < 0) { color.a = 0; isIntoWalking = false; }
             sp.color = color;
         }
-        if (sps[0].color.a == 0) DebuLog.C.AddDlList($"intoInvisi end");
     }
-    
+
     void IntoInvisibleTMP(TextMeshProUGUI[] tmps)
     {
+        TestServerRpc(NetworkManager.Singleton.LocalClientId, 2.21f);
         foreach (TextMeshProUGUI tmp in tmps)
         {
             Color color = tmp.color;
@@ -126,6 +119,7 @@ public class NightStager : NetworkBehaviour
             if (color.a < 0) { color.a = 0; isIntoWalking = false; }
             tmp.color = color;
         }
+        TestServerRpc(NetworkManager.Singleton.LocalClientId, 2.22f);
         if (tmps[0].color.a == 0) IntoHotel();
     }
 
@@ -136,6 +130,23 @@ public class NightStager : NetworkBehaviour
 
     void IntoHotel()
     {
+        hotelCount++;
+        DebuLog.C.AddDlList($"3  IsSpawned: {IsSpawned}, IsOwner: {IsOwner}, IsServer: {IsServer}, IsClient: {IsClient}");
+        TestServerRpc(NetworkManager.Singleton.LocalClientId, 3);
+    }
+    void EndStaging()
+    {
+        TestServerRpc(NetworkManager.Singleton.LocalClientId, 4);
+        hotelCount = 0;
+        isIntoWalking = false;
+        DebuLog.C.AddDlList($"5  IsSpawned: {IsSpawned}, IsOwner: {IsOwner}, IsServer: {IsServer}, IsClient: {IsClient}");
+        TestServerRpc(NetworkManager.Singleton.LocalClientId, 5);
         NightCalcer.C.StartCalc();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void TestServerRpc(ulong id, float f)
+    {
+        DebuLog.C.AddDlList($"test night index : {f} , id : {id}");
     }
 }

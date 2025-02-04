@@ -4,44 +4,44 @@ using UnityEngine;
 public class TimeUpLeave : NetworkBehaviour
 {
     [SerializeField] float speed = 7f;
-    Vector3 direction;
+    Vector3 leaveDirection;
     bool IsP0Leaving = false;
 
     GameObject p0;
     bool IsP1Leaving = false;
     public Vector3 DayPos { get; set; }
-    bool isSetupComeBacking = false;
+    bool isComeBackingToDay = false;
 
-    public NetworkVariable<bool> isDay = new(true);
-    public bool IsDay
-    {
-        get => isDay.Value;
-        set => isDay.Value = value;
-    }
+    //public NetworkVariable<bool> isDay = new(true);
+    //public bool IsDay
+    //{
+    //    get => isDay.Value;
+    //    set => isDay.Value = value;
+    //}
 
     void Update()
     {
         if (IsP0Leaving) P0Leave();
         if (IsP1Leaving) P1Leave();
-        if (isSetupComeBacking) ReturningDay();
+        if (isComeBackingToDay) ComeBackingToDay();
     }
 
     public void OnP0Leave(Vector3 direction)
     {
-        this.direction = direction;
+        this.leaveDirection = direction;
         IsP0Leaving = true;
-        IsDay = false;
+        //IsDay = false;
     }
     public void OnP1Leave(GameObject p0)
     {
         this.p0 = p0;
         IsP1Leaving = true;
-        IsDay = false;
+        //IsDay = false;
     }
 
     void P0Leave()
     {
-        transform.position += speed * Time.deltaTime * direction;
+        transform.position += speed * Time.deltaTime * leaveDirection;
 
     }
     void P1Leave()
@@ -56,25 +56,18 @@ public class TimeUpLeave : NetworkBehaviour
         IsP1Leaving = false;
     }
 
-    public void StartReturnDay()
+    public void ComeBackToDayFlow()
     {
-        IsDay = true;
+        //IsDay = true;
         Vector3 direction = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0f).normalized;
-        transform.position = DayPos;
-        transform.position += direction * 10f;
-        StartReturnDayServerRpc(transform.position);
-    }
-    [ServerRpc]
-    void StartReturnDayServerRpc(Vector3 pos)
-    {
-        isSetupComeBacking = true;
-        transform.position = pos;
+        transform.position = DayPos + direction * 10f;
+        isComeBackingToDay = true;
     }
 
-    void ReturningDay()
+    void ComeBackingToDay()
     {
         Vector3 direction = (DayPos - transform.position).normalized;
         transform.position += speed * Time.deltaTime * direction;
-        if (transform.position == DayPos) { isSetupComeBacking = false; DebuLog.C.AddDlList("SetupComeBacking end"); }
+        if ((transform.position- DayPos).magnitude<2f) { isComeBackingToDay = false; DebuLog.C.AddDlList("SetupComeBacking end"); }
     }
 }

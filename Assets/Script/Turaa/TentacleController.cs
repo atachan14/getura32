@@ -48,13 +48,11 @@ public class TentacleController : NetworkBehaviour
     [ServerRpc]
     void RedAnimationServerRpc()
     {
-        DebuLog.C.AddDlList($"RedAnimeServerRpc");
         if (TentacleScaleX.Value > redAnimeRange) redAnimeDirection = false;
         if (TentacleScaleX.Value < -1 * redAnimeRange) redAnimeDirection = true;
 
         if (redAnimeDirection) TentacleScaleX.Value += redAnimeSpeed * Time.deltaTime;
         if (!redAnimeDirection) TentacleScaleX.Value -= redAnimeSpeed * Time.deltaTime;
-        DebuLog.C.AddDlList($"RedAnimeSRpc{TentacleScaleX.Value}");
     }
 
     [ServerRpc]
