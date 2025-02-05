@@ -11,7 +11,7 @@ public class PartnerManager : NetworkBehaviour
 
     ulong myId;
     ulong? partnerId;
-    int tribute;
+    public int tribute { get; set; }
     bool isP0;
     GameObject myTuraa;
     MatchingStatus mStatus;

@@ -6,12 +6,16 @@ using UnityEngine.SceneManagement;
 public class OpeningManager : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI nextTMP;
+    [SerializeField] int startGold = 50000;
+    [SerializeField] int startFeel = 50;
+    [SerializeField] int startCharm = 10;
 
     void Start()
     {
         if (IsHost)
         {
             SetupLP();
+            SetupStatus();
         }
     }
 
@@ -29,7 +33,7 @@ public class OpeningManager : NetworkBehaviour
             for (int j = 0; j < rs; j++)
             {
                 if (i == j) continue;
-                int lp = LPmapManager.S.MeTageToLp(i, j);
+                int lp = LPmapManager.S.GetLpFromMeTage(i, j);
                 DeliverLPClientRpc(i, j, lp);
             }
         }
@@ -46,6 +50,21 @@ public class OpeningManager : NetworkBehaviour
         GameObject tage = NetworkManager.Singleton.ConnectedClients[(ulong)target].PlayerObject.gameObject;
         tage.GetComponent<NamePlate>().DisplayLp = lp;
     }
+
+    void SetupStatus()
+    {
+        DeliverStatusClientRpc(startGold, startFeel, startCharm);
+    }
+
+    [ClientRpc]
+    void DeliverStatusClientRpc(int gold,int feel,int charm)
+    {
+        Gold.C.Value = gold;
+        Feel.C.Value = feel;
+        Charm.C.Value = charm;
+    }
+
+
 
 
     public void NextExe()

@@ -15,6 +15,7 @@ public class MatchingStatus : NetworkBehaviour
 
     public GameObject PartnerTuraa { get; set; }
     public ulong? PartnerId { get; set; }
+    public int PartnerTribute {  get; set; }
     public bool IsP0 { get; set; }
 
 
