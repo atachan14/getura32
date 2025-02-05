@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
@@ -6,13 +7,24 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 public class OpenShapeDisplay : MonoBehaviour
 {
+    public static OpenShapeDisplay L;
     [SerializeField] MenuDammySpriter menuDammySpriter;
     [SerializeField] GameObject customUI;
+    [SerializeField] GameObject part;
     [SerializeField] GameObject shapeDisplay;
     [SerializeField] GameObject thumbnailPrefab;
     [SerializeField] GameObject thmChild;
     List<GameObject> thmbnailList;
-    string selectPart;
+
+    [SerializeField] GameObject colorDisplayPrefab;
+    public List<ColorDisplay> colorDisplayList { get; set; } = new List<ColorDisplay>();
+
+    public string SelectPart { get; set; }
+
+    private void Awake()
+    {
+        L = this;
+    }
     void Start()
     {
 
@@ -56,7 +68,7 @@ public class OpenShapeDisplay : MonoBehaviour
     }
     void BallOpen()
     {
-        selectPart = "Ball";
+        SelectPart = "Ball";
 
         List<List<Sprite>> spsList = BallSet.C.SpritesList;
         GenerateShapeDisplay(spsList);
@@ -64,7 +76,7 @@ public class OpenShapeDisplay : MonoBehaviour
 
     void EyeOpen()
     {
-        selectPart = "Eye";
+        SelectPart = "Eye";
         List<List<Sprite>> spsList = EyeSet.C.SpritesList;
         GenerateShapeDisplay(spsList);
     }
@@ -76,8 +88,23 @@ public class OpenShapeDisplay : MonoBehaviour
         thmbnailList = GenerateThmbnailList(spsList);
         SetOnClickIndex();
         LineUpThmbnailList();
+        GenerateColorDisplay();
+        TabManager.L.OnClickShape();
     }
 
+    void GenerateColorDisplay()
+    {
+        Debug.Log("generateColorDisplay");
+        foreach (ColorDisplay cd in colorDisplayList) Destroy(cd.gameObject);
+        colorDisplayList.Clear();
+        for(int i = 0; i < 4; i++)
+        {
+            GameObject g = Instantiate(colorDisplayPrefab,part.transform);
+            colorDisplayList.Add(g.GetComponent<ColorDisplay>());
+            colorDisplayList[i].SetupIndex(SelectPart, i);
+            Debug.Log($"colorDisplayList[i]:{colorDisplayList.Count} , {colorDisplayList[i].part} , {colorDisplayList[i].Index}");
+        }
+    }
     void ResetShapeDisplay()
     {
         foreach (Transform child in shapeDisplay.transform)
@@ -156,7 +183,11 @@ public class OpenShapeDisplay : MonoBehaviour
             spList.Add(image.sprite);
         }
         Debug.Log($"OnThumClick{i}");
-        menuDammySpriter.ChangeShape(selectPart, spList);
-        PlayerPrefs.SetInt(selectPart, i);
+        menuDammySpriter.ChangeShape(SelectPart, spList);
+        PlayerPrefs.SetInt(SelectPart, i);
     }
+
+
+
+
 }

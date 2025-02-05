@@ -4,44 +4,66 @@ using UnityEngine.UI;
 
 public class ColorDisplay : MonoBehaviour
 {
-    private int selectTab;
+    public int Index { get; set; }
+    public string part { get; set; }
     [SerializeField] TMP_InputField rField;
     [SerializeField] TMP_InputField bField;
     [SerializeField] TMP_InputField gField;
-    [SerializeField] TMP_InputField nField;
+    [SerializeField] TMP_InputField aField;
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()
     {
 
     }
 
-    public void OnSubmitColorR()
+    public void SetupIndex(string part ,int i)
     {
-        int colorR = int.Parse(rField.text);
-        PlayerPrefs.SetInt($"Color,{selectTab},R", colorR);
+        Index = i;
+        this.part = part; 
+        MyColorToSetField();
+    }
+
+    void MyColorToSetField()
+    {
+        string savedColor = PlayerPrefs.GetString($"{part}Color{Index}", "1,1,1,1");
+        string[] rgba = savedColor.Split(',');
+        rField.text = rgba[0];
+        bField.text = rgba[1];
+        gField.text = rgba[2];
+        aField.text = rgba[3];
+    }
+
+
+    public void OnSubmitColor()
+    {
+        Color myColor = new Color
+        (
+            float.Parse(rField.text),
+            float.Parse(gField.text),
+            float.Parse(bField.text),
+            float.Parse(aField.text)
+        );
+
+        PlayerPrefs.SetString($"{part}Color{Index}", $"{myColor.r},{myColor.g},{myColor.b},{myColor.a}");
         // changeColor atode kaku
     }
 
-    public void OnSubmitColorB()
+
+    public void OnClickRed()
     {
-        int colorB = int.Parse(bField.text);
-        PlayerPrefs.SetInt($"Color,{selectTab},B", colorB);
-        // changeColor atode kaku
+        PlayerPrefs.SetString($"{part}Color{Index}", $"{1},{0},{0},{1}");
     }
-    public void OnSubmitColorG()
+    public void OnClickBlue()
     {
-        int colorG = int.Parse(gField.text);
-        PlayerPrefs.SetInt($"Color,{selectTab},G", colorG);
-        // changeColor atode kaku
+        PlayerPrefs.SetString($"{part}Color{Index}", $"{0},{1},{0},{1}");
     }
-    public void OnSubmitColorN()
+    public void OnClickGreen()
     {
-        int colorN = int.Parse(nField.text);
-        PlayerPrefs.SetInt($"Color,{selectTab},G", colorN);
+        PlayerPrefs.SetString($"{part}Color{Index}", $"{0},{0},{1},{1}");
     }
+
 }
