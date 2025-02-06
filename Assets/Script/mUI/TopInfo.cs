@@ -16,7 +16,6 @@ public class TopInfo : MonoBehaviour
     [SerializeField] Image[] triBtnImages = new Image[4];
     ulong targetId;
     bool isMinus = false;
-    string type;
     public static Dictionary<ulong, int> tributeDict = new();
 
 
@@ -118,5 +117,10 @@ public class TopInfo : MonoBehaviour
     public int GetTribute()
     {
         return tributeDict[targetId];
+    }
+
+    public int GetTributeFromId(ulong id)
+    {
+        return tributeDict[id];
     }
 }

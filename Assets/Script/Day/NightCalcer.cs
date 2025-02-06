@@ -19,7 +19,7 @@ public class NightCalcer : MonoBehaviour
     public void StartCalc()
     {
         int partnerLp = MatchingStatus.C.PartnerTuraa.GetComponent<NamePlate>().DisplayLp;
-        Gold.C.Value += PartnerManager.C.tribute;
+        Gold.C.Value += MatchingStatus.C.AgreeTribute;
         Feel.C.Value += partnerLp - 50;
         DebuLog.C.AddDlList("Calc BeforCharm");
 

@@ -50,7 +50,9 @@ public class MatchingStatus : NetworkBehaviour
         set
         {
             redId = value;
-            RedTuraa = NetworkManager.Singleton.ConnectedClients[(ulong)redId].PlayerObject.gameObject;
+            RedTuraa = value != null
+                ? NetworkManager.Singleton.ConnectedClients[(ulong)redId].PlayerObject.gameObject
+                : null;
         }
     }
 
@@ -71,7 +73,7 @@ public class MatchingStatus : NetworkBehaviour
     /// <summary>
     /// //////////////
     /// </summary>
-    private List<(GameObject turaa,int tribute)> pinkTupleLIst = new();
+    private List<(GameObject turaa, int tribute)> pinkTupleLIst = new();
     public List<(GameObject turaa, int tribute)> PinkTuraaList
     {
         get => pinkTupleLIst;
@@ -108,17 +110,19 @@ public class MatchingStatus : NetworkBehaviour
             {
                 partnerId = networkObject.OwnerClientId;
             }
-            namePlate.ChangeColor();
+            
+            if (partnerId == redId) redId = null;
             StickEffect.C.StickingServerRpc(PartnerTuraa);
+            if(partnerTuraa) AgreeTribute = TopInfo.C.GetTributeFromId((ulong)partnerId);
+            namePlate.ChangeColor();
         }
     }
-    public int PartnerTribute { get; set; }
-    public bool IsP0 { get; set; }
+    public int AgreeTribute { get; set; }
 
     void Start()
     {
         if (IsOwner) C = this;
         namePlate = GetComponent<NamePlate>();
     }
-  
+
 }

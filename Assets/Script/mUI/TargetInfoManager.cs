@@ -20,7 +20,6 @@ public class TargetInfoManager : NetworkBehaviour
 
     private GameObject myTuraa;
     private ulong myId;
-    private TentacleController tentacleController;
     private MatchingStatus mStatus;
 
     private GameObject targetTuraa;
@@ -36,7 +35,6 @@ public class TargetInfoManager : NetworkBehaviour
     {
         myId = NetworkManager.Singleton.LocalClientId;
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
-        tentacleController = myTuraa.GetComponent<TentacleController>();
         mStatus = myTuraa.GetComponent<MatchingStatus>();
         ChangeInfoType(pinkInfo);
     }
@@ -123,19 +121,21 @@ public class TargetInfoManager : NetworkBehaviour
     }
     public void Split()
     {
-        PartnerManager.C.SplitPartnerServerRpc(myId);
+        SplitManager.C.Split();
     }
     [ClientRpc]
     public void ReceiveOKClientRpc(ulong targetId)
     {
-        if (NetworkManager.Singleton.LocalClientId == targetId)
-        {
-            mStatus.RedTuraa = null;
-        }
+        if (myId != targetId) return;
+        SplitManager.C.Split();
+        MatchingStatus.C.PartnerId = targetId;
     }
-    public void ReceiveNG()
+    [ClientRpc]
+    public void ReceiveNGClientRpc(ulong ntrId)
     {
+        if (myId == ntrId) return;
         mStatus.RedTuraa = null;
+
     }
 
 }
