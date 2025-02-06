@@ -15,10 +15,8 @@ public class TargetInfoManager : NetworkBehaviour
     [SerializeField] private GameObject stickInfo;
     private GameObject[] infos;
 
-    [SerializeField] private MatchingEffect mEffect;
     [SerializeField] private LoveCallsManage loveCalls;
     [SerializeField] GameObject triBtnObject;
-    [SerializeField] TopInfo topInfo;
 
     private GameObject myTuraa;
     private ulong myId;
@@ -46,7 +44,7 @@ public class TargetInfoManager : NetworkBehaviour
     private void Update()
     {
         SelectType();
-        
+
     }
     public bool SetTarget(GameObject target)
     {
@@ -57,7 +55,7 @@ public class TargetInfoManager : NetworkBehaviour
         targetId = target.GetComponent<NetworkObject>().OwnerClientId;
         targetTuraa = target;
 
-        if (targetTuraa != null) topInfo.SetTopInfo(targetId, targetTuraa.GetComponent<NamePlate>());
+        if (targetTuraa != null) TopInfo.C.SetTopInfo(targetId, targetTuraa.GetComponent<NamePlate>());
 
 
         DebuLog.C.AddDlList("SetTarget End");
@@ -66,7 +64,7 @@ public class TargetInfoManager : NetworkBehaviour
 
     void SelectType()
     {
-        if (mStatus.IsRed) { ChangeInfoType(redInfo); }
+        if (mStatus.RedTuraa) { ChangeInfoType(redInfo); }
         else if (mStatus.PartnerId != null && mStatus.PartnerId == targetId) { ChangeInfoType(stickInfo); }
         else { ChangeInfoType(pinkInfo); };
     }
@@ -79,29 +77,25 @@ public class TargetInfoManager : NetworkBehaviour
         }
 
         if (bm == stickInfo) { triBtnObject.SetActive(false); } else { triBtnObject.SetActive(true); }
-        if (bm == redInfo) { TopInfo.C.SetMinusForRed(); } 
+        if (bm == redInfo) { TopInfo.C.SetMinusForRed(); }
 
     }
 
     public void LoveCall()
     {
-        mEffect.OnRedEffect(targetTuraa);
-        mStatus.IsRed = true;
-        DebuLog.C.AddDlList($"LoveCall");
-        LoveCallServerRpc(targetId, myId, topInfo.GetTribute());
+        MatchingStatus.C.RedTuraa = targetTuraa;
+        LoveCallServerRpc(targetId, myId, TopInfo.C.GetTribute());
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void LoveCallServerRpc(ulong targetId, ulong senderId, int money)
     {
-        DebuLog.C.AddDlList($"LoveCall SRpc");
         LoveCallClientRpc(targetId, senderId, money);
     }
 
     [ClientRpc]
     public void LoveCallClientRpc(ulong targetId, ulong senderId, int money)
     {
-        DebuLog.C.AddDlList($"LoveCall CRpc");
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
             loveCalls.ReceiveLoveCall(senderId, money);
@@ -111,9 +105,7 @@ public class TargetInfoManager : NetworkBehaviour
     public void LoveCallCansell()
     {
         LoveCallCansellServerRpc(targetId, myId);
-        mEffect.OffRedEffect();
-        mStatus.IsRed = false;
-        TopInfo.C.ReleaseMinusForRed();
+        MatchingStatus.C.RedTuraa = null;
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -132,25 +124,18 @@ public class TargetInfoManager : NetworkBehaviour
     public void Split()
     {
         PartnerManager.C.SplitPartnerServerRpc(myId);
-        //ChangeInfoType(pinkInfo);
-        TopInfo.C.ReleaseMinusForRed();
     }
     [ClientRpc]
     public void ReceiveOKClientRpc(ulong targetId)
     {
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            mEffect.OffRedEffect();
-            mStatus.IsRed = false;
-            //ChangeInfoType(stickInfo);
-            TopInfo.C.ReleaseMinusForRed();
+            mStatus.RedTuraa = null;
         }
     }
     public void ReceiveNG()
     {
-        mEffect.OffRedEffect();
-        mStatus.IsRed = false;
-        TopInfo.C.ReleaseMinusForRed();
+        mStatus.RedTuraa = null;
     }
 
 }

@@ -34,9 +34,15 @@ public class NamePlate : NetworkBehaviour
         if (IsOwner)
         {
             SetTuraaNameServerRpc(PlayerPrefs.GetString("TuraaName"));
+            ChangeColor();
         }
+    }
+    [ClientRpc]
+    public void StartClientRpc()
+    {
         ChangeColor();
     }
+
     void Update()
     {
         nameTMP.text = TuraaName.Value.ToString();
@@ -56,25 +62,26 @@ public class NamePlate : NetworkBehaviour
 
     public void ChangeColor()
     {
+        DebuLog.C.AddDlList($"start ChangeColor");
         if (!MatchingStatus.C.IsAlive) NameColor = Color.black;
         else if (MatchingStatus.C.IsPlz) NameColor = new Color(1f, 0f, 1f, 1f);
         else if (MatchingStatus.C.IsCant) NameColor = Color.gray;
-        else if (MatchingStatus.C.IsRed) NameColor = Color.red;
-        else if (MatchingStatus.C.PartnerId != null) NameColor = Color.green;
-        else if (MatchingStatus.C.IsPink) NameColor = new Color(0.5f, 4f, 1f, 1f);
+        else if (MatchingStatus.C.RedTuraa) NameColor = Color.red;
+        else if (MatchingStatus.C.PartnerId != null) { NameColor = Color.green; DebuLog.C.AddDlList($"green id:{MatchingStatus.C.PartnerId}"); }
+        else if (MatchingStatus.C.PinkTuraaList.Count > 0) NameColor = new Color(0.5f, 4f, 1f, 1f);
         else NameColor = Color.blue;
-        ChangeColorServerRpc(NameColor.r, NameColor.b, NameColor.g, NameColor.a);
+        ChangeColorServerRpc(NameColor.r, NameColor.g, NameColor.b, NameColor.a);
     }
     [ServerRpc]
-    void ChangeColorServerRpc(float r, float b, float g, float a)
+    void ChangeColorServerRpc(float r, float g, float b, float a)
     {
-        ChangeColorClientRpc(r, b, g, a);
+        ChangeColorClientRpc(r,g, b, a);
     }
 
     [ClientRpc]
-    void ChangeColorClientRpc(float r, float b, float g, float a)
+    void ChangeColorClientRpc(float r, float g, float b, float a)
     {
-        NameColor = new Color(r, b, g, a);
+        NameColor = new Color(r, g, b, a);
     }
 
 
