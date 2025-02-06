@@ -6,16 +6,94 @@ public class MatchingStatus : NetworkBehaviour
 {
 
     public static MatchingStatus C;
-    public bool IsAlive { get; set; } = true;
-    public bool IsPink { get; set; } = false;
-    public bool IsRed { get; set; } = false;
-    public bool IsStick { get; set; } = false;
-    public bool IsPlz { get; set; } = false;
-    public bool IsCant { get; set; } = false;
+    NamePlate namePlate;
+    private bool isAlive = true;
+    public bool IsAlive
+    {
+        get => isAlive;
+        set
+        {
+            isAlive = value;
+            namePlate.ChangeColor();
+        }
+    }
 
-    public GameObject PartnerTuraa { get; set; }
-    public ulong? PartnerId { get; set; }
-    public int PartnerTribute {  get; set; }
+    private bool isPlz = false;
+    public bool IsPlz
+    {
+        get => isPlz;
+        set
+        {
+            isPlz = value;
+            namePlate.ChangeColor();
+        }
+    }
+
+    private bool isCant = false;
+    public bool IsCant
+    {
+        get => isCant;
+        set
+        {
+            isCant = value;
+            namePlate.ChangeColor();
+        }
+    }
+    private bool isRed = false;
+    public bool IsRed
+    {
+        get => isRed;
+        set
+        {
+            isRed = value;
+            namePlate.ChangeColor();
+        }
+    }
+
+    private ulong? partnerId = null;
+    public ulong? PartnerId
+    {
+        get => partnerId;
+        set
+        {
+            partnerId = value;
+            if (partnerId != null && NetworkManager.Singleton.ConnectedClients[(ulong)partnerId].PlayerObject != partnerTuraa)
+            {
+                partnerTuraa = NetworkManager.Singleton.ConnectedClients[(ulong)partnerId].PlayerObject.gameObject;
+            }
+            namePlate.ChangeColor();
+        }
+    }
+    
+
+    private bool isPink = false;
+    public bool IsPink
+    {
+        get => isPink;
+        set
+        {
+            isPink = value;
+            namePlate.ChangeColor();
+        }
+    }
+
+
+
+    private GameObject partnerTuraa = null;
+    public GameObject PartnerTuraa
+    {
+        get => partnerTuraa;
+        set
+        {
+            partnerTuraa = value;
+            if (partnerTuraa.TryGetComponent<NetworkObject>(out var networkObject) && networkObject.OwnerClientId != partnerId)
+            {
+                partnerId = networkObject.OwnerClientId;
+            }
+            namePlate.ChangeColor();
+        }
+    }
+    public int PartnerTribute { get; set; }
     public bool IsP0 { get; set; }
 
 
@@ -27,6 +105,7 @@ public class MatchingStatus : NetworkBehaviour
     void Start()
     {
         if (IsOwner) C = this;
+        namePlate = GetComponent<NamePlate>();
     }
     void Update()
     {

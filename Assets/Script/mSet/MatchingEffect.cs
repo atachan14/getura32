@@ -11,7 +11,7 @@ public class MatchingEffect : MonoBehaviour
     [SerializeField] private TargetInfoManager targetInfo;
     [SerializeField] private InputManager inputManager;
 
-    [SerializeField] private GameObject purpleBoard;
+    [SerializeField] private GameObject pinkBoard;
     [SerializeField] private GameObject redBoard;
     [SerializeField] private GameObject stickEffectPrefab;
 
@@ -30,14 +30,7 @@ public class MatchingEffect : MonoBehaviour
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
     }
 
-    void SetupBoard(GameObject board)
-    {
-        board.SetActive(false);
-        SpriteRenderer redSpriteRenderer = board.GetComponent<SpriteRenderer>();
-        Color boardColor = redSpriteRenderer.color;
-        boardColor.a = 0.5f; // AlphaílÇê›íËÅi0.0 - 1.0Åj
-        redSpriteRenderer.color = boardColor;
-    }
+  
 
     void Update()
     {
@@ -70,7 +63,7 @@ public class MatchingEffect : MonoBehaviour
         PullSO(myTuraa);
         foreach (GameObject target in purpleTargetList) PullSO(target);
 
-        purpleBoard.SetActive(true);
+        pinkBoard.SetActive(true);
         myTuraa.GetComponent<OwnerPlayer>().OnPinkSlow(targetList.Count);
     }
 
@@ -80,7 +73,7 @@ public class MatchingEffect : MonoBehaviour
         foreach (GameObject target in purpleTargetList) ReturnSO(target);
         purpleTargetList.Clear();
 
-        purpleBoard.SetActive(false);
+        pinkBoard.SetActive(false);
         myTuraa.GetComponent<OwnerPlayer>().OffPinkSlow();
     }
 
