@@ -8,7 +8,6 @@ public class LovePopupManage : NetworkBehaviour
 {
     [SerializeField] TargetInfoManager targetInfo;
 
-    [SerializeField] private GameObject self;
     [SerializeField] private LoveCallsManage loveCallsManage;
     [SerializeField] private PartnerManager partnerManager;
 
@@ -23,7 +22,7 @@ public class LovePopupManage : NetworkBehaviour
     void Start()
     {
         myId = NetworkManager.Singleton.LocalClientId;
-        self.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void SetLovePopup(GameObject senderTuraa, int money)

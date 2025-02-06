@@ -57,7 +57,6 @@ public class SpriteSetting : NetworkBehaviour
         SetNewShape(ballParson, ballSps);
         SetNewShape(eyeParson, EyeSps);
         // SetNewShape(legParson, LegSps);
-        DebuLog.C.AddDlList($"");
     }
 
 

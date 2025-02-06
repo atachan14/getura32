@@ -2547,7 +2547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2809051554
+  GlobalObjectIdHash: 2508969846
   InScenePlacedSourceGlobalObjectIdHash: 2574747634
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2977,7 +2977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 141980199
+  GlobalObjectIdHash: 2508969846
   InScenePlacedSourceGlobalObjectIdHash: 2574747634
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3703,7 +3703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 368120095
+  GlobalObjectIdHash: 2508969846
   InScenePlacedSourceGlobalObjectIdHash: 2574747634
   DeferredDespawnTick: 0
   Ownership: 1
@@ -5164,11 +5164,8 @@ MonoBehaviour:
   pinkInfo: {fileID: 1660533653434274312}
   redInfo: {fileID: 2256357013657948297}
   stickInfo: {fileID: 2941947952702511209}
-  mEffect: {fileID: 1113492793409928732}
   loveCalls: {fileID: 2197693627816038071}
   triBtnObject: {fileID: 6713986047484010850}
-  minusImage: {fileID: 0}
-  topInfo: {fileID: 5668186004597217635}
 --- !u!1 &3341572499830284665
 GameObject:
   m_ObjectHideFlags: 0
@@ -8970,7 +8967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1637051418
+  GlobalObjectIdHash: 2508969846
   InScenePlacedSourceGlobalObjectIdHash: 2574747634
   DeferredDespawnTick: 0
   Ownership: 1
@@ -10781,7 +10778,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetInfo: {fileID: 1568284977869487885}
   inputManager: {fileID: 5101552831367859243}
-  purpleBoard: {fileID: 7627635295286451745}
+  pinkBoard: {fileID: 0}
   redBoard: {fileID: 4743076113324449738}
   stickEffectPrefab: {fileID: 2901203729677153397, guid: 0afd8d75379e0ea4cb0821f3c9591d0f, type: 3}
 --- !u!1 &7455469765074668593
@@ -12763,7 +12760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3287992961
+  GlobalObjectIdHash: 2508969846
   InScenePlacedSourceGlobalObjectIdHash: 2574747634
   DeferredDespawnTick: 0
   Ownership: 1

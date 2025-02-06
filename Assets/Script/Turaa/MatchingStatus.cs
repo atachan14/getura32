@@ -9,7 +9,6 @@ public class MatchingStatus : NetworkBehaviour
 
     public static MatchingStatus C;
     NamePlate namePlate;
-    MatchingEffect mEffect;
     private bool isAlive = true;
     public bool IsAlive
     {
@@ -28,6 +27,7 @@ public class MatchingStatus : NetworkBehaviour
         set
         {
             isPlz = value;
+            PlzEffect.C.ChangeIsPlzServerRpc(value);
             namePlate.ChangeColor();
         }
     }
@@ -39,6 +39,7 @@ public class MatchingStatus : NetworkBehaviour
         set
         {
             isCant = value;
+            CantEffect.C.ChangeIsCantServerRpc(value);
             namePlate.ChangeColor();
         }
     }
@@ -108,25 +109,16 @@ public class MatchingStatus : NetworkBehaviour
                 partnerId = networkObject.OwnerClientId;
             }
             namePlate.ChangeColor();
+            StickEffect.C.StickingServerRpc(PartnerTuraa);
         }
     }
     public int PartnerTribute { get; set; }
     public bool IsP0 { get; set; }
 
-
-
-    private void Awake()
-    {
-
-    }
     void Start()
     {
         if (IsOwner) C = this;
         namePlate = GetComponent<NamePlate>();
-        mEffect = GetComponent<MatchingEffect>();
     }
-    void Update()
-    {
-
-    }
+  
 }

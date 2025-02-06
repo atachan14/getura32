@@ -8,19 +8,16 @@ using static UnityEngine.GraphicsBuffer;
 public class MatchingEffect : MonoBehaviour
 {
     public static MatchingEffect CI;
-    [SerializeField] private TargetInfoManager targetInfo;
-    [SerializeField] private InputManager inputManager;
 
     [SerializeField] private GameObject pinkBoard;
     [SerializeField] private GameObject redBoard;
     [SerializeField] private GameObject stickEffectPrefab;
 
     List<GameObject> SOupList = new();
-    private List<GameObject> purpleTargetList;
+    private List<GameObject> pinkTargetList;
     //private GameObject redTarget;
 
     private GameObject myTuraa;
-    private MatchingStatus mStatus;
 
     private void Awake()
     {
@@ -30,21 +27,10 @@ public class MatchingEffect : MonoBehaviour
     {
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
     }
-
-  
-
-    void Update()
-    {
-
-    }
-
     public void RedEffect(bool b)
     {
         RedPinkSO();
         redBoard.SetActive(b);
-        inputManager.IsRedStop = b;
-        //if (b) OnRedEffect();
-        //else OffRedEffect();
     }
 
     public void OnRedEffect()
@@ -53,7 +39,6 @@ public class MatchingEffect : MonoBehaviour
         PullSO(MatchingStatus.C.RedTuraa);
 
         redBoard.SetActive(true);
-        inputManager.IsRedStop = true;
     }
 
     public void OffRedEffect()
@@ -62,14 +47,13 @@ public class MatchingEffect : MonoBehaviour
         ReturnSO(MatchingStatus.C.RedTuraa);
 
         redBoard.SetActive(false);
-        inputManager.IsRedStop = false;
     }
 
     public void OnPinkEffect(List<GameObject> targetList)
     {
-        purpleTargetList = targetList;
+        pinkTargetList = targetList;
         PullSO(myTuraa);
-        foreach (GameObject target in purpleTargetList) PullSO(target);
+        foreach (GameObject target in pinkTargetList) PullSO(target);
 
         pinkBoard.SetActive(true);
         myTuraa.GetComponent<OwnerPlayer>().OnPinkSlow(targetList.Count);
@@ -78,8 +62,8 @@ public class MatchingEffect : MonoBehaviour
     public void OffPinkEffect()
     {
         ReturnSO(myTuraa);
-        foreach (GameObject target in purpleTargetList) ReturnSO(target);
-        purpleTargetList.Clear();
+        foreach (GameObject target in pinkTargetList) ReturnSO(target);
+        pinkTargetList.Clear();
 
         pinkBoard.SetActive(false);
         myTuraa.GetComponent<OwnerPlayer>().OffPinkSlow();

@@ -62,7 +62,6 @@ public class NamePlate : NetworkBehaviour
 
     public void ChangeColor()
     {
-        DebuLog.C.AddDlList($"start ChangeColor");
         if (!MatchingStatus.C.IsAlive) NameColor = Color.black;
         else if (MatchingStatus.C.IsPlz) NameColor = new Color(1f, 0f, 1f, 1f);
         else if (MatchingStatus.C.IsCant) NameColor = Color.gray;
