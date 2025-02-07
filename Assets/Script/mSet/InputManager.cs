@@ -45,13 +45,9 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F9)) F9 = !F9;
 
         scroll = Input.GetAxis("Mouse ScrollWheel");
-<<<<<<< HEAD
-        if (scroll != 0f) ZoomCamera(scroll);
-=======
         if (scroll != 0f) CameraController.C.ZoomCamera(scroll);
->>>>>>> 304fbeaf236ba4e1ae50fee3414d2cb882743c0e
 
-        if (MatchingStatus.C.RedTuraa) return;
+        if (MatchingStatus.C.RedTuraa!=null) return;
         if (Input.GetMouseButtonDown(1)) ClickMove(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         if (Input.GetMouseButtonDown(0)) OpenInfo();
 

@@ -986,11 +986,11 @@ GameObject:
   - component: {fileID: 3443810483980750936}
   - component: {fileID: 980536899576658914}
   - component: {fileID: 7265637198694391849}
-  - component: {fileID: 6792717017788070989}
   - component: {fileID: 4584490207940359277}
   - component: {fileID: 6085948085674343843}
   - component: {fileID: 212864247926143096}
   - component: {fileID: 4193684794523778449}
+  - component: {fileID: 2622812614522785181}
   m_Layer: 0
   m_Name: turaa
   m_TagString: CharacterClick
@@ -1126,7 +1126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  mStatus: {fileID: 6792717017788070989}
+  mStatus: {fileID: 2622812614522785181}
   speed: 5
   newPinkLate: 0.7
   stickOffset: 1.5
@@ -1217,7 +1217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  mStatus: {fileID: 6792717017788070989}
+  mStatus: {fileID: 2622812614522785181}
   activeTentacle: {fileID: 1903377336699644917}
   redAnimeRange: 1
   redAnimeSpeed: 10
@@ -1236,19 +1236,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   nameTMP: {fileID: 7329312414969614193}
   lpTMP: {fileID: 1399508024980186446}
---- !u!114 &6792717017788070989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8501463007481296686}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1346e1c7b9fb6fb4f90f37b922515ad2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!114 &4584490207940359277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1304,6 +1291,19 @@ MonoBehaviour:
   eyeParson: {fileID: 5138367710730366748}
   legParson: {fileID: 5585197819460031563}
   shapeChildPrefab: {fileID: 5687203452694479614, guid: 4468a39882c2c364a9225dea092ecd86, type: 3}
+--- !u!114 &2622812614522785181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8501463007481296686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1346e1c7b9fb6fb4f90f37b922515ad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &8691917174210839814
 GameObject:
   m_ObjectHideFlags: 0

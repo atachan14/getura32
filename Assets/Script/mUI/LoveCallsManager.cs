@@ -59,8 +59,9 @@ public class LoveCallsManage : MonoBehaviour
                 break;
             }
         }
-        MatchingStatus.C.PinkTupleList = loveCallList;
-        
+        NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<NamePlate>().ChangeColor();
+        MatchingEffect.CI.PinkEffect();
+
     }
     void ResetLovePopups()
     {

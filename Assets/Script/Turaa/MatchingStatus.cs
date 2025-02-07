@@ -8,7 +8,7 @@ public class MatchingStatus : NetworkBehaviour
 {
 
     public static MatchingStatus C;
-    NamePlate namePlate;
+    public NamePlate namePlate;
     private bool isAlive = true;
     public bool IsAlive
     {
@@ -76,16 +76,16 @@ public class MatchingStatus : NetworkBehaviour
         set
         {
             pinkTupleLIst = value;
-            namePlate.ChangeColor();
-            MatchingEffect.CI.PinkEffect();
+           
            
         }
     }
-    /// <summary>
-    /// //////////////
-    /// </summary>
+
+
+
+
     private GameObject redTuraa = null;
-    public GameObject RedTuraa
+    public GameObject? RedTuraa
     {
         get => redTuraa;
         set
