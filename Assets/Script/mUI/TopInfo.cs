@@ -24,10 +24,7 @@ public class TopInfo : MonoBehaviour
     {
         C = this;
     }
-    private void Start()
-    {
-
-    }
+   
 
     public void OnClickMinusTogle()
     {

@@ -69,21 +69,21 @@ public class MatchingStatus : NetworkBehaviour
             }
         }
     }
-
-    /// <summary>
-    /// //////////////
-    /// </summary>
     private List<(GameObject turaa, int tribute)> pinkTupleLIst = new();
-    public List<(GameObject turaa, int tribute)> PinkTuraaList
+    public List<(GameObject turaa, int tribute)> PinkTupleList
     {
         get => pinkTupleLIst;
         set
         {
             pinkTupleLIst = value;
             namePlate.ChangeColor();
+            MatchingEffect.CI.PinkEffect();
+           
         }
     }
-
+    /// <summary>
+    /// //////////////
+    /// </summary>
     private GameObject redTuraa = null;
     public GameObject RedTuraa
     {
@@ -117,12 +117,22 @@ public class MatchingStatus : NetworkBehaviour
             namePlate.ChangeColor();
         }
     }
+
+   
+
     public int AgreeTribute { get; set; }
+
+    private void Awake()
+    {
+       C = this;
+    }
 
     void Start()
     {
-        if (IsOwner) C = this;
-        namePlate = GetComponent<NamePlate>();
+       
+        namePlate = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<NamePlate>();
+        if(namePlate==null)Debug.Log($"namePlate isnot");
+        if (namePlate != null) Debug.Log($"namePlate is");
     }
 
 }

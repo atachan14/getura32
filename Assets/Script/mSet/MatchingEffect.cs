@@ -14,7 +14,7 @@ public class MatchingEffect : MonoBehaviour
     [SerializeField] private GameObject stickEffectPrefab;
 
     List<GameObject> SOupList = new();
-    private List<GameObject> pinkTargetList;
+    Color pinkA = new (0.4f, 0, 0.2f, 0);
     //private GameObject redTarget;
 
     private GameObject myTuraa;
@@ -49,32 +49,40 @@ public class MatchingEffect : MonoBehaviour
         redBoard.SetActive(false);
     }
 
-    public void OnPinkEffect(List<GameObject> targetList)
+    public void PinkEffect()
     {
-        pinkTargetList = targetList;
-        PullSO(myTuraa);
-        foreach (GameObject target in pinkTargetList) PullSO(target);
-
-        pinkBoard.SetActive(true);
-        myTuraa.GetComponent<OwnerPlayer>().OnPinkSlow(targetList.Count);
+        RedPinkSO();
+        List<(GameObject, int)> tupleList = MatchingStatus.C.PinkTupleList;
+        pinkA.a = (tupleList.Count != 0) ? (tupleList.Count) * 2 / 100 : 0f;
+        pinkBoard.GetComponent<SpriteRenderer>().color = pinkA;
     }
 
-    public void OffPinkEffect()
-    {
-        ReturnSO(myTuraa);
-        foreach (GameObject target in pinkTargetList) ReturnSO(target);
-        pinkTargetList.Clear();
+    //public void OnPinkEffect(List<GameObject> targetList)
+    //{
+    //    pinkTargetList = targetList;
+    //    PullSO(myTuraa);
+    //    foreach (GameObject target in pinkTargetList) PullSO(target);
 
-        pinkBoard.SetActive(false);
-        myTuraa.GetComponent<OwnerPlayer>().OffPinkSlow();
-    }
+    //    pinkBoard.SetActive(true);
+    //    myTuraa.GetComponent<OwnerPlayer>().OnPinkSlow(targetList.Count);
+    //}
+
+    //public void OffPinkEffect()
+    //{
+    //    ReturnSO(myTuraa);
+    //    foreach (GameObject target in pinkTargetList) ReturnSO(target);
+    //    pinkTargetList.Clear();
+
+    //    pinkBoard.SetActive(false);
+    //    myTuraa.GetComponent<OwnerPlayer>().OffPinkSlow();
+    //}
 
     void RedPinkSO()
     {
         foreach (GameObject t in SOupList) ReturnSO(t);
         SOupList.Clear();
-       
-        foreach((GameObject p,int) tuple in MatchingStatus.C.PinkTuraaList) SOupList.Add(tuple.p);
+
+        foreach ((GameObject p, int) tuple in MatchingStatus.C.PinkTupleList) SOupList.Add(tuple.p);
         SOupList.Add(MatchingStatus.C.RedTuraa);
         foreach (GameObject t in SOupList) PullSO(t);
     }

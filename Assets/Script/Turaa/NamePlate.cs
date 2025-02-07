@@ -62,12 +62,13 @@ public class NamePlate : NetworkBehaviour
 
     public void ChangeColor()
     {
+        Debug.Log($"Start ChangeColor:{MatchingStatus.C.IsAlive} , {Color.black}");
         if (!MatchingStatus.C.IsAlive) NameColor = Color.black;
         else if (MatchingStatus.C.IsPlz) NameColor = new Color(1f, 0f, 1f, 1f);
         else if (MatchingStatus.C.IsCant) NameColor = Color.gray;
-        else if (MatchingStatus.C.RedTuraa) NameColor = Color.red;
+        else if (MatchingStatus.C.RedTuraa != null) NameColor = Color.red;
         else if (MatchingStatus.C.PartnerId != null) { NameColor = Color.green; DebuLog.C.AddDlList($"green id:{MatchingStatus.C.PartnerId}"); }
-        else if (MatchingStatus.C.PinkTuraaList.Count > 0) NameColor = new Color(0.5f, 4f, 1f, 1f);
+        else if (MatchingStatus.C.PinkTupleList.Count > 0) NameColor = new Color(0.5f, 4f, 1f, 1f);
         else NameColor = Color.blue;
         ChangeColorServerRpc(NameColor.r, NameColor.g, NameColor.b, NameColor.a);
     }

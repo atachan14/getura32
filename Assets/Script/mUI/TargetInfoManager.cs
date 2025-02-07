@@ -88,17 +88,9 @@ public class TargetInfoManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void LoveCallServerRpc(ulong targetId, ulong senderId, int money)
     {
-        LoveCallClientRpc(targetId, senderId, money);
+       loveCalls.ReceiveLoveCallClientRpc(targetId, senderId, money);
     }
 
-    [ClientRpc]
-    public void LoveCallClientRpc(ulong targetId, ulong senderId, int money)
-    {
-        if (NetworkManager.Singleton.LocalClientId == targetId)
-        {
-            loveCalls.ReceiveLoveCall(senderId, money);
-        }
-    }
 
     public void LoveCallCansell()
     {
@@ -109,16 +101,16 @@ public class TargetInfoManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void LoveCallCansellServerRpc(ulong targetId, ulong senderId)
     {
-        LoveCallCansellClientRpc(targetId, senderId);
+        loveCalls.ReceiveLoveCallCansellClientRpc(targetId, senderId);
     }
-    [ClientRpc]
-    public void LoveCallCansellClientRpc(ulong targetId, ulong senderId)
-    {
-        if (NetworkManager.Singleton.LocalClientId == targetId)
-        {
-            loveCalls.ReceiveLoveCallCansell(senderId);
-        }
-    }
+    //[ClientRpc]
+    //public void LoveCallCansellClientRpc(ulong targetId, ulong senderId)
+    //{
+    //    if (NetworkManager.Singleton.LocalClientId == targetId)
+    //    {
+    //        loveCalls.ReceiveLoveCallCansell(senderId);
+    //    }
+    //}
     public void Split()
     {
         SplitManager.C.Split();
