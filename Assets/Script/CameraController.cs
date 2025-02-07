@@ -6,8 +6,10 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public static CameraController C;
+    [SerializeField] Camera myCamera;
     public float ScrollSize = 4;
-    private bool isMoving = false;
+    GameObject myTuraa;
+    bool isMoving = false;
     float duration = 0.2f;
     float elapsed = 0f;
 
@@ -44,6 +46,32 @@ public class CameraController : MonoBehaviour
         transform.position = targetPosition; // ç≈èIà íuÇï‚ê≥
         isMoving = false;
     }
+
+    public void ZoomCamera(float scroll)
+    {
+
+        myCamera.orthographicSize -= scroll * 2f;
+        myCamera.orthographicSize = Mathf.Clamp(myCamera.orthographicSize, 2f, 14f);
+    }
+
+    public void TakeCamera()
+    {
+        if (myTuraa == null)
+        {
+            myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
+        }
+        Vector3 takePos = myTuraa.transform.position;
+        takePos.z = -10;
+        myCamera.transform.position = takePos;
+    }
+
+    public void ToMoveCamera(Vector3 direction)
+    {
+        CameraController.C.MoveCamera(direction);
+    }
+
+
+
 
     public void NightCamera()
     {

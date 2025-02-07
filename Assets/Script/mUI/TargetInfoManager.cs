@@ -131,8 +131,7 @@ public class TargetInfoManager : NetworkBehaviour
     }
     public void Split()
     {
-        PartnerManager.C.SplitPartnerServerRpc(myId);
-        //ChangeInfoType(pinkInfo);
+        SplitManager.C.Split();
         TopInfo.C.ReleaseMinusForRed();
     }
     [ClientRpc]
@@ -140,6 +139,7 @@ public class TargetInfoManager : NetworkBehaviour
     {
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
+            SplitManager.C.Split();
             mEffect.OffRedEffect();
             mStatus.IsRed = false;
             //ChangeInfoType(stickInfo);

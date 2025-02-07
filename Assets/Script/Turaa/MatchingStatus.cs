@@ -14,7 +14,19 @@ public class MatchingStatus : NetworkBehaviour
     public bool IsCant { get; set; } = false;
 
     public GameObject PartnerTuraa { get; set; }
-    public ulong? PartnerId { get; set; }
+    ulong? partnerId;
+    public ulong? PartnerId 
+    { 
+        get { return partnerId; }
+        set
+        { 
+            partnerId = value;
+            if (value != null)
+            {
+                PartnerTuraa = NetworkManager.Singleton.ConnectedClients[(ulong)value].PlayerObject.gameObject;
+            }
+        }
+    }
     public int PartnerTribute {  get; set; }
     public bool IsP0 { get; set; }
 

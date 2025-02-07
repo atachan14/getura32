@@ -11,6 +11,7 @@ public class LovePopupManage : NetworkBehaviour
     [SerializeField] private GameObject self;
     [SerializeField] private LoveCallsManage loveCallsManage;
     [SerializeField] private PartnerManager partnerManager;
+    MatchingStatus mStatus;
 
     [SerializeField] private TextMeshProUGUI senderNameTMP;
     [SerializeField] private TextMeshProUGUI moneyTMP;
@@ -24,6 +25,7 @@ public class LovePopupManage : NetworkBehaviour
     {
         myId = NetworkManager.Singleton.LocalClientId;
         self.SetActive(false);
+        mStatus = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<MatchingStatus>();
     }
 
     public void SetLovePopup(GameObject senderTuraa, int money)
@@ -47,6 +49,9 @@ public class LovePopupManage : NetworkBehaviour
     }
     public void OKClick()
     {
+        //SplitManager.C.Split();
+        // mStatus.PartnerId = senderId;
+        //mStatus.PartnerTribute = money;
         SendOKServerRpc(senderId);
         loveCallsManage.RemoveLoveCallList(senderTuraa);
         DebuLog.C.AddDlList($"OKClick:{myId},{senderId}");

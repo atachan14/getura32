@@ -250,6 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5141d477bb9f89429924c1c8d00692a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myCamera: {fileID: 0}
   ScrollSize: 5
 --- !u!114 &702240720
 MonoBehaviour:
@@ -681,6 +682,7 @@ GameObject:
   - component: {fileID: 1143213567}
   - component: {fileID: 1143213566}
   - component: {fileID: 1143213565}
+  - component: {fileID: 1143213569}
   m_Layer: 0
   m_Name: DayManager
   m_TagString: Untagged
@@ -797,6 +799,18 @@ MonoBehaviour:
   aliveSizeTMP: {fileID: 894381881}
   timeTMP: {fileID: 469521424647285059}
   mSetObject: {fileID: 1001032389}
+--- !u!114 &1143213569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143213560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37faac6fb8a2e4a4481e161b7315675d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1546988788
 GameObject:
   m_ObjectHideFlags: 0
