@@ -30,7 +30,7 @@ public class TentacleController : NetworkBehaviour
 
     void Start()
     {
-        NoContactTentacleServerRpc();
+        if(IsOwner) NoContactTentacleServerRpc();
     }
 
     void Update()

@@ -37,7 +37,6 @@ public class InputManager : MonoBehaviour
         GameObject myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.GameObject();
         ownerPlayer = myTuraa.GetComponent<OwnerPlayer>();
         tentacleController = myTuraa.GetComponent<TentacleController>();
-        myCamera = CameraController.C.GetComponent<Camera>();
     }
 
     void Update()
@@ -51,7 +50,7 @@ public class InputManager : MonoBehaviour
         if (!F9 && !F8) SelectMoveCamera();
         if (Input.GetKeyDown(KeyCode.F9)) F9 = !F9;
 
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0f) ZoomCamera(scroll);
 
         if (IsRedStop) return;

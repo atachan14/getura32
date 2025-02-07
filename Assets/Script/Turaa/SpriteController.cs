@@ -8,8 +8,7 @@ public class SpriteController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        mySPRs = GetComponentsInChildren<SpriteRenderer>();
-        myTMPs = GetComponentsInChildren<TextMeshProUGUI>();
+       
     }
 
     // Update is called once per frame
@@ -19,6 +18,8 @@ public class SpriteController : MonoBehaviour
     }
     public void ChangeSPRs_A(float a)
     {
+        mySPRs = GetComponentsInChildren<SpriteRenderer>(true);
+        myTMPs = GetComponentsInChildren<TextMeshProUGUI>(true);
         foreach (SpriteRenderer spr in mySPRs) 
         {
             Color color = spr.color;

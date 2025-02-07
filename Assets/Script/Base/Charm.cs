@@ -2,7 +2,7 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Charm : NetworkBehaviour
+public class Charm : MonoBehaviour
 {
     public static Charm C;
     [SerializeField] TextMeshProUGUI charmTMP;
@@ -15,7 +15,7 @@ public class Charm : NetworkBehaviour
         set
         {
             targetValue = value;
-            LPmapManager.S.ReportCharmServerRpc(myId, value);
+            DDOLReceiver.C.ReportCharm(value);
         }
     }
 
@@ -41,4 +41,6 @@ public class Charm : NetworkBehaviour
             charmTMP.text = $"Charm: {value}";
         }
     }
+
+   
 }

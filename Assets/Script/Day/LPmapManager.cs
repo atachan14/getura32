@@ -1,11 +1,13 @@
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class LPmapManager : NetworkBehaviour
+public class LPmapManager : MonoBehaviour
 {
+    //DontDestroyOnLoad
     public static LPmapManager S;
     public int[,] LPmap { get; set; }
-    public int[] CharmArray { get; set; }
+    public Dictionary<ulong,int> UlongCharmDict { get; set; } =new Dictionary<ulong,int>();
 
     void Awake()
     {
@@ -15,7 +17,6 @@ public class LPmapManager : NetworkBehaviour
     public void NewGenerate()
     {
         int rs = RoomSetting.CI.RoomSize;
-        CharmArray = new int[rs];
         LPmap = new int[rs, rs];
 
         for (int i = 0; i < rs; i++)
@@ -38,12 +39,11 @@ public class LPmapManager : NetworkBehaviour
         return LPmap[me, tage];
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void ReportCharmServerRpc(ulong senderId, int charm)
+    public void ReportCharm(ulong senderId, int charm)
     {
-
-        CharmArray[(int)senderId] = charm;
-        DebuLog.C.AddDlList($"myId:{NetworkManager.Singleton.LocalClientId}, senderId:{senderId}, charm:{charm}");
+        Debug.Log($"myId:{NetworkManager.Singleton.LocalClientId}, senderId:{senderId}, charm:{charm}");
+        UlongCharmDict[senderId] = charm;
+        
     }
 
     public void UpdateLpMap()
