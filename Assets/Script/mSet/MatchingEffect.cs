@@ -8,18 +8,16 @@ using static UnityEngine.GraphicsBuffer;
 public class MatchingEffect : MonoBehaviour
 {
     public static MatchingEffect CI;
-    [SerializeField] private TargetInfoManager targetInfo;
-    [SerializeField] private InputManager inputManager;
 
-    [SerializeField] private GameObject purpleBoard;
+    [SerializeField] private GameObject pinkBoard;
     [SerializeField] private GameObject redBoard;
     [SerializeField] private GameObject stickEffectPrefab;
 
-    private List<GameObject> purpleTargetList;
-    private GameObject redTarget;
+    List<GameObject> SOupList = new();
+    Color pinkA = new (0.4f, 0, 0.2f, 0);
+    //private GameObject redTarget;
 
     private GameObject myTuraa;
-    private MatchingStatus mStatus;
 
     private void Awake()
     {
@@ -29,59 +27,64 @@ public class MatchingEffect : MonoBehaviour
     {
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
     }
-
-    void SetupBoard(GameObject board)
+    public void RedEffect(bool b)
     {
-        board.SetActive(false);
-        SpriteRenderer redSpriteRenderer = board.GetComponent<SpriteRenderer>();
-        Color boardColor = redSpriteRenderer.color;
-        boardColor.a = 0.5f; // AlphaílÇê›íËÅi0.0 - 1.0Åj
-        redSpriteRenderer.color = boardColor;
+        RedPinkSO();
+        redBoard.SetActive(b);
     }
 
-    void Update()
+    public void OnRedEffect()
     {
-
-    }
-
-    public void OnRedEffect(GameObject target)
-    {
-        redTarget = target;
         PullSO(myTuraa);
-        PullSO(redTarget);
+        PullSO(MatchingStatus.C.RedTuraa);
 
         redBoard.SetActive(true);
-        inputManager.IsRedStop = true;
     }
 
     public void OffRedEffect()
     {
         ReturnSO(myTuraa);
-        ReturnSO(redTarget);
-        redTarget = null;
+        ReturnSO(MatchingStatus.C.RedTuraa);
 
         redBoard.SetActive(false);
-        inputManager.IsRedStop = false;
     }
 
-    public void OnPinkEffect(List<GameObject> targetList)
+    public void PinkEffect()
     {
-        purpleTargetList = targetList;
-        PullSO(myTuraa);
-        foreach (GameObject target in purpleTargetList) PullSO(target);
-
-        purpleBoard.SetActive(true);
-        myTuraa.GetComponent<OwnerPlayer>().OnPinkSlow(targetList.Count);
+        RedPinkSO();
+        List<(GameObject, int)> tupleList = MatchingStatus.C.PinkTupleList;
+        pinkA.a = (tupleList.Count != 0) ? (tupleList.Count) * 2 / 100 : 0f;
+        pinkBoard.GetComponent<SpriteRenderer>().color = pinkA;
     }
 
-    public void OffPinkEffect()
-    {
-        ReturnSO(myTuraa);
-        foreach (GameObject target in purpleTargetList) ReturnSO(target);
-        purpleTargetList.Clear();
+    //public void OnPinkEffect(List<GameObject> targetList)
+    //{
+    //    pinkTargetList = targetList;
+    //    PullSO(myTuraa);
+    //    foreach (GameObject target in pinkTargetList) PullSO(target);
 
-        purpleBoard.SetActive(false);
-        myTuraa.GetComponent<OwnerPlayer>().OffPinkSlow();
+    //    pinkBoard.SetActive(true);
+    //    myTuraa.GetComponent<OwnerPlayer>().OnPinkSlow(targetList.Count);
+    //}
+
+    //public void OffPinkEffect()
+    //{
+    //    ReturnSO(myTuraa);
+    //    foreach (GameObject target in pinkTargetList) ReturnSO(target);
+    //    pinkTargetList.Clear();
+
+    //    pinkBoard.SetActive(false);
+    //    myTuraa.GetComponent<OwnerPlayer>().OffPinkSlow();
+    //}
+
+    void RedPinkSO()
+    {
+        foreach (GameObject t in SOupList) ReturnSO(t);
+        SOupList.Clear();
+
+        foreach ((GameObject p, int) tuple in MatchingStatus.C.PinkTupleList) SOupList.Add(tuple.p);
+        SOupList.Add(MatchingStatus.C.RedTuraa);
+        foreach (GameObject t in SOupList) PullSO(t);
     }
 
     void PullSO(GameObject turaa)
@@ -89,7 +92,7 @@ public class MatchingEffect : MonoBehaviour
         SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
-            sprite.sortingOrder += 10;
+            sprite.sortingOrder = 10;
         }
     }
 
@@ -98,7 +101,7 @@ public class MatchingEffect : MonoBehaviour
         SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
-            sprite.sortingOrder -= 10;
+            sprite.sortingOrder = 0;
         }
     }
 }

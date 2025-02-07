@@ -6,11 +6,8 @@ using UnityEngine.Rendering;
 
 public class LovePopupManage : NetworkBehaviour
 {
-    [SerializeField] TargetInfoManager targetInfo;
 
-    [SerializeField] private GameObject self;
     [SerializeField] private LoveCallsManage loveCallsManage;
-    [SerializeField] private PartnerManager partnerManager;
 
     [SerializeField] private TextMeshProUGUI senderNameTMP;
     [SerializeField] private TextMeshProUGUI moneyTMP;
@@ -23,7 +20,7 @@ public class LovePopupManage : NetworkBehaviour
     void Start()
     {
         myId = NetworkManager.Singleton.LocalClientId;
-        self.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void SetLovePopup(GameObject senderTuraa, int money)
@@ -47,15 +44,15 @@ public class LovePopupManage : NetworkBehaviour
     }
     public void OKClick()
     {
+        //êÊÇ…ï ÇÍÇÈÅB
+        SplitManager.C.Split();
         SendOKServerRpc(senderId);
         loveCallsManage.RemoveLoveCallList(senderTuraa);
-        DebuLog.C.AddDlList($"OKClick:{myId},{senderId}");
-        partnerManager.ChangePartnerServerRpc(myId, senderId,money);
     }
     [ServerRpc(RequireOwnership = false)]
     void SendOKServerRpc(ulong targetId)
     {
-        targetInfo.ReceiveOKClientRpc(targetId);
+        TargetInfoManager.C.ReceiveOKClientRpc(targetId);
     }
 
 
@@ -74,19 +71,9 @@ public class LovePopupManage : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     void SendNGServerRpc(ulong targetId)
     {
-        DebuLog.C.AddDlList($"NGClickSeverRpc.targetId:{targetId}");
-        SendNGClientRpc(targetId);
+        TargetInfoManager.C.ReceiveNGClientRpc(targetId);
     }
 
-    [ClientRpc]
-    void SendNGClientRpc(ulong targetId)
-    {
-        DebuLog.C.AddDlList($"NGClickClientRpc.targetId:{targetId}");
-        if (NetworkManager.Singleton.LocalClientId == targetId)
-        {
-            targetInfo.ReceiveNG();
-        }
-    }
     public void BlockClick()
     {
 

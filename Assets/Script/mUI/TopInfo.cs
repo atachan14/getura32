@@ -16,27 +16,29 @@ public class TopInfo : MonoBehaviour
     [SerializeField] Image[] triBtnImages = new Image[4];
     ulong targetId;
     bool isMinus = false;
-    string type;
     public static Dictionary<ulong, int> tributeDict = new();
 
-  
+
 
     private void Awake()
     {
         C = this;
     }
-    private void Start()
-    {
-
-    }
+   
 
     public void OnClickMinusTogle()
     {
-        if (MatchingStatus.C.IsRed) return;
+        if (MatchingStatus.C.RedTuraa) return;
 
         isMinus = !isMinus;
         if (isMinus) { foreach (Image im in triBtnImages) im.color = new Color(248 / 255f, 165 / 255f, 98 / 255f); }
         if (!isMinus) { foreach (Image im in triBtnImages) im.color = new Color(0.5f, 0.6f, 1f); }
+    }
+
+    public void MinusForRed(bool b)
+    {
+        if (b) SetMinusForRed();
+        else ReleaseMinusForRed();
     }
 
     public void SetMinusForRed()
@@ -62,7 +64,7 @@ public class TopInfo : MonoBehaviour
         DebuLog.C.AddDlList($"SetTopInfo");
         targetId = id;
         targetNameTMP.text = targetNP.GetName();
-        
+
         ShowTributeTMP();
     }
 
@@ -97,7 +99,7 @@ public class TopInfo : MonoBehaviour
             tributeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f);
             triTypeTMP.text = "get";
             triTypeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f);
-        
+
         }
         else if (tribute > 0)
         {
@@ -112,5 +114,10 @@ public class TopInfo : MonoBehaviour
     public int GetTribute()
     {
         return tributeDict[targetId];
+    }
+
+    public int GetTributeFromId(ulong id)
+    {
+        return tributeDict[id];
     }
 }
