@@ -11,6 +11,9 @@
 		- targetName
 		- LovePopup.SenderName
 		- chat
+	- LP表示
+		- targetInfo
+		- lovePopup
 	- PleaseTalkAura
 	- CantTalkAura
 	- turaa

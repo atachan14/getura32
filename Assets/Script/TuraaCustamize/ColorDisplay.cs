@@ -5,66 +5,65 @@ using UnityEngine.UI;
 public class ColorDisplay : MonoBehaviour
 {
     public int Index { get; set; }
+    public string part { get; set; }
     [SerializeField] TMP_InputField rField;
     [SerializeField] TMP_InputField bField;
     [SerializeField] TMP_InputField gField;
     [SerializeField] TMP_InputField aField;
-  
-    public void SetupIndex( int i)
+    void Start()
+    {
+
+    }
+
+    void Update()
+    {
+
+    }
+
+    public void SetupIndex(string part ,int i)
     {
         Index = i;
+        this.part = part; 
         MyColorToSetField();
     }
 
     void MyColorToSetField()
     {
-        string savedColor = PlayerPrefs.GetString($"{OpenShapeDisplay.L.Part}Color{Index}", "1,1,1,1");
-        savedColor = float.TryParse(savedColor ,out float result) ? savedColor : "0,0,0,0";
-        Debug.Log($"savedColor:{savedColor}");
+        string savedColor = PlayerPrefs.GetString($"{part}Color{Index}", "1,1,1,1");
         string[] rgba = savedColor.Split(',');
         rField.text = rgba[0];
-        gField.text = rgba[1];
-        bField.text = rgba[2];
+        bField.text = rgba[1];
+        gField.text = rgba[2];
         aField.text = rgba[3];
-        TabManager.L.colorTabs[Index].GetComponent<Image>().color
-            = new Color(float.Parse(rgba[0]), float.Parse(rgba[1]), float.Parse(rgba[2]), float.Parse(rgba[3]));
     }
 
 
     public void OnSubmitColor()
     {
-        Color myColor = new 
+        Color myColor = new Color
         (
-            float.TryParse(rField.text, out float rresult) ? rresult : 0,
-            float.TryParse(gField.text, out float gresult) ? gresult : 0,
-            float.TryParse(bField.text, out float bresult) ? bresult : 0,
-            float.TryParse(aField.text, out float aresult) ? aresult : 1
+            float.Parse(rField.text),
+            float.Parse(gField.text),
+            float.Parse(bField.text),
+            float.Parse(aField.text)
         );
 
-        PlayerPrefs.SetString($"{OpenShapeDisplay.L.Part}Color{Index}", $"{myColor.r},{myColor.g},{myColor.b},{myColor.a}");
-        Debug.Log($"OnSubmitColor:{myColor.r},{myColor.g},{myColor.b},{myColor.a}");
-        MenuDammySpriter.L.ChangeColor(OpenShapeDisplay.L.Part, Index);
+        PlayerPrefs.SetString($"{part}Color{Index}", $"{myColor.r},{myColor.g},{myColor.b},{myColor.a}");
+        // changeColor atode kaku
     }
 
 
     public void OnClickRed()
     {
-        PlayerPrefs.SetString($"{OpenShapeDisplay.L.Part}Color{Index}", $"25,0,0,25");
-        MyColorToSetField();
+        PlayerPrefs.SetString($"{part}Color{Index}", $"{1},{0},{0},{1}");
     }
     public void OnClickBlue()
     {
-        PlayerPrefs.SetString($"{OpenShapeDisplay.L.Part}Color{Index}", $"{0},{0},{25},{25}");
-        MyColorToSetField();
+        PlayerPrefs.SetString($"{part}Color{Index}", $"{0},{1},{0},{1}");
     }
     public void OnClickGreen()
     {
-        PlayerPrefs.SetString($"{OpenShapeDisplay.L.Part}Color{Index}", $"{0},{10},{0},{25}");
-        MyColorToSetField();
+        PlayerPrefs.SetString($"{part}Color{Index}", $"{0},{0},{1},{1}");
     }
-    public void OnClickYellow()
-    {
-        PlayerPrefs.SetString($"{OpenShapeDisplay.L.Part}Color{Index}", $"{25},{25},{0},{25}");
-        MyColorToSetField();
-    }
+
 }

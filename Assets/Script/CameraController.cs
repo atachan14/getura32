@@ -6,14 +6,12 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public static CameraController C;
-    [SerializeField] Camera myCamera;
-    [SerializeField] float ScrollSize = 4;
+    public float ScrollSize = 4;
     private bool isMoving = false;
     float duration = 0.2f;
     float elapsed = 0f;
-    GameObject myTuraa;
 
-    Vector3 nightPos = new (1000, 1000, -100);
+    Vector3 nightPos = new Vector3(1000, 1000, -100);
 
     private void Awake()
     {
@@ -45,35 +43,6 @@ public class CameraController : MonoBehaviour
 
         transform.position = targetPosition; // ç≈èIà íuÇï‚ê≥
         isMoving = false;
-    }
-
-    public void ZoomCamera(float scroll)
-    {
-
-        myCamera.orthographicSize -= scroll * 2f;
-        myCamera.orthographicSize = Mathf.Clamp(myCamera.orthographicSize, 2f, 14f);
-    }
-
-    public void TakeCamera()
-    {
-        if (myTuraa == null)
-        {
-            myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
-        }
-        Vector3 takePos = myTuraa.transform.position;
-        takePos.z = -10;
-        myCamera.transform.position = takePos;
-    }
-    public void SelectMoveCamera()
-    {
-        if (Input.mousePosition.x < 0) ToMoveCamera(Vector3.left);
-        if (Input.mousePosition.x > Screen.width) ToMoveCamera(Vector3.right);
-        if (Input.mousePosition.y < 0) ToMoveCamera(Vector3.down);
-        if (Input.mousePosition.y > Screen.height) ToMoveCamera(Vector3.up);
-    }
-    void ToMoveCamera(Vector3 direction)
-    {
-        CameraController.C.MoveCamera(direction);
     }
 
     public void NightCamera()

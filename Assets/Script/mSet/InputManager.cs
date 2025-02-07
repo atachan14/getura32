@@ -13,9 +13,15 @@ public class InputManager : MonoBehaviour
     [SerializeField] private GameObject targetInfo;
     [SerializeField] private TargetInfoManager targetInfoScript;
     private GameObject targetPlayer;
-    float scroll;
+    private float scroll;
+    Camera myCamera;
+
     OwnerPlayer ownerPlayer;
     TentacleController tentacleController;
+    public bool IsRedStop { get; set; } = false;
+
+
+    private NetworkObject myTuraa;
     public bool F8 { get; set; } 
 
     public bool F9 { get; set; } 
@@ -39,26 +45,28 @@ public class InputManager : MonoBehaviour
             && EventSystem.current.currentSelectedGameObject.GetComponent<InputField>()) return;
 
         if (Input.GetKeyDown(KeyCode.F8)) F8 = !F8;
-        if (Input.GetKey(KeyCode.Space) || F8) CameraController.C.TakeCamera();
+        if (Input.GetKey(KeyCode.Space) || F8) TakeCamera();
 
-        if (!F9 && !F8) CameraController.C.SelectMoveCamera();
+        if (!F9 && !F8) SelectMoveCamera();
         if (Input.GetKeyDown(KeyCode.F9)) F9 = !F9;
 
         scroll = Input.GetAxis("Mouse ScrollWheel");
-<<<<<<< HEAD
         if (scroll != 0f) ZoomCamera(scroll);
-=======
-        if (scroll != 0f) CameraController.C.ZoomCamera(scroll);
->>>>>>> 304fbeaf236ba4e1ae50fee3414d2cb882743c0e
 
-        if (MatchingStatus.C.RedTuraa) return;
+        if (IsRedStop) return;
         if (Input.GetMouseButtonDown(1)) ClickMove(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         if (Input.GetMouseButtonDown(0)) OpenInfo();
 
     }
 
 
-   
+    void SelectMoveCamera()
+    {
+        if (Input.mousePosition.x < 0) ToMoveCamera(Vector3.left);
+        if (Input.mousePosition.x > Screen.width) ToMoveCamera(Vector3.right);
+        if (Input.mousePosition.y < 0) ToMoveCamera(Vector3.down);
+        if (Input.mousePosition.y > Screen.height) ToMoveCamera(Vector3.up);
+    }
 
     void ClickMove(Vector3 worldPosition)
     {
@@ -96,9 +104,23 @@ public class InputManager : MonoBehaviour
             }
         }
     }
-   
+    void ZoomCamera(float scroll)
+    {
+       
+        myCamera.orthographicSize -= scroll * 2f;
+        myCamera.orthographicSize = Mathf.Clamp(myCamera.orthographicSize, 2f, 14f);
+    }
 
-   
+    void TakeCamera()
+    {
+        if (myTuraa == null)
+        {
+            myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject;
+        }
+        Vector3 takePos = myTuraa.transform.position;
+        takePos.z = -10;
+        myCamera.transform.position = takePos;
+    }
     void HideInfoUI()
     {
         targetInfo.SetActive(false);
@@ -106,7 +128,10 @@ public class InputManager : MonoBehaviour
         tentacleController.NoContactTentacle();
     }
 
-    
+    void ToMoveCamera(Vector3 direction)
+    {
+        CameraController.C.MoveCamera(direction);
+    }
 
 
 

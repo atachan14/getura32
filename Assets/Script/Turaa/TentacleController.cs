@@ -41,8 +41,8 @@ public class TentacleController : NetworkBehaviour
         }
         SyncTentacle();
 
-        if (IsOwner && mStatus.RedTuraa) { RedAnimationServerRpc(); }
-        if (IsOwner && !mStatus.RedTuraa) { NotRedAnimeServerRpc(); }
+        if (IsOwner && mStatus.IsRed) { RedAnimationServerRpc(); }
+        if (IsOwner && !mStatus.IsRed) { NotRedAnimeServerRpc(); }
     }
 
     [ServerRpc]

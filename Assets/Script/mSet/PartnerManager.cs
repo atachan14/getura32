@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using System.Data.SqlTypes;
 
-public class PartnerManagerRun : NetworkBehaviour
+public class PartnerManager : NetworkBehaviour
 {
-    public static PartnerManagerRun C;
+    public static PartnerManager C;
     public List<(ulong p0, ulong p1, int tribute)> PairIdList { get; set; } = new();
 
     ulong myId;
@@ -90,9 +90,9 @@ public class PartnerManagerRun : NetworkBehaviour
         DebuLog.C.AddDlList($"UpdateMatchingStatus1 mStatus==null:{mStatus == null}");
         mStatus.PartnerTuraa = PartnerTuraa;
         mStatus.PartnerId = partnerId;
-        //mStatus.IsP0 = this.isP0;
+        mStatus.IsP0 = this.isP0;
         if (isP0) TopInfo.tributeDict[(ulong)partnerId] = -1 * tribute;
-        if (!isP0) TopInfo.tributeDict[(ulong)partnerId] = tribute;
+        if (!isP0) TopInfo.tributeDict[(ulong)partnerId] =  tribute;
         TopInfo.C.ShowStickTributeTMP();
         DebuLog.C.AddDlList("UpdateMatchingStatus2");
 

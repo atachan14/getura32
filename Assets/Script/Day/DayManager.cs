@@ -112,7 +112,7 @@ public class DayManager : NetworkBehaviour
     }
     void SavePairIdList()
     {
-       // LastDayData.C.PairIdList = PartnerManager.C.PairIdList;
+        LastDayData.C.PairIdList = PartnerManager.C.PairIdList;
         DebuLog.C.AddDlList($"SavePairIdList[{string.Join(", ", LastDayData.C.PairIdList)}]");
     }
 

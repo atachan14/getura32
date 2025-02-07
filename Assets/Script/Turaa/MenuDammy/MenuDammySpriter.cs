@@ -7,17 +7,11 @@ using Color = UnityEngine.Color;
 
 public class MenuDammySpriter : MonoBehaviour
 {
-    public static MenuDammySpriter L;
     [SerializeField] GameObject Ball;
     [SerializeField] GameObject Eye;
     [SerializeField] GameObject Leg;
     [SerializeField] GameObject partChildPrefab;
-
-    private void Awake()
-    {
-        L = this;
-    }
-
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
 
@@ -67,15 +61,15 @@ public class MenuDammySpriter : MonoBehaviour
         {
             case "Ball":
                 SpriteRenderer[] ballSrs = Ball.GetComponentsInChildren<SpriteRenderer>();
-                if (ballSrs.Length - 1 >= index) ballSrs[index].color = GetColorFromPrefs(part, index);
+                if (ballSrs[index] != null) ballSrs[index].color = GetColorFromPrefs(part, index);
                 return;
             case "Eye":
                 SpriteRenderer[] eyeSrs = Eye.GetComponentsInChildren<SpriteRenderer>();
-                if (eyeSrs.Length - 1 >= index) eyeSrs[index].color = GetColorFromPrefs(part, index);
+                if (eyeSrs[index] != null) eyeSrs[index].color = GetColorFromPrefs(part, index);
                 return;
             case "Leg":
                 SpriteRenderer[] legSrs = Leg.GetComponentsInChildren<SpriteRenderer>();
-                if (legSrs.Length - 1 >= index) legSrs[index].color = GetColorFromPrefs(part, index);
+                if (legSrs[index] != null) legSrs[index].color = GetColorFromPrefs(part, index);
                 return;
         }
     }
@@ -92,7 +86,6 @@ public class MenuDammySpriter : MonoBehaviour
             float.Parse(rgba[2]),
             float.Parse(rgba[3])
         );
-        Debug.Log($"GetColorFromPrefs:{part} , {index} , {c}");
         return c;
     }
 }
