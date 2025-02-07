@@ -991,6 +991,7 @@ GameObject:
   - component: {fileID: 212864247926143096}
   - component: {fileID: 4193684794523778449}
   - component: {fileID: 2622812614522785181}
+  - component: {fileID: -8674800263601474589}
   m_Layer: 0
   m_Name: turaa
   m_TagString: CharacterClick
@@ -1100,7 +1101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4102734170
+  GlobalObjectIdHash: 3092954044
   InScenePlacedSourceGlobalObjectIdHash: 578380149
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1304,6 +1305,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  namePlate: {fileID: 0}
+--- !u!114 &-8674800263601474589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8501463007481296686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 963ed30031ce0c945a0ab3696b3cfb34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  StickingHeartPrefab: {fileID: 2427438601984530990, guid: 0afd8d75379e0ea4cb0821f3c9591d0f, type: 3}
 --- !u!1 &8691917174210839814
 GameObject:
   m_ObjectHideFlags: 0

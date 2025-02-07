@@ -85,15 +85,18 @@ public class MatchingStatus : NetworkBehaviour
 
 
     private GameObject redTuraa = null;
-    public GameObject? RedTuraa
+    public GameObject RedTuraa
     {
         get => redTuraa;
         set
         {
+            DebuLog.C.AddDlList("mStatus SetRedTuraa");
             redTuraa = value;
             redId = redTuraa ? GetComponent<NetworkObject>().OwnerClientId : null;
+            DebuLog.C.AddDlList($"mStatus redId:{redId}");
             namePlate.ChangeColor();
             MatchingEffect.CI.RedEffect(value);
+            TargetInfoManager.C.SelectType();
             TopInfo.C.MinusForRed(value);
         }
 
@@ -115,6 +118,7 @@ public class MatchingStatus : NetworkBehaviour
             StickEffect.C.StickingServerRpc(PartnerTuraa);
             if(partnerTuraa) AgreeTribute = TopInfo.C.GetTributeFromId((ulong)partnerId);
             namePlate.ChangeColor();
+            TargetInfoManager.C.SelectType();
         }
     }
 

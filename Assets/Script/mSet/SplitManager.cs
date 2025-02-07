@@ -17,7 +17,11 @@ public class SplitManager : MonoBehaviour
     public void Split()
     {
         //æ‚É‘—M‚µ‚Ä‚©‚ç•Ê‚ê‚éB
-        SplitServerRpc((ulong)MatchingStatus.C.PartnerId);
+        if (MatchingStatus.C.PartnerId.HasValue)
+        {
+            ulong value = MatchingStatus.C.PartnerId.Value;
+            SplitServerRpc(value);
+        }
         MatchingStatus.C.PartnerId = null;
     }
 
@@ -32,4 +36,5 @@ public class SplitManager : MonoBehaviour
         if (myId != oldPartnerId) return;
         MatchingStatus.C.PartnerId = null;
     }
+
 }

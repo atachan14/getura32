@@ -41,28 +41,30 @@ public class TargetInfoManager : NetworkBehaviour
 
     private void Update()
     {
-        SelectType();
 
     }
-    public bool SetTarget(GameObject target)
+    public void SetTarget(GameObject target)
     {
         DebuLog.C.AddDlList("SetTarget Start");
-        if (targetTuraa != null && targetTuraa == target) return true;
-        DebuLog.C.AddDlList("SetTarget ifPass");
-
+        
         targetId = target.GetComponent<NetworkObject>().OwnerClientId;
         targetTuraa = target;
 
         if (targetTuraa != null) TopInfo.C.SetTopInfo(targetId, targetTuraa.GetComponent<NamePlate>());
 
-
+        SelectType();
         DebuLog.C.AddDlList("SetTarget End");
-        return true;
+        
     }
 
-    void SelectType()
+    public void SelectType()
     {
-        if (mStatus.RedTuraa) { ChangeInfoType(redInfo); }
+        Debug.Log($"myTuraa:{myTuraa != null}");
+        if (mStatus == null) {mStatus=NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<MatchingStatus>();}
+        Debug.Log($"mStatus:{mStatus!=null}");
+        Debug.Log($"mStatus.RedId:{mStatus.RedId!=null}");
+        Debug.Log($"targetId:{targetId}");
+        if (mStatus.RedId!=null&& mStatus.RedId==targetId ) { ChangeInfoType(redInfo); }
         else if (mStatus.PartnerId != null && mStatus.PartnerId == targetId) { ChangeInfoType(stickInfo); }
         else { ChangeInfoType(pinkInfo); };
     }
@@ -118,9 +120,12 @@ public class TargetInfoManager : NetworkBehaviour
     [ClientRpc]
     public void ReceiveOKClientRpc(ulong targetId)
     {
+        DebuLog.C.AddDlList($"ReceiveOK 1{myId}");
         if (myId != targetId) return;
+        DebuLog.C.AddDlList($"ReceiveOK 2{myId}");
         SplitManager.C.Split();
         MatchingStatus.C.PartnerId = targetId;
+        DebuLog.C.AddDlList($"ReceiveOK 2 end");
     }
     [ClientRpc]
     public void ReceiveNGClientRpc(ulong ntrId)

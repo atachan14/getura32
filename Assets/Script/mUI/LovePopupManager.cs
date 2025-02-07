@@ -45,9 +45,10 @@ public class LovePopupManage : NetworkBehaviour
     public void OKClick()
     {
         //êÊÇ…ï ÇÍÇÈÅB
-        SplitManager.C.Split();
-        SendOKServerRpc(senderId);
-        loveCallsManage.RemoveLoveCallList(senderTuraa);
+        DebuLog.C.AddDlList("start OKClick");
+        SplitManager.C.Split(); DebuLog.C.AddDlList("Split OKClick");
+        SendOKServerRpc(senderId); DebuLog.C.AddDlList("sendOKSrpc OKClick");
+        loveCallsManage.RemoveLoveCallList(senderTuraa); DebuLog.C.AddDlList("Remove OKClick");
     }
     [ServerRpc(RequireOwnership = false)]
     void SendOKServerRpc(ulong targetId)
