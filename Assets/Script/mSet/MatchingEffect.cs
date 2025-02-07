@@ -89,6 +89,7 @@ public class MatchingEffect : MonoBehaviour
 
     void PullSO(GameObject turaa)
     {
+        if (!turaa) return;
         SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
@@ -98,6 +99,7 @@ public class MatchingEffect : MonoBehaviour
 
     void ReturnSO(GameObject turaa)
     {
+        if(!turaa) return;
         SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
