@@ -16,9 +16,9 @@ public class InputManager : MonoBehaviour
     float scroll;
     OwnerPlayer ownerPlayer;
     TentacleController tentacleController;
-    public bool F8 { get; set; }
+    public bool F8 { get; set; } 
 
-    public bool F9 { get; set; }
+    public bool F9 { get; set; } 
 
     void Start()
     {
@@ -47,14 +47,14 @@ public class InputManager : MonoBehaviour
         scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0f) CameraController.C.ZoomCamera(scroll);
 
-        if (MatchingStatus.C.RedTuraa != null) return;
+        if (MatchingStatus.C.RedTuraa!=null) return;
         if (Input.GetMouseButtonDown(1)) ClickMove(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        if (Input.GetMouseButtonDown(0)) CheckTarget();
+        if (Input.GetMouseButtonDown(0)) OpenInfo();
 
     }
 
 
-
+   
 
     void ClickMove(Vector3 worldPosition)
     {
@@ -65,7 +65,7 @@ public class InputManager : MonoBehaviour
         ownerPlayer.ClickMove(worldPosition);
     }
 
-    void CheckTarget()
+    void OpenInfo()
     {
         if (EventSystem.current.IsPointerOverGameObject())
         {
@@ -77,26 +77,24 @@ public class InputManager : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
             if (hit.collider != null && hit.collider.CompareTag("CharacterClick"))
             {
-                OpenInfoUI(hit);
+                targetPlayer = hit.collider.gameObject;
+
+                tentacleController.ActivateTentacle(targetPlayer);
+                
+                targetInfo.SetActive(targetInfoScript.SetTarget(targetPlayer));
+                DebuLog.C.AddDlList("afterSetTarget");
+                
             }
             else
             {
                 HideInfoUI();
+                tentacleController.NoContactTentacle();
             }
         }
     }
+   
 
-    void OpenInfoUI(RaycastHit2D hit)
-    {
-        targetPlayer = hit.collider.gameObject;
-        tentacleController.ActivateTentacle(targetPlayer);
-
-        targetInfo.SetActive(true);
-        targetInfoScript.SetTarget(targetPlayer);
-        DebuLog.C.AddDlList("afterSetTarget");
-    }
-
-
+   
     void HideInfoUI()
     {
         targetInfo.SetActive(false);
@@ -104,7 +102,7 @@ public class InputManager : MonoBehaviour
         tentacleController.NoContactTentacle();
     }
 
-
+    
 
 
 

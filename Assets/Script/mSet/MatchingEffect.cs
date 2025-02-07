@@ -93,7 +93,7 @@ public class MatchingEffect : MonoBehaviour
         SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
-            sprite.sortingOrder = 100;
+            sprite.sortingOrder = 10;
         }
     }
 
