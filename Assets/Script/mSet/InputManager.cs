@@ -16,7 +16,7 @@ public class InputManager : MonoBehaviour
     private float scroll;
     Camera myCamera;
 
-    OwnerPlayer ownerPlayer;
+    TuraaWalker ownerPlayer;
     TentacleController tentacleController;
     public bool IsRedStop { get; set; } = false;
 
@@ -35,7 +35,7 @@ public class InputManager : MonoBehaviour
         F9 = PlayerPrefs.GetInt("F9", 0) == 0;
 
         GameObject myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.GameObject();
-        ownerPlayer = myTuraa.GetComponent<OwnerPlayer>();
+        ownerPlayer = myTuraa.GetComponent<TuraaWalker>();
         tentacleController = myTuraa.GetComponent<TentacleController>();
     }
 
@@ -45,13 +45,13 @@ public class InputManager : MonoBehaviour
             && EventSystem.current.currentSelectedGameObject.GetComponent<InputField>()) return;
 
         if (Input.GetKeyDown(KeyCode.F8)) F8 = !F8;
-        if (Input.GetKey(KeyCode.Space) || F8) TakeCamera();
+        if (Input.GetKey(KeyCode.Space) || F8) CameraController.C.TakeCamera();
 
         if (!F9 && !F8) SelectMoveCamera();
         if (Input.GetKeyDown(KeyCode.F9)) F9 = !F9;
 
         scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (scroll != 0f) ZoomCamera(scroll);
+        if (scroll != 0f) CameraController.C.ZoomCamera(scroll);
 
         if (IsRedStop) return;
         if (Input.GetMouseButtonDown(1)) ClickMove(Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -62,10 +62,10 @@ public class InputManager : MonoBehaviour
 
     void SelectMoveCamera()
     {
-        if (Input.mousePosition.x < 0) ToMoveCamera(Vector3.left);
-        if (Input.mousePosition.x > Screen.width) ToMoveCamera(Vector3.right);
-        if (Input.mousePosition.y < 0) ToMoveCamera(Vector3.down);
-        if (Input.mousePosition.y > Screen.height) ToMoveCamera(Vector3.up);
+        if (Input.mousePosition.x < 0) CameraController.C.ToMoveCamera(Vector3.left);
+        if (Input.mousePosition.x > Screen.width) CameraController.C.ToMoveCamera(Vector3.right);
+        if (Input.mousePosition.y < 0) CameraController.C.ToMoveCamera(Vector3.down);
+        if (Input.mousePosition.y > Screen.height) CameraController.C.ToMoveCamera(Vector3.up);
     }
 
     void ClickMove(Vector3 worldPosition)
@@ -104,36 +104,14 @@ public class InputManager : MonoBehaviour
             }
         }
     }
-    void ZoomCamera(float scroll)
-    {
-       
-        myCamera.orthographicSize -= scroll * 2f;
-        myCamera.orthographicSize = Mathf.Clamp(myCamera.orthographicSize, 2f, 14f);
-    }
+    
 
-    void TakeCamera()
-    {
-        if (myTuraa == null)
-        {
-            myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject;
-        }
-        Vector3 takePos = myTuraa.transform.position;
-        takePos.z = -10;
-        myCamera.transform.position = takePos;
-    }
     void HideInfoUI()
     {
         targetInfo.SetActive(false);
         targetPlayer = null;
         tentacleController.NoContactTentacle();
     }
-
-    void ToMoveCamera(Vector3 direction)
-    {
-        CameraController.C.MoveCamera(direction);
-    }
-
-
 
 }
 

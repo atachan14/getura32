@@ -10,12 +10,9 @@ public class PartnerManager : NetworkBehaviour
     public List<(ulong p0, ulong p1, int tribute)> PairIdList { get; set; } = new();
 
     ulong myId;
-    ulong? partnerId;
     public int tribute { get; set; }
-    bool isP0;
     GameObject myTuraa;
     MatchingStatus mStatus;
-    public GameObject PartnerTuraa { get; set; }
     void Awake()
     {
         C = this;
@@ -60,39 +57,47 @@ public class PartnerManager : NetworkBehaviour
         ResetPartnerClientRpc();
         foreach ((ulong p0, ulong p1, int tribute) pairId in PairIdList)
         {
-            UpdateThisFieldClientRpc(pairId.p0, pairId.p1, pairId.tribute);
+            UpdateMatchingStatusClientRpc(pairId.p0, pairId.p1, pairId.tribute);
         }
-        UpdateMatchingStatusClientRpc();
+
     }
 
     [ClientRpc]
     public void ResetPartnerClientRpc()
     {
-        partnerId = null;
-        PartnerTuraa = null;
+        mStatus.PartnerId = 9999;
+        mStatus.PartnerTuraa = null;
     }
 
-    [ClientRpc]
-    public void UpdateThisFieldClientRpc(ulong p0, ulong p1, int tribute)
-    {
-        DebuLog.C.AddDlList("UpdatePartnerClientRpc");
-        if (myId == p0) { partnerId = p1; this.isP0 = true; DebuLog.C.AddDlList("me p0"); }
-        if (myId == p1) { partnerId = p0; this.isP0 = false; DebuLog.C.AddDlList("me p1"); }
-        PartnerTuraa = NetworkManager.Singleton.ConnectedClients[(ulong)partnerId].PlayerObject.gameObject;
-        this.tribute = tribute;
+    //[ClientRpc]
+    //public void UpdateThisFieldClientRpc(ulong p0, ulong p1, int tribute)
+    //{
+    //    DebuLog.C.AddDlList("UpdatePartnerClientRpc");
+    //    if (myId == p0) { partnerId = p1; this.isP0 = true; DebuLog.C.AddDlList("me p0"); }
+    //    if (myId == p1) { partnerId = p0; this.isP0 = false; DebuLog.C.AddDlList("me p1"); }
+    //    PartnerTuraa = NetworkManager.Singleton.ConnectedClients[(ulong)partnerId].PlayerObject.gameObject;
+    //    this.tribute = tribute;
 
-        DebuLog.C.AddDlList($"UpdatePartnerClientRpc partnerId:{partnerId}");
+    //    DebuLog.C.AddDlList($"UpdatePartnerClientRpc partnerId:{partnerId}");
 
-    }
+    //}
     [ClientRpc]
-    void UpdateMatchingStatusClientRpc()
+    void UpdateMatchingStatusClientRpc(ulong p0, ulong p1, int tribute)
     {
-        DebuLog.C.AddDlList($"UpdateMatchingStatus1 mStatus==null:{mStatus == null}");
-        mStatus.PartnerTuraa = PartnerTuraa;
-        mStatus.PartnerId = partnerId;
-        mStatus.IsP0 = this.isP0;
-        if (isP0) TopInfo.tributeDict[(ulong)partnerId] = -1 * tribute;
-        if (!isP0) TopInfo.tributeDict[(ulong)partnerId] =  tribute;
+        if (myId == p0)
+        {
+            mStatus.PartnerId = p1;
+            mStatus.PartnerTribute = -1 * tribute;
+            TopInfo.tributeDict[p1] = -1 * tribute;
+        }
+
+        if (myId == p1)
+        {
+            mStatus.PartnerId = p0;
+            mStatus.PartnerTribute = tribute;
+            TopInfo.tributeDict[p0] = tribute;
+        }
+
         TopInfo.C.ShowStickTributeTMP();
         DebuLog.C.AddDlList("UpdateMatchingStatus2");
 

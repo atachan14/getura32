@@ -168,7 +168,7 @@ public class DayManager : NetworkBehaviour
     void LeaverGoNightClientRpc()
     {
 
-        if (NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<MatchingStatus>().PartnerId != null)
+        if (NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<MatchingStatus>().PartnerId != 9999)
         {
             DayNightController.C.GoToFlow();
             NightStager.C.NightStart();

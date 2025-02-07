@@ -4,7 +4,7 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class OwnerPlayer : NetworkBehaviour
+public class TuraaWalker : NetworkBehaviour
 {
     [SerializeField] MatchingStatus mStatus;
     [SerializeField] private float speed = 5f;
@@ -17,7 +17,6 @@ public class OwnerPlayer : NetworkBehaviour
     private Vector3 nextPos;
     private Vector3 direction;
     private bool isMoving = false;
-    public bool IsAlive { get; set; } = true;
 
     void Start()
     {
@@ -32,7 +31,7 @@ public class OwnerPlayer : NetworkBehaviour
         SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
-            sprite.sortingOrder = 1;
+            sprite.sortingOrder += 1;
         }
     }
 

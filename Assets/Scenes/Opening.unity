@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 919913274}
   - component: {fileID: 919913279}
   - component: {fileID: 919913278}
+  - component: {fileID: 919913280}
   m_Layer: 5
   m_Name: OpeningManager
   m_TagString: Untagged
@@ -237,6 +238,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   nextTMP: {fileID: 2110863308}
+  startGold: 50000
+  startFeel: 50
+  startCharm: 10
 --- !u!114 &919913279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,6 +266,18 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &919913280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919913273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37faac6fb8a2e4a4481e161b7315675d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1112177423
 GameObject:
   m_ObjectHideFlags: 0

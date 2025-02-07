@@ -67,7 +67,7 @@ public class TargetInfoManager : NetworkBehaviour
     void SelectType()
     {
         if (mStatus.IsRed) { ChangeInfoType(redInfo); }
-        else if (mStatus.PartnerId != null && mStatus.PartnerId == targetId) { ChangeInfoType(stickInfo); }
+        else if (mStatus.PartnerId == targetId) { ChangeInfoType(stickInfo); }
         else { ChangeInfoType(pinkInfo); };
     }
 

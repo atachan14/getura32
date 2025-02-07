@@ -71,7 +71,7 @@ public class MatchingEffect : MonoBehaviour
         foreach (GameObject target in purpleTargetList) PullSO(target);
 
         purpleBoard.SetActive(true);
-        myTuraa.GetComponent<OwnerPlayer>().OnPinkSlow(targetList.Count);
+        myTuraa.GetComponent<TuraaWalker>().OnPinkSlow(targetList.Count);
     }
 
     public void OffPinkEffect()
@@ -81,7 +81,7 @@ public class MatchingEffect : MonoBehaviour
         purpleTargetList.Clear();
 
         purpleBoard.SetActive(false);
-        myTuraa.GetComponent<OwnerPlayer>().OffPinkSlow();
+        myTuraa.GetComponent<TuraaWalker>().OffPinkSlow();
     }
 
     void PullSO(GameObject turaa)

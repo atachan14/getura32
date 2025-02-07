@@ -10,7 +10,12 @@ public class LoveCallsManage : MonoBehaviour
     [SerializeField] private MatchingEffect mEffect;
     [SerializeField] private GameObject[] LovePopups = new GameObject[4];
 
-    private List<(GameObject senderTuraa, int money)> loveCallList = new List<(GameObject senderTuraa, int money)>();
+    private List<(GameObject senderTuraa, int money)> loveCallList;
+
+    private void Start()
+    {
+        loveCallList = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<MatchingStatus>().PinkList;
+    }
 
     public void AddLoveCallList(GameObject senderTuraa, int money)
     {

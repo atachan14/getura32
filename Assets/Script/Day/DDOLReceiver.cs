@@ -13,6 +13,7 @@ public class DDOLReceiver : MonoBehaviour
 
     private void Start()
     {
+        
         myId = NetworkManager.Singleton.LocalClientId;
     }
 

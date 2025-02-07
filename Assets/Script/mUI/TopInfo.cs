@@ -71,8 +71,8 @@ public class TopInfo : MonoBehaviour
         DebuLog.C.AddDlList($"ShowTributeTMP");
         int tribute = tributeDict.GetValueOrDefault(targetId, 0);
 
-        DebuLog.C.AddDlList($"ShowTributeTMP:{MatchingStatus.C != null},{MatchingStatus.C.PartnerId != null}");
-        if (MatchingStatus.C.PartnerId != null && targetId == MatchingStatus.C.PartnerId)
+        DebuLog.C.AddDlList($"ShowTributeTMP:{MatchingStatus.C != null}");
+        if (targetId == MatchingStatus.C.PartnerId)
         {
             ShowStickTributeTMP();
             return;
