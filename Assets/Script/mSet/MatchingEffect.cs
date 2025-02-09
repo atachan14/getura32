@@ -15,8 +15,8 @@ public class MatchingEffect : MonoBehaviour
     [SerializeField] private GameObject redBoard;
     [SerializeField] private GameObject stickEffectPrefab;
 
-    //private List<GameObject> purpleTargetList = new();
-    //private GameObject redTarget;
+    private List<GameObject> purpleTargetList = new();
+    private GameObject redTarget;
 
     private GameObject myTuraa;
     private MatchingStatus mStatus;
@@ -41,12 +41,17 @@ public class MatchingEffect : MonoBehaviour
     }
 
    
-
-    public void OnRedEffect(GameObject target)
+    public void RedEffectSelecter(GameObject redTarget)
     {
-        redTarget = target;
+        this.redTarget = redTarget;
+        if (redTarget) OnRedEffect();
+        else OffRedEffect();
+    }
+
+    public void OnRedEffect()
+    {
         PullSO(myTuraa);
-        PullSO(redTarget);
+        PullSO(mStatus.RedTarget);
 
         redBoard.SetActive(true);
         inputManager.IsRedStop = true;
@@ -55,8 +60,7 @@ public class MatchingEffect : MonoBehaviour
     public void OffRedEffect()
     {
         ReturnSO(myTuraa);
-        ReturnSO(redTarget);
-        redTarget = null;
+        ReturnSO(mStatus.RedTarget);
 
         redBoard.SetActive(false);
         inputManager.IsRedStop = false;
@@ -64,9 +68,8 @@ public class MatchingEffect : MonoBehaviour
 
     public void OnPinkEffect(List<GameObject> targetList)
     {
-        purpleTargetList = targetList;
         PullSO(myTuraa);
-        foreach (GameObject target in purpleTargetList) PullSO(target);
+        foreach (GameObject target in targetList) PullSO(target);
 
         purpleBoard.SetActive(true);
         myTuraa.GetComponent<TuraaWalker>().OnPinkSlow(targetList.Count);
@@ -75,8 +78,8 @@ public class MatchingEffect : MonoBehaviour
     public void OffPinkEffect()
     {
         ReturnSO(myTuraa);
-        foreach (GameObject target in purpleTargetList) ReturnSO(target);
-        purpleTargetList.Clear();
+        foreach (GameObject target in targetList) ReturnSO(target);
+        targetList.Clear();
 
         purpleBoard.SetActive(false);
         myTuraa.GetComponent<TuraaWalker>().OffPinkSlow();

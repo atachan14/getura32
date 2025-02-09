@@ -85,8 +85,7 @@ public class TargetInfoManager : NetworkBehaviour
 
     public void LoveCall()
     {
-        mEffect.OnRedEffect(targetTuraa);
-        mStatus.IsRed = true;
+        mStatus.RedTarget = targetTuraa;
         DebuLog.C.AddDlList($"LoveCall");
         LoveCallServerRpc(targetId, myId, topInfo.GetTribute());
     }
@@ -111,8 +110,8 @@ public class TargetInfoManager : NetworkBehaviour
     public void LoveCallCansell()
     {
         LoveCallCansellServerRpc(targetId, myId);
-        mEffect.OffRedEffect();
-        mStatus.IsRed = false;
+       
+        mStatus.RedTarget = null;
         TopInfo.C.ReleaseMinusForRed();
     }
 
@@ -140,16 +139,14 @@ public class TargetInfoManager : NetworkBehaviour
     {
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            mEffect.OffRedEffect();
-            mStatus.IsRed = false;
+             mStatus.RedTarget = null;
             //ChangeInfoType(stickInfo);
             TopInfo.C.ReleaseMinusForRed();
         }
     }
     public void ReceiveNG()
     {
-        mEffect.OffRedEffect();
-        mStatus.IsRed = false;
+         mStatus.RedTarget = null;
         TopInfo.C.ReleaseMinusForRed();
     }
 
