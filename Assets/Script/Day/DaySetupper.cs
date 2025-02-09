@@ -9,74 +9,83 @@ public class DaySetupper : NetworkBehaviour
 {
     public static DaySetupper C;
     ulong nowAlonerId;
+    bool dieStaging;
 
     private void Awake()
     {
         C = this;
     }
 
-    public void ServerNewDayFlow()
+    public IEnumerator ServerNewDayFlow()
     {
-        ServerComeBackDayPos();
-       
+        
+        yield return StartCoroutine(ServerDierSelect());
+
+
         DayManager.S.StartTurn();
 
 
 
+
+
     }
-    void ServerComeBackDayPos()
+
+   
+
+
+
+    IEnumerator ServerDierSelect()
     {
-        DebuLog.C.AddDlList($"start SeverComeBackDayPos:{DayAlonerManager.C.AlonerIds.Count}");
-        foreach (var client in NetworkManager.Singleton.ConnectedClients)
+        if (LastDayData.C.AlonerList.Count == 0)
         {
-            client.Value.PlayerObject.gameObject.GetComponent<TimeUpLeave>().ComeBackToDayFlow();
+            Debug.Log("severDierSelect true");
+            yield return StartCoroutine(ServerFeelMinDie());
+        }
+        else
+        {
+            Debug.Log("severDierSelect else");
+            yield return StartCoroutine(ServerAlonerDie());
         }
     }
 
+    IEnumerator ServerFeelMinDie()
+    {
+        Debug.Log("ServerFeelMinDie");
+        yield return null;
+    }
 
-    //ì‰ÇÃÉoÉOÅB
-    //void ServerAlonersDie()
-    //{
-    //DebuLog.C.AddDlList($"start SeverAlonersDie AlonerIds.Count:{DayAlonerManager.C.AlonerIds.Count}");
-    //while (DayAlonerManager.C.AlonerIds.Count != 0)
-    //{
-    //    if (dieStaging) continue;
-    //    dieStaging = true;
-    //    ulong alonerId = DayAlonerManager.C.AlonerIds[0];
-    //    AlonerDieClientRpc(alonerId);
+    IEnumerator ServerAlonerDie()
+    {
+        Debug.Log($"{LastDayData.C.AlonerList}");
+        WaitForSeconds w = new WaitForSeconds(4f);
+        foreach (ulong id in LastDayData.C.AlonerList)
+        {
+            AlonerDieClientRpc(id);
+            yield return w;
+        }
+        LastDayData.C.AlonerList.Clear();
+        Debug.Log("ServerAlonersDie end");
+    }
 
-    //}
-    //DebuLog.C.AddDlList("ServerAlonersDie end");
-    //}
+    [ClientRpc]
+    void AlonerDieClientRpc(ulong alonerId)
+    {
+        StartCoroutine(AlonerDieCoroutine(alonerId));
+    }
 
-    //[ClientRpc]
-    //void AlonerDieClientRpc(ulong aloner)
-    //{
-    //    nowAlonerId = aloner;
-    //    DebuLog.C.AddDlList($"nowAlonerId:{nowAlonerId}");
+    IEnumerator AlonerDieCoroutine(ulong alonerId)
+    {
+        Debug.Log($"nowAlonerId:{nowAlonerId}");
+        nowAlonerId = alonerId;
+        DieStager nowAlonerDS = NetworkManager.Singleton.ConnectedClients[alonerId].PlayerObject.gameObject.GetComponent<DieStager>();
+        Debug.Log($"after ForcusAloner");
+        yield return StartCoroutine(CameraController.C.ForcusAloner(nowAlonerId));
+        yield return StartCoroutine(nowAlonerDS.DieStaging());
+    }
 
-    //    CameraController.C.ForcusAloner(nowAlonerId);
-    //    StartCoroutine(ClientAlonerDie());
-    //}
 
-    //IEnumerator ClientAlonerDie()
-    //{
-    //    WaitForSeconds w = new WaitForSeconds(2f);
-    //    DebuLog.C.AddDlList("w2f");
-    //    yield return w;
-    //    NetworkManager.Singleton.ConnectedClients[nowAlonerId].PlayerObject
-    //        .gameObject.GetComponent<DieStager>().DieStaging();
-    //    DebuLog.C.AddDlList("w2f2");
-    //    yield return w;
 
-    //    if (IsHost)
-    //    {
-    //        DayAlonerManager.C.AlonerIds.RemoveAt(0);
-    //        dieStaging = false;
-    //    }
-    //}
 
-    
 
 
 }

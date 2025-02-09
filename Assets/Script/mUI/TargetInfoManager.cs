@@ -153,4 +153,9 @@ public class TargetInfoManager : NetworkBehaviour
         TopInfo.C.ReleaseMinusForRed();
     }
 
+    public void Reset()
+    {
+        targetTuraa = null;
+        targetId = 9999;
+    }
 }

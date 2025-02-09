@@ -39,7 +39,7 @@ public class DayManager : NetworkBehaviour
         timeTMP.text = RoomSetting.CI.TimeSize.ToString();
         remainingTime = RoomSetting.CI.TimeSize;
 
-        GenerateMatchingSetClientRpc();
+        //GenerateMatchingSetClientRpc();
         SetupRoomInfoClientRpc(timeTMP.text, roomSizeTMP.text, aliveSizeTMP.text);
         StartCoroutine(TimerCoroutine());
     }
@@ -59,12 +59,12 @@ public class DayManager : NetworkBehaviour
         return aliveCount;
     }
 
-    [ClientRpc]
-    void GenerateMatchingSetClientRpc()
-    {
-        if (NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<MatchingStatus>().IsAlive)
-            mSetObject.SetActive(true);
-    }
+    //[ClientRpc]
+    //void GenerateMatchingSetClientRpc()
+    //{
+    //    if (NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<MatchingStatus>().IsAlive)
+    //        mSetObject.SetActive(true);
+    //}
 
     [ClientRpc]
     public void SetupRoomInfoClientRpc(string t, string rs, string aliveSize)

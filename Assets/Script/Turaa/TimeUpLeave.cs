@@ -60,14 +60,14 @@ public class TimeUpLeave : NetworkBehaviour
     {
         //IsDay = true;
         Vector3 direction = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0f).normalized;
-        transform.position = DayPos + direction * 10f;
+        transform.position = DayPos + direction * 15f;
         isComeBackingToDay = true;
     }
 
     void ComeBackingToDay()
     {
         Vector3 direction = (DayPos - transform.position).normalized;
-        transform.position += speed * Time.deltaTime * direction;
+        transform.position += speed * Time.deltaTime * direction * 0.5f;
         if ((transform.position - DayPos).magnitude < 2f)
         {
             isComeBackingToDay = false;

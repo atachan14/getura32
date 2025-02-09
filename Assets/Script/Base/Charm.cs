@@ -8,7 +8,6 @@ public class Charm : MonoBehaviour
     [SerializeField] TextMeshProUGUI charmTMP;
     int value = 0;
     int targetValue = 0;
-    ulong myId;
     public int Value
     {
         get { return value; }
@@ -26,7 +25,6 @@ public class Charm : MonoBehaviour
 
     private void Start()
     {
-        myId = NetworkManager.Singleton.LocalClientId;
     }
 
     void Update()

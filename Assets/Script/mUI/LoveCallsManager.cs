@@ -7,14 +7,21 @@ using UnityEngine.Rendering;
 
 public class LoveCallsManage : MonoBehaviour
 {
+    public static LoveCallsManage C;
     [SerializeField] private MatchingEffect mEffect;
     [SerializeField] private GameObject[] LovePopups = new GameObject[4];
-
+    NamePlate namePlate;
     private List<(GameObject senderTuraa, int money)> loveCallList;
+
+    void Awake()
+    {
+        C = this;
+    }
 
     private void Start()
     {
         loveCallList = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<MatchingStatus>().PinkList;
+        namePlate = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<NamePlate>();
     }
 
     public void AddLoveCallList(GameObject senderTuraa, int money)
@@ -36,7 +43,7 @@ public class LoveCallsManage : MonoBehaviour
         ShowLovePopups();
     }
 
-    void ShowLovePopups()
+    public void ShowLovePopups()
     {
         ResetLovePopups();
         List<GameObject> senderTuraaList = new();
@@ -64,6 +71,7 @@ public class LoveCallsManage : MonoBehaviour
         {
             mEffect.OffPinkEffect();
         }
+        namePlate.ChangeColor();
     }
     void ResetLovePopups()
     {
@@ -88,5 +96,10 @@ public class LoveCallsManage : MonoBehaviour
     {
         GameObject senderTuraa = NetworkManager.Singleton.ConnectedClients[senderId].PlayerObject.gameObject;
         RemoveLoveCallList(senderTuraa);
+    }
+
+    public void Reset()
+    {
+        ClearLoveCallList();
     }
 }

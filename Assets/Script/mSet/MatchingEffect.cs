@@ -15,8 +15,8 @@ public class MatchingEffect : MonoBehaviour
     [SerializeField] private GameObject redBoard;
     [SerializeField] private GameObject stickEffectPrefab;
 
-    private List<GameObject> purpleTargetList;
-    private GameObject redTarget;
+    //private List<GameObject> purpleTargetList = new();
+    //private GameObject redTarget;
 
     private GameObject myTuraa;
     private MatchingStatus mStatus;
@@ -28,6 +28,7 @@ public class MatchingEffect : MonoBehaviour
     void Start()
     {
         myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.gameObject;
+        mStatus = myTuraa.GetComponent<MatchingStatus>();
     }
 
     void SetupBoard(GameObject board)
@@ -39,10 +40,7 @@ public class MatchingEffect : MonoBehaviour
         redSpriteRenderer.color = boardColor;
     }
 
-    void Update()
-    {
-
-    }
+   
 
     public void OnRedEffect(GameObject target)
     {

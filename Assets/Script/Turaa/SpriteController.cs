@@ -16,7 +16,7 @@ public class SpriteController : MonoBehaviour
     {
         
     }
-    public void ChangeSPRs_A(float a)
+    public void ChangeSPRs_TMPs_A(float a)
     {
         mySPRs = GetComponentsInChildren<SpriteRenderer>(true);
         myTMPs = GetComponentsInChildren<TextMeshProUGUI>(true);
@@ -26,5 +26,12 @@ public class SpriteController : MonoBehaviour
             color.a = a;
             spr.color = color;
         }
+        foreach (TextMeshProUGUI tmp in myTMPs)
+        {
+            Color color = tmp.color;
+            color.a = a;
+            tmp.color = color;
+        }
     }
+
 }

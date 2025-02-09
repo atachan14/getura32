@@ -60,10 +60,19 @@ public class MatchingStatus : NetworkBehaviour
         {
             partnerId = value;
             if (value != 9999) PartnerTuraa = NetworkManager.Singleton.ConnectedClients[value].PlayerObject.gameObject;
+            else partnerTuraa = null;
         }
     }
-    private List<(GameObject senderTuraa, int money)> pinkList = new ();
-    public List<(GameObject senderTuraa, int money)> PinkList { get { return pinkList; } }
+    private List<(GameObject senderTuraa, int money)> pinkList = new();
+    public List<(GameObject senderTuraa, int money)> PinkList
+    {
+        get { return pinkList; }
+        set
+        {
+            pinkList = value;
+            if (IsOwner) LoveCallsManage.C.ShowLovePopups();
+        }
+    }
 
 
     GameObject partnerTuraa;
@@ -73,8 +82,10 @@ public class MatchingStatus : NetworkBehaviour
         set
         {
             partnerTuraa = value;
-            if(value != null) partnerId = value.GetComponent<NetworkObject>().OwnerClientId;
-
+            if (value != null) partnerId = value.GetComponent<NetworkObject>().OwnerClientId;
+            else partnerId = 9999;
+            GetComponent<StickEffect>().StickingServerRpc((value != null));
+            namePlate.ChangeColor();
         }
     }
 
@@ -86,7 +97,7 @@ public class MatchingStatus : NetworkBehaviour
 
     private void Awake()
     {
-       
+
     }
 
     private void Start()
@@ -94,4 +105,15 @@ public class MatchingStatus : NetworkBehaviour
         if (IsOwner) C = this;
         namePlate = GetComponent<NamePlate>();
     }
+
+    public void Reset()
+    {
+        IsPlz = false;
+        IsCant = false;
+        IsRed = false;
+        PartnerId = 9999;
+        PinkList = new();
+        PartnerTribute = 0;
+    }
+
 }

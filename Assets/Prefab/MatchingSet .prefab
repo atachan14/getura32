@@ -2547,7 +2547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2809051554
+  GlobalObjectIdHash: 2508969846
   InScenePlacedSourceGlobalObjectIdHash: 2574747634
   DeferredDespawnTick: 0
   Ownership: 1
@@ -2977,7 +2977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 141980199
+  GlobalObjectIdHash: 2508969846
   InScenePlacedSourceGlobalObjectIdHash: 2574747634
   DeferredDespawnTick: 0
   Ownership: 1
@@ -3703,7 +3703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 368120095
+  GlobalObjectIdHash: 2508969846
   InScenePlacedSourceGlobalObjectIdHash: 2574747634
   DeferredDespawnTick: 0
   Ownership: 1
@@ -5167,7 +5167,6 @@ MonoBehaviour:
   mEffect: {fileID: 1113492793409928732}
   loveCalls: {fileID: 2197693627816038071}
   triBtnObject: {fileID: 6713986047484010850}
-  minusImage: {fileID: 0}
   topInfo: {fileID: 5668186004597217635}
 --- !u!1 &3341572499830284665
 GameObject:
@@ -8970,7 +8969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1637051418
+  GlobalObjectIdHash: 2508969846
   InScenePlacedSourceGlobalObjectIdHash: 2574747634
   DeferredDespawnTick: 0
   Ownership: 1
@@ -11073,7 +11072,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.6628492, g: 0.4978195, b: 0.9339623, a: 0.5882353}
+  m_Color: {r: 0.76521444, g: 0.49803922, b: 0.93333334, a: 0.5882353}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -12763,7 +12762,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3287992961
+  GlobalObjectIdHash: 2508969846
   InScenePlacedSourceGlobalObjectIdHash: 2574747634
   DeferredDespawnTick: 0
   Ownership: 1

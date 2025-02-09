@@ -6,11 +6,11 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public static CameraController C;
-   [SerializeField] Camera myCamera;
-    [SerializeField] GameObject myTuraa;
-    public float ScrollSize = 4;
+    [SerializeField] Camera myCamera;
+    GameObject myTuraa;
+    public float ScrollSize = 4f;
     private bool isMoving = false;
-    float duration = 0.2f;
+    float duration = 0.5f;
     float elapsed = 0f;
 
     Vector3 nightPos = new Vector3(1000, 1000, -100);
@@ -90,8 +90,23 @@ public class CameraController : MonoBehaviour
         GetComponent<Camera>().orthographicSize = 15;
     }
 
-    public void ForcusAloner(ulong id)
+    public IEnumerator ForcusAloner(ulong id)
     {
-        transform.position = NetworkManager.Singleton.ConnectedClients[id].PlayerObject.gameObject.transform.position;
+        Debug.Log("ForcusAloner start");
+
+        Vector3 startPos = transform.position;
+        Vector3 targetPos = NetworkManager.Singleton.ConnectedClients[id].PlayerObject.gameObject.transform.position;
+        float duration = 2f;
+        float elapsedTime = 0f;
+        
+        while (elapsedTime < duration)
+        {
+            transform.position = Vector3.Lerp(startPos, targetPos, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = targetPos;
+        Debug.Log("ForcusAloner end");
     }
 }

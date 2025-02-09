@@ -28,11 +28,12 @@ public class RobbyManager : NetworkBehaviour
     }
     public void StartExe()
     {
-        RoomSetting.CI.RoomSize = int.Parse(robbySizeTMP.text);
-        RoomSetting.CI.TimeSize = int.Parse(timeSettingTMP.text);
+        RoomSetting.CI.SaveRoomSetting(int.Parse(robbySizeTMP.text), int.Parse(timeSettingTMP.text));
+       
         SaveInputModeClientRpc();
         SLD.SingleLoad(SNM.Opening);
     }
+
 
     [ClientRpc]
     public void SaveInputModeClientRpc()

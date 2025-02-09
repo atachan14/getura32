@@ -14,12 +14,13 @@ public class DayAlonerManager : NetworkBehaviour
     public void ClientAloneStart()
     {
         ReportAlonerServerRpc(NetworkManager.Singleton.LocalClientId);
+        Feel.C.AloneFeel();
         DebuLog.C.AddDlList("after ReportAlonerServerRpc");
     }
     [ServerRpc(RequireOwnership = false)]
     public void ReportAlonerServerRpc(ulong id)
     {
-        AlonerIds.Add(id);
+        LastDayData.C.AlonerList.Add(id);
         DebuLog.C.AddDlList($"ReportAlonerServerRpc id:{id} , ListCount:{AlonerIds.Count}");
     }
 }

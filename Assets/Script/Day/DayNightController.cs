@@ -3,11 +3,14 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using TMPro;
+using UnityEditor.PackageManager;
 
 public class DayNightController : NetworkBehaviour
 {
     public static DayNightController C;
     public int NowNightCount { get; set; } = 0;
+    bool isNight = false;
 
     private void Awake()
     {
@@ -18,6 +21,7 @@ public class DayNightController : NetworkBehaviour
     {
         CameraController.C.NightCamera();
         GoToSetAcrives();
+        isNight = true;
         GoToReportServerRpc();
     }
     void GoToSetAcrives()
@@ -33,30 +37,21 @@ public class DayNightController : NetworkBehaviour
         NowNightCount++;
         DebuLog.C.AddDlList($"GoToReportSRpc NowNightCount:{NowNightCount}");
     }
-    public void ClientComeBackFlow()
+
+
+
+
+    [ClientRpc]
+    public void ComeBackFlowClientRpc()
     {
-        DebuLog.C.AddDlList("start ClientComeBackFlow");
+        if (!isNight) return;
         CameraController.C.DayCamera();
-        DebuLog.C.AddDlList("befor ClientComeBackSetActive");
-        ClientComeBackSetActives(); DebuLog.C.AddDlList("befor ComeBackReportServerRpc");
-        ComeBackReportServerRpc(); DebuLog.C.AddDlList("after ComeBackReportServerRpc");
+        ClientComeBackSetActives();
+        ClientResetLastDayUIs();
+        ComeBackReportServerRpc();
         //StartCoroutine(WaitToComeBackReportSRpc());
 
     }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void TestServerRpc(ulong id)
-    {
-        DebuLog.C.AddDlList($"test DayNight : {id}");
-    }
-
-    //IEnumerator WaitToComeBackReportSRpc()
-    //{
-    //    yield return new WaitForSeconds(3f);
-
-    //}
-
-
     void ClientComeBackSetActives()
     {
         foreach (var client in NetworkManager.Singleton.ConnectedClients)
@@ -65,42 +60,58 @@ public class DayNightController : NetworkBehaviour
             turaa.SetActive(true);
             turaa.GetComponent<NetworkTransform>().enabled = true;
             turaa.GetComponent<Rigidbody2D>().simulated = true;
-            turaa.GetComponent<SpriteController>().ChangeSPRs_A(1f);
+            turaa.GetComponent<SpriteController>().ChangeSPRs_TMPs_A(1f);
+            turaa.GetComponent<MatchingStatus>().Reset();
         }
     }
+
+    void ClientResetLastDayUIs()
+    {
+        TargetInfoManager.C.Reset();
+    }
+
 
     [ServerRpc(RequireOwnership = false)]
     public void ComeBackReportServerRpc()
     {
         NowNightCount--;
-        DebuLog.C.AddDlList($"ComeBackReportSRpc Id:{NetworkManager.Singleton.LocalClientId}, NowNightCount:{NowNightCount} ");
+        Debug.Log($"ComeBackReportSRpc Id:{NetworkManager.Singleton.LocalClientId}, NowNightCount:{NowNightCount} ");
        
-        //SeverRpc‘—‚ê‚È‚¢ƒoƒO
         if (NowNightCount == 0)
         {
-            DebuLog.C.AddDlList($"ComeBackReportSRpc  true");
+            Debug.Log($"ComeBackReportSRpc  true");
             ServerFullReportAfter();
         }
         else
         {
-            DebuLog.C.AddDlList("return");
+            Debug.Log("return");
             return;
         }
 
-        //StartCoroutine(TempServerFullReportAfter());
-        //ServerFullReportAfter();
     }
 
     void ServerFullReportAfter()
     {
-        DaySetupper.C.ServerNewDayFlow();
+       
+        ServerComeBackDayPos();
+        StartCoroutine(EndDelay());
+       
     }
 
-    IEnumerator TempServerFullReportAfter()
+   
+
+    void ServerComeBackDayPos()
     {
-        DebuLog.C.AddDlList("TempServerFull");
-        yield return new WaitForSeconds(3f);
-        DebuLog.C.AddDlList("TempServerFullReportAfter");
-        DaySetupper.C.ServerNewDayFlow();
+        DebuLog.C.AddDlList($"start SeverComeBackDayPos:{DayAlonerManager.C.AlonerIds.Count}");
+        foreach (var client in NetworkManager.Singleton.ConnectedClients)
+        {
+            client.Value.PlayerObject.gameObject.GetComponent<TimeUpLeave>().ComeBackToDayFlow();
+        }
+    }
+
+    IEnumerator EndDelay()
+    {
+        yield return new WaitForSeconds(2);
+        StartCoroutine (DaySetupper.C.ServerNewDayFlow());
     }
 }

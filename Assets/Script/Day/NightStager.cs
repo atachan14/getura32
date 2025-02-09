@@ -4,6 +4,7 @@ using TMPro;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class NightStager : NetworkBehaviour
 {
@@ -44,6 +45,7 @@ public class NightStager : NetworkBehaviour
     {
         TestServerRpc(NetworkManager.Singleton.LocalClientId, 0);
         PairVisible();
+
         StartCoroutine(OnLeftWalking());
         DebuLog.C.AddDlList($"1  IsSpawned: {IsSpawned}, IsOwner: {IsOwner}, IsServer: {IsServer}, IsClient: {IsClient}");
         TestServerRpc(NetworkManager.Singleton.LocalClientId, 1);
@@ -60,6 +62,7 @@ public class NightStager : NetworkBehaviour
         turaa.SetActive(true);
         turaa.GetComponent<NetworkTransform>().enabled = false;
         turaa.GetComponent<Rigidbody2D>().simulated = false;
+        turaa.GetComponent<StickEffect>().Sticking=false;
         turaa.transform.position = new Vector3(1015f + offset, 995f, -11);
     }
 
@@ -78,10 +81,9 @@ public class NightStager : NetworkBehaviour
             isLeftWalking = false;
             isIntoWalking = true;
 
+
             partnerSps = MatchingStatus.C.PartnerTuraa.GetComponentsInChildren<SpriteRenderer>();
             partnerTMP = MatchingStatus.C.PartnerTuraa.GetComponentsInChildren<TextMeshProUGUI>();
-            TestServerRpc(NetworkManager.Singleton.LocalClientId, 2);
-            DebuLog.C.AddDlList($"2  IsSpawned: {IsSpawned}, IsOwner: {IsOwner}, IsServer: {IsServer}, IsClient: {IsClient}");
         }
     }
 

@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -32,5 +34,17 @@ public class Feel : MonoBehaviour
 
             feelTMP.text = $"Feel: {value}";
         }
+    }
+
+    public IEnumerator AloneFeel()
+    {
+            float time = 0;
+        float duration = 8;
+            while (time < duration)
+            {
+                time += Time.deltaTime;
+                Value = Mathf.RoundToInt(Mathf.Lerp(value, 0, time / duration));
+                yield return null;
+            }
     }
 }

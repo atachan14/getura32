@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class SpriteSetting : NetworkBehaviour
 {
@@ -54,14 +55,14 @@ public class SpriteSetting : NetworkBehaviour
         List<Sprite> ballSps = BallSet.C.SpritesList[ballIndex];
         List<Sprite> EyeSps = EyeSet.C.SpritesList[eyeIndex];
         // List<Sprite> LegSps = EyeSet.C.SpritesList[legIndex];
-        SetNewShape(ballParson, ballSps);
-        SetNewShape(eyeParson, EyeSps);
+        SetNewShape(ballParson, ballSps, 30);
+        SetNewShape(eyeParson, EyeSps, 20);
         // SetNewShape(legParson, LegSps);
     }
 
 
 
-    public void SetNewShape(GameObject parson, List<Sprite> sps)
+    public void SetNewShape(GameObject parson, List<Sprite> sps, int so)
     {
         foreach (Transform child in parson.transform)
         {
@@ -70,14 +71,13 @@ public class SpriteSetting : NetworkBehaviour
                 Destroy(child.gameObject);
             }
         }
-        float offset = 0f;
+        int offset = 4;
         foreach (Sprite sp in sps)
         {
             GameObject newChild = Instantiate(shapeChildPrefab, parson.transform, false);
             newChild.GetComponent<SpriteRenderer>().sprite = sp;
-            newChild.transform.position += new Vector3(0, 0, offset);
-            offset += 0.1f;
-
+            newChild.GetComponent<SpriteRenderer>().sortingOrder += so + offset;
+            offset += -1;
         }
     }
 }

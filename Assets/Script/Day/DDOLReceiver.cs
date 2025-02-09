@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class DDOLReceiver : MonoBehaviour
+public class DDOLReceiver : NetworkBehaviour
 {
     public static DDOLReceiver C;
     ulong myId;

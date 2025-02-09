@@ -11,11 +11,10 @@ public class TuraaWalker : NetworkBehaviour
     [SerializeField] private float newPinkLate = 0.7f;
     private float defaultPink = 1f;
     private float pinkRatio = 1f;
-    [SerializeField] private float stickOffset = 3f;
+    [SerializeField] private float stickOffset = 1.5f;
 
     private Rigidbody2D rb;
     private Vector3 nextPos;
-    private Vector3 direction;
     private bool isMoving = false;
 
     void Start()
