@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using Unity.Netcode;
 using Unity.VisualScripting;
@@ -42,24 +41,16 @@ public class MatchingStatus : NetworkBehaviour
             namePlate.ChangeColor();
         }
     }
-
-    private GameObject redTarget;
-    public GameObject RedTarget
+    private bool isRed = false;
+    public bool IsRed
     {
-        get { return redTarget; }
+        get => isRed;
         set
         {
-            redTarget = value;
-            if (IsOwner) MatchingEffect.CI.RedEffectSelecter(value);
+            isRed = value;
             namePlate.ChangeColor();
         }
     }
-
-    public bool IsRed
-    {
-        get { return redTarget != null; }
-    }
-
 
     ulong partnerId = 9999;
     public ulong PartnerId
@@ -72,12 +63,6 @@ public class MatchingStatus : NetworkBehaviour
             else partnerTuraa = null;
         }
     }
-
-    public bool HasPartner
-    {
-        get { return partnerId != 9999; }
-    }
-
     private List<(GameObject senderTuraa, int money)> pinkList = new();
     public List<(GameObject senderTuraa, int money)> PinkList
     {
@@ -86,18 +71,6 @@ public class MatchingStatus : NetworkBehaviour
         {
             pinkList = value;
             if (IsOwner) LoveCallsManage.C.ShowLovePopups();
-        }
-    }
-    public bool IsPink
-    {
-        get { return pinkList.Count > 0; }
-    }
-
-    public List<GameObject> PinkTargetList
-    {
-        get 
-        { 
-            return pinkList.Select(item => item.senderTuraa).ToList();
         }
     }
 
@@ -137,7 +110,7 @@ public class MatchingStatus : NetworkBehaviour
     {
         IsPlz = false;
         IsCant = false;
-        RedTarget = null;
+        IsRed = false;
         PartnerId = 9999;
         PinkList = new();
         PartnerTribute = 0;
