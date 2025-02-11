@@ -46,7 +46,7 @@ public class TargetInfoManager : NetworkBehaviour
     private void Update()
     {
         SelectType();
-        
+
     }
     public bool SetTarget(GameObject target)
     {
@@ -79,14 +79,13 @@ public class TargetInfoManager : NetworkBehaviour
         }
 
         if (bm == stickInfo) { triBtnObject.SetActive(false); } else { triBtnObject.SetActive(true); }
-        if (bm == redInfo) { TopInfo.C.SetMinusForRed(); } 
+        if (bm == redInfo) { TopInfo.C.SetMinusForRed(); }
 
     }
 
     public void LoveCall()
     {
-        mEffect.OnRedEffect(targetTuraa);
-        mStatus.IsRed = true;
+        mStatus.RedTarget = targetTuraa;
         DebuLog.C.AddDlList($"LoveCall");
         LoveCallServerRpc(targetId, myId, topInfo.GetTribute());
     }
@@ -111,8 +110,8 @@ public class TargetInfoManager : NetworkBehaviour
     public void LoveCallCansell()
     {
         LoveCallCansellServerRpc(targetId, myId);
-        mEffect.OffRedEffect();
-        mStatus.IsRed = false;
+        //mEffect.OffRedEffect();
+        mStatus.RedTarget = null;
         TopInfo.C.ReleaseMinusForRed();
     }
 
@@ -140,16 +139,17 @@ public class TargetInfoManager : NetworkBehaviour
     {
         if (NetworkManager.Singleton.LocalClientId == targetId)
         {
-            mEffect.OffRedEffect();
-            mStatus.IsRed = false;
+            //mEffect.OffRedEffect();
+            mStatus.RedTarget = null;
+
             //ChangeInfoType(stickInfo);
             TopInfo.C.ReleaseMinusForRed();
         }
     }
     public void ReceiveNG()
     {
-        mEffect.OffRedEffect();
-        mStatus.IsRed = false;
+        //mEffect.OffRedEffect();
+        mStatus.RedTarget = null;
         TopInfo.C.ReleaseMinusForRed();
     }
 

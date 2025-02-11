@@ -410,6 +410,7 @@ GameObject:
   - component: {fileID: 490476383}
   - component: {fileID: 490476381}
   - component: {fileID: 490476380}
+  - component: {fileID: 490476384}
   m_Layer: 0
   m_Name: DammyCustamizer
   m_TagString: Untagged
@@ -470,6 +471,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &490476384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 490476379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3028799979f580a4bb7a0162238dcf99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sp0:
+  - {fileID: -4197720868059120748, guid: c64a92638ccfe714f961d3a50546e297, type: 3}
+  sp1:
+  - {fileID: 3771956805242267613, guid: 5b807d3cd524c5c498bafc6d234dc127, type: 3}
+  - {fileID: 12454195890636132, guid: 74ba5dbd263c29142bd804cf5930ee62, type: 3}
+  - {fileID: -6922719500765128915, guid: c7a89076478e1f54fa814797709a61f6, type: 3}
+  sp2:
+  - {fileID: 8910653310320846050, guid: ad3eb3a92d73ef4489e7dc49349eb16b, type: 3}
+  - {fileID: 4449082220229824037, guid: f90f9125fbbf232478ebf6521d296b86, type: 3}
 --- !u!1 &513924170
 GameObject:
   m_ObjectHideFlags: 0
@@ -3577,6 +3599,10 @@ PrefabInstance:
     - target: {fileID: 4083219395548795440, guid: dcc41567357def642a2ab44c99c89732, type: 3}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 4719664324599006737, guid: dcc41567357def642a2ab44c99c89732, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5595251084694890187, guid: dcc41567357def642a2ab44c99c89732, type: 3}
       propertyPath: m_TagString

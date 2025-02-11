@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Security.Cryptography;
 using Unity.Collections;
 using Unity.Netcode;
@@ -53,16 +54,17 @@ public class SpriteSetting : NetworkBehaviour
     void ChangeSprites(int ballIndex, int eyeIndex, int legIndex)
     {
         List<Sprite> ballSps = BallSet.C.SpritesList[ballIndex];
-        List<Sprite> EyeSps = EyeSet.C.SpritesList[eyeIndex];
-        // List<Sprite> LegSps = EyeSet.C.SpritesList[legIndex];
-        SetNewShape(ballParson, ballSps, 30);
-        SetNewShape(eyeParson, EyeSps, 20);
-        // SetNewShape(legParson, LegSps);
+        List<Sprite> eyeSps = EyeSet.C.SpritesList[eyeIndex];
+        List<Sprite> legSps = LegSet.C.SpritesList[legIndex];
+        Debug.Log(legIndex);
+        SetNewShape(ballParson, ballSps, -30);
+        SetNewShape(eyeParson, eyeSps, -20);
+        SetNewShape(legParson, legSps, -10);
     }
 
 
 
-    public void SetNewShape(GameObject parson, List<Sprite> sps, int so)
+    public void SetNewShape(GameObject parson, List<Sprite> sps, float z)
     {
         foreach (Transform child in parson.transform)
         {
@@ -71,12 +73,13 @@ public class SpriteSetting : NetworkBehaviour
                 Destroy(child.gameObject);
             }
         }
+        RectTransform parentRect = GetComponent<RectTransform>();
         int offset = 4;
         foreach (Sprite sp in sps)
         {
-            GameObject newChild = Instantiate(shapeChildPrefab, parson.transform, false);
+            Vector3 v = new Vector3(parentRect.anchoredPosition.x, parentRect.anchoredPosition.y, z - offset);
+            GameObject newChild = Instantiate(shapeChildPrefab, v, Quaternion.identity, parson.transform);
             newChild.GetComponent<SpriteRenderer>().sprite = sp;
-            newChild.GetComponent<SpriteRenderer>().sortingOrder += so + offset;
             offset += -1;
         }
     }

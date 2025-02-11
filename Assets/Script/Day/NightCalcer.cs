@@ -7,7 +7,7 @@ public class NightCalcer : NetworkBehaviour
 {
     public static NightCalcer C;
     ulong myId;
-    List<(ulong sId,ulong tId)> serverList=new();
+    List<(ulong sId, ulong tId)> serverList = new();
 
     void Awake()
     {
@@ -28,17 +28,17 @@ public class NightCalcer : NetworkBehaviour
         Feel.C.Value += partnerLp - 50;
         Charm.C.Value += partnerLp / 10;
         ReportPartnerServerRpc(myId, MatchingStatus.C.PartnerId);
-       
+
     }
 
-  
 
-    [ServerRpc(RequireOwnership =false)]
-    void ReportPartnerServerRpc(ulong senderId,ulong partnerId)
+
+    [ServerRpc(RequireOwnership = false)]
+    void ReportPartnerServerRpc(ulong senderId, ulong partnerId)
     {
         serverList.Add((senderId, partnerId));
 
-        if (serverList.Count != DayNightController.C.NowNightCount) return;
+        if (serverList.Count != DayNightController.C.isNowNighters.Count) return;
 
         foreach (var item in serverList)
         {
@@ -80,5 +80,5 @@ public class NightCalcer : NetworkBehaviour
         yield return new WaitForSeconds(2);
         DayNightController.C.ComeBackFlowClientRpc();
     }
-   
+
 }

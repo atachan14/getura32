@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 public class OpeningManager : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI nextTMP;
-    [SerializeField] int startGold = 50000;
-    [SerializeField] int startFeel = 50;
+    [SerializeField] int startGold = 20000;
+    [SerializeField] int startFeel = 100;
     [SerializeField] int startCharm = 10;
 
     void Start()

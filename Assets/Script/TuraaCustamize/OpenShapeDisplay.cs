@@ -52,17 +52,15 @@ public class OpenShapeDisplay : MonoBehaviour
             if (hit.collider != null)
                 if (hit.collider.CompareTag("Ball"))
                 {
-                    Debug.Log("ball");
                     BallOpen();
                 }
                 else if (hit.collider.CompareTag("Eye"))
                 {
-                    Debug.Log("Eye");
                     EyeOpen();
                 }
                 else if (hit.collider.CompareTag("Leg"))
                 {
-                    Debug.Log("Leg");
+                    LegOpen();
                 }
         }
     }
@@ -78,6 +76,13 @@ public class OpenShapeDisplay : MonoBehaviour
     {
         SelectPart = "Eye";
         List<List<Sprite>> spsList = EyeSet.C.SpritesList;
+        GenerateShapeDisplay(spsList);
+    }
+
+    void LegOpen()
+    {
+        SelectPart = "Leg";
+        List<List<Sprite>> spsList = LegSet.C.SpritesList;
         GenerateShapeDisplay(spsList);
     }
 

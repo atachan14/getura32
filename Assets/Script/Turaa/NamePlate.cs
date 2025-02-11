@@ -6,17 +6,24 @@ using Unity.Collections;
 using System.Collections.Generic;
 using System.Collections;
 using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.UI;
 
 public class NamePlate : NetworkBehaviour
 {
     [SerializeField] TextMeshProUGUI nameTMP;
     [SerializeField] TextMeshProUGUI lpTMP;
+    [SerializeField] SpriteRenderer shadow;
+    [SerializeField] SpriteRenderer ownerShadow;
     public NetworkVariable<FixedString64Bytes> TuraaName { get; set; } = new NetworkVariable<FixedString64Bytes>();
 
     public Color NameColor
     {
         get => nameTMP.color;
-        set => nameTMP.color = value;
+        set 
+        {
+            nameTMP.color = value;
+            shadow.color = value;
+        }
     }
 
     int displayLp;
@@ -35,8 +42,13 @@ public class NamePlate : NetworkBehaviour
         if (IsOwner)
         {
             SetTuraaNameServerRpc(PlayerPrefs.GetString("TuraaName"));
+            nameTMP.text = PlayerPrefs.GetString("TuraaName");
+
+            ownerShadow.gameObject.SetActive(true);
+            
             StartCoroutine(WaitStart());
         }
+        NameColor = Color.blue;
     }
 
     IEnumerator WaitStart()
@@ -68,6 +80,7 @@ public class NamePlate : NetworkBehaviour
     {
         Debug.Log("namePlate SetTuraaNameServerRpc");
         TuraaName.Value = newName;
+
     }
 
     public void ChangeColor()
@@ -78,10 +91,11 @@ public class NamePlate : NetworkBehaviour
         else if (MatchingStatus.C.IsPlz) NameColor = new Color(1f, 1f, 6f, 1f);
         else if (MatchingStatus.C.IsCant) NameColor = Color.gray;
         else if (MatchingStatus.C.IsRed) NameColor = Color.red;
-        else if (MatchingStatus.C.PartnerId != 9999) { NameColor = Color.green; Debug.Log("green?"); }
-        else if (MatchingStatus.C.PinkList.Count != 0) NameColor = new Color(0.7f, 0.4f, 0.7f, 1f);
+        else if (MatchingStatus.C.PartnerId != 9999) { NameColor = Color.green; }
+        else if (MatchingStatus.C.PinkList.Count != 0) NameColor = new Color(0.7f, 0.0f, 0.6f, 1f);
         else NameColor = Color.blue;
-        ChangeColorServerRpc(NameColor.r, NameColor.g, NameColor.b, NameColor.a);
+        shadow.color = NameColor;
+        if (IsOwner) ChangeColorServerRpc(NameColor.r, NameColor.g, NameColor.b, NameColor.a);
     }
     [ServerRpc]
     void ChangeColorServerRpc(float r, float g, float b, float a)

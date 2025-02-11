@@ -24,11 +24,19 @@ public class DayManager : NetworkBehaviour
     }
     void Start()
     {
-        if (IsHost)
-        {
+        StartCoroutine(DayStartCoroutine());
+    }
 
-            StartTurn();
-        }
+    [ClientRpc]
+    public void DayStartClientRpc()
+    {
+        StartCoroutine(DayStartCoroutine());
+    }
+
+    IEnumerator DayStartCoroutine()
+    {
+        yield return StartCoroutine(DayStartBand.S.StartExe());
+        if (IsHost) StartTurn();
     }
 
     public void StartTurn()
@@ -120,7 +128,7 @@ public class DayManager : NetworkBehaviour
     void StopForTimeUpClientRpc()
     {
         DebuLog.C.AddDlList("timeup");
-       mSetObject.SetActive(false);
+        mSetObject.SetActive(false);
     }
 
     void TentacleSetInvisible()

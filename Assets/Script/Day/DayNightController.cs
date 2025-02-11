@@ -9,12 +9,19 @@ using UnityEditor.PackageManager;
 public class DayNightController : NetworkBehaviour
 {
     public static DayNightController C;
-    public int NowNightCount { get; set; } = 0;
+    public List<ulong> isNowNighters { get; set; } = new();
     bool isNight = false;
+    ulong myId;
+    int cbReportCount=0;
 
     private void Awake()
     {
         C = this;
+    }
+
+    private void Start()
+    {
+        myId = NetworkManager.Singleton.LocalClientId;
     }
 
     public void GoToFlow()
@@ -22,7 +29,7 @@ public class DayNightController : NetworkBehaviour
         CameraController.C.NightCamera();
         GoToSetAcrives();
         isNight = true;
-        GoToReportServerRpc();
+        GoToReportServerRpc(myId);
     }
     void GoToSetAcrives()
     {
@@ -32,10 +39,9 @@ public class DayNightController : NetworkBehaviour
         }
     }
     [ServerRpc(RequireOwnership = false)]
-    public void GoToReportServerRpc()
+    public void GoToReportServerRpc(ulong id)
     {
-        NowNightCount++;
-        DebuLog.C.AddDlList($"GoToReportSRpc NowNightCount:{NowNightCount}");
+        isNowNighters.Add(id);
     }
 
 
@@ -47,10 +53,23 @@ public class DayNightController : NetworkBehaviour
         if (!isNight) return;
         CameraController.C.DayCamera();
         ClientComeBackSetActives();
-        ClientResetLastDayUIs();
-        ComeBackReportServerRpc();
+        ServerComeBackDayPos();
+        ComeBackReportServerRpc(myId);
+
         //StartCoroutine(WaitToComeBackReportSRpc());
 
+    }
+    void ServerComeBackDayPos()
+    {
+        DebuLog.C.AddDlList($"start SeverComeBackDayPos:{DayAlonerManager.C.AlonerIds.Count}");
+        foreach (var client in NetworkManager.Singleton.ConnectedClients)
+        {
+            if (isNowNighters.Contains(client.Value.ClientId))
+            {
+                GameObject turaa = client.Value.PlayerObject.gameObject;
+                turaa.GetComponent<TimeUpLeave>().ComeBackToDayFlow();
+            }
+        }
     }
     void ClientComeBackSetActives()
     {
@@ -58,13 +77,48 @@ public class DayNightController : NetworkBehaviour
         {
             GameObject turaa = client.Value.PlayerObject.gameObject;
             turaa.SetActive(true);
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ComeBackReportServerRpc(ulong id)
+    {
+        cbReportCount++;
+        if (cbReportCount==isNowNighters.Count)
+        {
+            Debug.Log($"ComeBackReportSRpc  true");
+            cbReportCount = 0;
+            ServerFullReportAfterClientRpc();
+        }
+        else
+        {
+            Debug.Log("return");
+            return;
+        }
+    }
+
+   
+
+    [ClientRpc]
+    void ServerFullReportAfterClientRpc()
+    {
+        
+        ClientComeBackSetActives2();
+        ClientResetLastDayUIs();
+        ComeBackReport2ServerRpc(myId);
+    }
+    
+    void ClientComeBackSetActives2()
+    {
+        foreach (var client in NetworkManager.Singleton.ConnectedClients)
+        {
+            GameObject turaa = client.Value.PlayerObject.gameObject;
             turaa.GetComponent<NetworkTransform>().enabled = true;
             turaa.GetComponent<Rigidbody2D>().simulated = true;
             turaa.GetComponent<SpriteController>().ChangeSPRs_TMPs_A(1f);
             turaa.GetComponent<MatchingStatus>().Reset();
         }
     }
-
     void ClientResetLastDayUIs()
     {
         TargetInfoManager.C.Reset();
@@ -72,12 +126,11 @@ public class DayNightController : NetworkBehaviour
 
 
     [ServerRpc(RequireOwnership = false)]
-    public void ComeBackReportServerRpc()
+    public void ComeBackReport2ServerRpc(ulong id)
     {
-        NowNightCount--;
-        Debug.Log($"ComeBackReportSRpc Id:{NetworkManager.Singleton.LocalClientId}, NowNightCount:{NowNightCount} ");
-       
-        if (NowNightCount == 0)
+        isNowNighters.Remove(id);
+        Debug.Log($"isNowNighters.Count:{isNowNighters.Count}");
+        if (isNowNighters.Count == 0)
         {
             Debug.Log($"ComeBackReportSRpc  true");
             ServerFullReportAfter();
@@ -93,25 +146,18 @@ public class DayNightController : NetworkBehaviour
     void ServerFullReportAfter()
     {
        
-        ServerComeBackDayPos();
+        
         StartCoroutine(EndDelay());
        
     }
 
    
 
-    void ServerComeBackDayPos()
-    {
-        DebuLog.C.AddDlList($"start SeverComeBackDayPos:{DayAlonerManager.C.AlonerIds.Count}");
-        foreach (var client in NetworkManager.Singleton.ConnectedClients)
-        {
-            client.Value.PlayerObject.gameObject.GetComponent<TimeUpLeave>().ComeBackToDayFlow();
-        }
-    }
+   
 
     IEnumerator EndDelay()
     {
         yield return new WaitForSeconds(2);
-        StartCoroutine (DaySetupper.C.ServerNewDayFlow());
+        StartCoroutine(DaySetupper.C.ServerNewDayFlow());
     }
 }

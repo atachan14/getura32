@@ -14,7 +14,8 @@ public class DayAlonerManager : NetworkBehaviour
     public void ClientAloneStart()
     {
         ReportAlonerServerRpc(NetworkManager.Singleton.LocalClientId);
-        Feel.C.AloneFeel();
+        MatchingSet.C.gameObject.SetActive(true);
+        StartCoroutine(Feel.C.AloneFeel());
         DebuLog.C.AddDlList("after ReportAlonerServerRpc");
     }
     [ServerRpc(RequireOwnership = false)]

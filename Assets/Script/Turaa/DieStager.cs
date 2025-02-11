@@ -19,32 +19,38 @@ public class DieStager : MonoBehaviour
     {
         Debug.Log("Start DieStaging");
 
-        Vector3 start = transform.localScale;
-        Vector3 target = start * 0.5f; // 目標のサイズ
-        float duration = 1.0f; // 1秒かけて縮む
+        Vector3 startScale = transform.localScale;
+        Vector3 targetScale = startScale * 0.5f;
+        float duration = 1.0f;
         float elapsed = 0f;
+
+        SpriteRenderer[] mySPRs = GetComponentsInChildren<SpriteRenderer>(true);
+        Color startColor = mySPRs[0].color; // 最初の色を取得
+        Color targetColor = Color.blue; // 青に変化
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            transform.localScale = Vector3.Lerp(start, target, elapsed / duration);
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            transform.localScale = Vector3.Lerp(startScale, targetScale, t);
+
+            foreach (SpriteRenderer spr in mySPRs)
+            {
+                spr.color = Color.Lerp(startColor, targetColor, t);
+            }
+
             yield return null;
         }
 
-        transform.localScale = target; // 最後にピタッと合わせる
-
-        DieColor();
-        GetComponent<MatchingStatus>().IsAlive = false;
-
-       Debug.Log("End DieStaging");
-    }
-
-    void DieColor()
-    {
-        SpriteRenderer[] mySPRs = GetComponentsInChildren<SpriteRenderer>(true);
+        transform.localScale = targetScale;
         foreach (SpriteRenderer spr in mySPRs)
         {
-            spr.color = Color.blue;
+            spr.color = targetColor;
         }
+
+        tag = "Untagged";
+        Debug.Log("End DieStaging");
     }
+
 }

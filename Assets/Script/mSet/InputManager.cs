@@ -14,7 +14,6 @@ public class InputManager : MonoBehaviour
     [SerializeField] private TargetInfoManager targetInfoScript;
     private GameObject targetPlayer;
     private float scroll;
-    Camera myCamera;
 
     TuraaWalker ownerPlayer;
     TentacleController tentacleController;

@@ -87,7 +87,7 @@ public class CameraController : MonoBehaviour
 
         pos.z = -100;
         transform.position = pos;
-        GetComponent<Camera>().orthographicSize = 15;
+        GetComponent<Camera>().orthographicSize = 10;
     }
 
     public IEnumerator ForcusAloner(ulong id)
@@ -96,6 +96,7 @@ public class CameraController : MonoBehaviour
 
         Vector3 startPos = transform.position;
         Vector3 targetPos = NetworkManager.Singleton.ConnectedClients[id].PlayerObject.gameObject.transform.position;
+        targetPos.z = startPos.z;
         float duration = 2f;
         float elapsedTime = 0f;
         

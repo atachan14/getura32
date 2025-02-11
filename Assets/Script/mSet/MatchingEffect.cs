@@ -15,8 +15,8 @@ public class MatchingEffect : MonoBehaviour
     [SerializeField] private GameObject redBoard;
     [SerializeField] private GameObject stickEffectPrefab;
 
-    //private List<GameObject> purpleTargetList = new();
-    //private GameObject redTarget;
+    private List<GameObject> purpleTargetList = new();
+    private GameObject redTarget;
 
     private GameObject myTuraa;
     private MatchingStatus mStatus;
@@ -31,32 +31,30 @@ public class MatchingEffect : MonoBehaviour
         mStatus = myTuraa.GetComponent<MatchingStatus>();
     }
 
-    void SetupBoard(GameObject board)
-    {
-        board.SetActive(false);
-        SpriteRenderer redSpriteRenderer = board.GetComponent<SpriteRenderer>();
-        Color boardColor = redSpriteRenderer.color;
-        boardColor.a = 0.5f; // Alpha値を設定（0.0 - 1.0）
-        redSpriteRenderer.color = boardColor;
-    }
+    //void SetupBoard(GameObject board)
+    //{
+    //    board.SetActive(false);
+    //    SpriteRenderer redSpriteRenderer = board.GetComponent<SpriteRenderer>();
+    //    Color boardColor = redSpriteRenderer.color;
+    //    boardColor.a = 0.5f; // Alpha値を設定（0.0 - 1.0）
+    //    redSpriteRenderer.color = boardColor;
+    //}
 
    
 
     public void OnRedEffect(GameObject target)
     {
-        redTarget = target;
         PullSO(myTuraa);
-        PullSO(redTarget);
+        PullSO(target);
 
         redBoard.SetActive(true);
         inputManager.IsRedStop = true;
     }
 
-    public void OffRedEffect()
+    public void OffRedEffect(GameObject target)
     {
         ReturnSO(myTuraa);
-        ReturnSO(redTarget);
-        redTarget = null;
+        ReturnSO(target);
 
         redBoard.SetActive(false);
         inputManager.IsRedStop = false;
@@ -87,7 +85,7 @@ public class MatchingEffect : MonoBehaviour
         SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
-            sprite.sortingOrder += 10;
+            sprite.sortingOrder += 100;
         }
     }
 
@@ -96,7 +94,7 @@ public class MatchingEffect : MonoBehaviour
         SpriteRenderer[] spriteRenderers = turaa.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
-            sprite.sortingOrder -= 10;
+            sprite.sortingOrder -= 100;
         }
     }
 }

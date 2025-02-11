@@ -10,7 +10,7 @@ public class TimeUpLeave : NetworkBehaviour
     GameObject p0;
     bool IsP1Leaving = false;
     public Vector3 DayPos { get; set; }
-    bool isComeBackingToDay = false;
+    //bool isComeBackingToDay = false;
 
     //public NetworkVariable<bool> isDay = new(true);
     //public bool IsDay
@@ -23,7 +23,7 @@ public class TimeUpLeave : NetworkBehaviour
     {
         if (IsP0Leaving) P0Leave();
         if (IsP1Leaving) P1Leave();
-        if (isComeBackingToDay) ComeBackingToDay();
+        //if (isComeBackingToDay) ComeBackingToDay();
     }
 
     public void OnP0Leave(Vector3 direction)
@@ -58,20 +58,21 @@ public class TimeUpLeave : NetworkBehaviour
 
     public void ComeBackToDayFlow()
     {
-        //IsDay = true;
-        Vector3 direction = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0f).normalized;
-        transform.position = DayPos + direction * 15f;
-        isComeBackingToDay = true;
+        transform.position = DayPos;
+        //Vector3 direction = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0f).normalized;
+        //transform.position = DayPos + direction * 15f;
+        //isComeBackingToDay = true;
     }
 
-    void ComeBackingToDay()
-    {
-        Vector3 direction = (DayPos - transform.position).normalized;
-        transform.position += speed * Time.deltaTime * direction * 0.5f;
-        if ((transform.position - DayPos).magnitude < 2f)
-        {
-            isComeBackingToDay = false;
-            DebuLog.C.AddDlList("SetupComeBacking end");
-        }
-    }
+    //void ComeBackingToDay()
+    //{
+    //    Vector3 direction = (DayPos - transform.position).normalized;
+    //    transform.position += speed * Time.deltaTime * direction * 0.5f;
+    //    if ((transform.position - DayPos).magnitude < 2f)
+    //    {
+    //        isComeBackingToDay = false;
+    //        DebuLog.C.AddDlList("SetupComeBacking end");
+    //    }
+    //    transform.position= DayPos;
+    //}
 }

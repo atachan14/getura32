@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Netcode;
 using Unity.VisualScripting;
@@ -15,7 +16,9 @@ public class MatchingStatus : NetworkBehaviour
         get => isAlive;
         set
         {
+            if (isAlive && !value) StartCoroutine(GetComponent<DieStager>().DieStaging());
             isAlive = value;
+           
             namePlate.ChangeColor();
         }
     }
@@ -27,6 +30,7 @@ public class MatchingStatus : NetworkBehaviour
         set
         {
             isPlz = value;
+            GetComponent<PlzEffect>().ExeServerRpc(value);
             namePlate.ChangeColor();
         }
     }
@@ -37,20 +41,33 @@ public class MatchingStatus : NetworkBehaviour
         get => isCant;
         set
         {
+            Debug.Log("Set_IsCant");
             isCant = value;
+            if (value) IsCantReset();
+            GetComponent<CantEffect>().ExeServerRpc(value);
             namePlate.ChangeColor();
         }
     }
-    private bool isRed = false;
-    public bool IsRed
+
+    private GameObject redTarget;
+    public GameObject RedTarget
     {
-        get => isRed;
+        get { return redTarget; }
         set
         {
-            isRed = value;
+            if (redTarget != null) MatchingEffect.CI.OffRedEffect(redTarget);
+            if (value != null) MatchingEffect.CI.OnRedEffect(value);
+
+            redTarget = value;
             namePlate.ChangeColor();
         }
     }
+
+    public bool IsRed
+    {
+        get { return redTarget != null; }
+    }
+
 
     ulong partnerId = 9999;
     public ulong PartnerId
@@ -63,6 +80,12 @@ public class MatchingStatus : NetworkBehaviour
             else partnerTuraa = null;
         }
     }
+
+    public bool HasPartner
+    {
+        get { return partnerId != 9999; }
+    }
+
     private List<(GameObject senderTuraa, int money)> pinkList = new();
     public List<(GameObject senderTuraa, int money)> PinkList
     {
@@ -71,6 +94,18 @@ public class MatchingStatus : NetworkBehaviour
         {
             pinkList = value;
             if (IsOwner) LoveCallsManage.C.ShowLovePopups();
+        }
+    }
+    public bool IsPink
+    {
+        get { return pinkList.Count > 0; }
+    }
+
+    public List<GameObject> PinkTargetList
+    {
+        get
+        {
+            return pinkList.Select(item => item.senderTuraa).ToList();
         }
     }
 
@@ -110,10 +145,15 @@ public class MatchingStatus : NetworkBehaviour
     {
         IsPlz = false;
         IsCant = false;
-        IsRed = false;
+        RedTarget = null;
         PartnerId = 9999;
         PinkList = new();
         PartnerTribute = 0;
+    }
+
+    void IsCantReset()
+    {
+
     }
 
 }
