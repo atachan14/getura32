@@ -1199,7 +1199,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6514445892043590990}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1568284977869487885}
+        m_TargetAssemblyTypeName: TargetInfoManager, Assembly-CSharp
+        m_MethodName: WisClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1470183689068119207
 GameObject:
   m_ObjectHideFlags: 0

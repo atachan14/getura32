@@ -11,6 +11,7 @@ public class ChatManager : NetworkBehaviour
     [SerializeField] private float maxWidth = 250f;
 
     string myName;
+    ulong myId;
 
 
     private void Awake()
@@ -22,33 +23,45 @@ public class ChatManager : NetworkBehaviour
     {
         //myName = ClientSetting.CI.TuraaName;
         myName = PlayerPrefs.GetString("TuraaName");
+        myId = NetworkManager.Singleton.LocalClientId;
     }
 
-   
-    public void AddBlue(string value, Color senderColor)
+
+    public void AddBlue(string value, Color senderColor, ulong wisId)
     {
         //DebuLog.C.AddDlList($"AddBlueServerRpc:{myName} , {value} ,{senderColor}");
         GameObject pt = MatchingStatus.C.PartnerTuraa;
         string senderName = myName;
         if (pt) senderName += $" ( & {pt.GetComponent<NamePlate>().GetName()} )";
-        AddBlueServerRpc(senderName, value, senderColor);
+     //   if(wisId!=9999&&)
+        AddBlueServerRpc(senderName, value, senderColor, myId, wisId);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void AddBlueServerRpc(string senderName, string value, Color senderColor)
+    public void AddBlueServerRpc(string senderName, string value, Color senderColor, ulong senderId, ulong wisId)
     {
         //DebuLog.C.AddDlList($"AddBlueServerRpc:{senderName} , {value} ,{senderColor}");
-        AddBlueClientRpc(senderName, value, senderColor);
+        AddBlueClientRpc(senderName, value, senderColor, senderId, wisId);
     }
     [ClientRpc]
-    public void AddBlueClientRpc(string senderName, string value, Color senderColor)
+    public void AddBlueClientRpc(string senderName, string value, Color senderColor, ulong senderId, ulong wisId)
     {
-        //DebuLog.C.AddDlList($"AddBlueClientRpc:{senderName} , {value} ,{senderColor}");
+        Debug.Log($"addBlueCRpc myId,senderId,wisId:{myId},{senderId},{wisId}");
+        if (wisId != 9999)
+        {
+            Debug.Log($"addBlueCRpc !=9999 pass");
+            if (wisId != myId && senderId != myId) return;
+            Debug.Log($"addBlueCRpc 2 pass");
+            senderColor = new Color(255/255, 105/255, 180 / 255);
+        }
 
+        Debug.Log($"addBlueCRpc senderName,value,senderColor:{senderName},{value},{senderColor}");
         GameObject chatItem = GenerateChatItem(senderName, value, senderColor);
         ChatDisplay.CI.ChatItemList.Insert(0, chatItem);
         ChatDisplay.CI.UpdateChatDisplay();
     }
+
+
 
     GameObject GenerateChatItem(string senderName, string value, Color senderColor)
     {
@@ -68,6 +81,11 @@ public class ChatManager : NetworkBehaviour
         chatItem.GetComponent<ChatItem>().SenderName.color = senderColor;
         chatItem.GetComponent<ChatItem>().Value.color = senderColor;
         return chatItem;
+    }
+
+    string WisTagChecker()
+    {
+        return "s";
     }
 
 

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using TMPro;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class ChatDisplay : MonoBehaviour
     [SerializeField] float yDistance = 30f;
     public List<GameObject> ChatItemList { get; set; } = new List<GameObject>();
     private Color inputColor = Color.blue;
-    GameObject wisTarget;
+    ulong wisId = 9999;
 
     private void Awake()
     {
@@ -19,17 +20,21 @@ public class ChatDisplay : MonoBehaviour
     }
     public void OnSubmitChat()
     {
-        if (inputColor == Color.blue)
+        if (inputField.text != "")
         {
-            DebuLog.C.AddDlList($"OnSubmitChat:{inputField.text}");
-            ChatManager.CI.AddBlue(inputField.text, inputColor);
+            DebuLog.C.AddDlList($"OnSubmitChat text,wisId:{inputField.text},{wisId}");
+            ChatManager.CI.AddBlue(inputField.text, inputColor, wisId);
         }
         inputField.text = "";
+        wisId = 9999;
     }
 
     public void WisSet(GameObject turaa)
     {
-
+        wisId = turaa.GetComponent<NetworkObject>().OwnerClientId;
+        string tn = turaa.GetComponent<NamePlate>().GetName();
+        inputField.text = $"[To:{tn}] " + inputField.text;
+        Debug.Log($"WisSet end wisId:{wisId}");
     }
 
 

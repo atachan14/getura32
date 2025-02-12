@@ -506,7 +506,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -12}
+  m_SizeDelta: {x: -20, y: -12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &532369489
 MonoBehaviour:
@@ -983,11 +983,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5479585fcabfff344915904bd5fadc6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1474750341 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6467802319809783719, guid: 09986e1a2d24d4f4383fc1283dfd33e6, type: 3}
-  m_PrefabInstance: {fileID: 8562909651560198493}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1503009194 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5634797954203852118, guid: 043cec5096da49547af0633b74cecafd, type: 3}
@@ -1180,7 +1175,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -5, y: 5}
-  m_SizeDelta: {x: 300, y: 30}
+  m_SizeDelta: {x: 290, y: 30}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1991061111
 MonoBehaviour:
@@ -1426,9 +1421,6 @@ PrefabInstance:
       insertIndex: 0
       addedObject: {fileID: 1724522722}
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6467802319809783719, guid: 09986e1a2d24d4f4383fc1283dfd33e6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8562909651560198505}
     - targetCorrespondingSourceObject: {fileID: 8343590217660720097, guid: 09986e1a2d24d4f4383fc1283dfd33e6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1341044906}
@@ -1438,31 +1430,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9204735163729172463, guid: 09986e1a2d24d4f4383fc1283dfd33e6, type: 3}
   m_PrefabInstance: {fileID: 8562909651560198493}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8562909651560198505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474750341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4031447127
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!1001 &9169377712287593520
 PrefabInstance:
   m_ObjectHideFlags: 0
