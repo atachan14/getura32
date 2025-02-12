@@ -158,7 +158,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.8}
   m_Radius: 0.65
 --- !u!1 &267538587 stripped
 GameObject:
@@ -199,7 +199,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.8}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -387,7 +387,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -1.3}
+  m_Offset: {x: 0, y: -0.9}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -486,12 +486,14 @@ MonoBehaviour:
   sp0:
   - {fileID: -4197720868059120748, guid: c64a92638ccfe714f961d3a50546e297, type: 3}
   sp1:
-  - {fileID: 3771956805242267613, guid: 5b807d3cd524c5c498bafc6d234dc127, type: 3}
-  - {fileID: 12454195890636132, guid: 74ba5dbd263c29142bd804cf5930ee62, type: 3}
-  - {fileID: -6922719500765128915, guid: c7a89076478e1f54fa814797709a61f6, type: 3}
+  - {fileID: 8910653310320846050, guid: e82d909e698034e47abb5b3e944a7d36, type: 3}
+  - {fileID: 4449082220229824037, guid: 05e4d2fe914698d48b10efb52eae7a9a, type: 3}
   sp2:
-  - {fileID: 8910653310320846050, guid: ad3eb3a92d73ef4489e7dc49349eb16b, type: 3}
-  - {fileID: 4449082220229824037, guid: f90f9125fbbf232478ebf6521d296b86, type: 3}
+  - {fileID: -7068442250952140677, guid: 66f58e2e973d64a44adb16a5e69c4f83, type: 3}
+  - {fileID: 3948664037200263842, guid: 750a4898938c5114ea3ea9218dd4f140, type: 3}
+  sp3:
+  - {fileID: -839106392766877732, guid: bcc5da7f01ed09744b7a660719f8d59a, type: 3}
+  - {fileID: 4087979726897860742, guid: e6fc860905973c04d91d33ea6c57b096, type: 3}
 --- !u!1 &513924170
 GameObject:
   m_ObjectHideFlags: 0
@@ -3560,6 +3562,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 63193244183795828, guid: dcc41567357def642a2ab44c99c89732, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 405820326815632613, guid: dcc41567357def642a2ab44c99c89732, type: 3}
       propertyPath: m_TagString
       value: Eye
@@ -3636,6 +3642,22 @@ PrefabInstance:
       propertyPath: Ball
       value: 
       objectReference: {fileID: 194451903}
+    - target: {fileID: 7681924226901919827, guid: dcc41567357def642a2ab44c99c89732, type: 3}
+      propertyPath: m_Size.x
+      value: 3.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7681924226901919827, guid: dcc41567357def642a2ab44c99c89732, type: 3}
+      propertyPath: m_Size.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7681924226901919827, guid: dcc41567357def642a2ab44c99c89732, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4197720868059120748, guid: c64a92638ccfe714f961d3a50546e297, type: 3}
+    - target: {fileID: 7681924226901919827, guid: dcc41567357def642a2ab44c99c89732, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8774937425133250995, guid: dcc41567357def642a2ab44c99c89732, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3722,9 +3744,7 @@ PrefabInstance:
       objectReference: {fileID: 7329312415481062207}
     m_RemovedComponents:
     - {fileID: 0}
-    - {fileID: 6228095299466491453, guid: dcc41567357def642a2ab44c99c89732, type: 3}
-    - {fileID: 5874829112562425001, guid: dcc41567357def642a2ab44c99c89732, type: 3}
-    - {fileID: 1101523373493781614, guid: dcc41567357def642a2ab44c99c89732, type: 3}
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

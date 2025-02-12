@@ -16,6 +16,7 @@ public class PlzEffect : NetworkBehaviour
     [SerializeField] GameObject plz6;
     [SerializeField] GameObject plz7;
     bool exe;
+    SoManager soManager;
 
     private void Awake()
     {
@@ -24,67 +25,15 @@ public class PlzEffect : NetworkBehaviour
 
     private void Update()
     {
-        //if (exe)
-        //{
-        //    if (plz1roteR)
-        //    {
-        //        if (plz1rote > 300) plz1roteR = true;
-        //        plz1rote += plz1roteSpeed;
-        //        plz1.transform.Rotate(0, 0, plz1rote * Time.deltaTime);
-        //    }
-        //    else
-        //    {
-        //        if (plz1rote < 50) plz1roteR = false;
-        //        plz1rote -= plz1roteSpeed;
-        //        plz1.transform.Rotate(0, 0, plz1rote * Time.deltaTime);
-        //    }
-        //    if (plz1roteSpeedR)
-        //    {
-        //        if (plz1roteSpeed > 5) plz1roteSpeedR = true;
-        //        plz1roteSpeed += 1;
-        //    }
-        //    else
-        //    {
-        //        if (plz1roteSpeed < 0.5) plz1roteSpeedR = false;
-        //        plz1roteSpeed -= 1;
-        //    }
-        //}
+      
     }
 
-    [ServerRpc]
-    public void ExeServerRpc(bool b)
-    {
-        ExeClientRpc(b);
-    }
-    [ClientRpc]
-    void ExeClientRpc(bool b)
+    public void ExePlz(bool b)
     {
         plzAura.SetActive(b);
         exe = b;
-        //SpriteRenderer[] srs = GetComponentsInChildren<SpriteRenderer>();
-        //TextMeshProUGUI[] tmps = GetComponentsInChildren<TextMeshProUGUI>();
 
-        //if (b)
-        //{
-        //    foreach (SpriteRenderer sr in srs)
-        //    {
-        //        sr.sortingOrder += 100;
-        //    }
-        //    foreach (TextMeshProUGUI tmp in tmps)
-        //    {
-        //        tmp.geometrySortingOrder += 1000;
-        //    }
-        //}
-        //else
-        //{
-        //    foreach (SpriteRenderer sr in srs)
-        //    {
-        //        sr.sortingOrder -= 100;
-        //    }
-        //    foreach (TextMeshProUGUI tmp in tmps)
-        //    {
-        //        tmp.geometrySortingOrder -= 1000;
-        //    }
-        //}
+        if (soManager == null) soManager = GetComponent<SoManager>();
+        soManager.SoSelect();
     }
 }

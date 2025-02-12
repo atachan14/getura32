@@ -175,7 +175,7 @@ public class OpenShapeDisplay : MonoBehaviour
     {
         for (int i = 0; i < thmbnailList.Count; i++)
         {
-            thmbnailList[i].transform.position += new Vector3(5+i%3*130, i/3*150, 0);
+            thmbnailList[i].transform.position += new Vector3(5+i%3*130, i/-3*150, 0);
         }
     }
 

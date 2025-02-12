@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5aa45e77461a42c418c0104290c320c9
+guid: bcc5da7f01ed09744b7a660719f8d59a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3301793689099896690
-    second: PlzAura2_0
+      213: -839106392766877732
+    second: Leg3_0_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PlzAura2_0
+      name: Leg3_0_0
       rect:
         serializedVersion: 2
-        x: 35
-        y: 5
-        width: 252
-        height: 387
+        x: 0
+        y: 0
+        width: 320
+        height: 400
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e88f297222cad22d0800000000000000
-      internalID: -3301793689099896690
+      spriteID: cdfee5a7e25ea54f0800000000000000
+      internalID: -839106392766877732
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 30729c61bf8a40c4eb0b6a6b8c329807
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PlzAura2_0: -3301793689099896690
+      Leg3_0_0: -839106392766877732
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

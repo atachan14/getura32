@@ -11,6 +11,7 @@ public class ChatDisplay : MonoBehaviour
     [SerializeField] float yDistance = 30f;
     public List<GameObject> ChatItemList { get; set; } = new List<GameObject>();
     private Color inputColor = Color.blue;
+    GameObject wisTarget;
 
     private void Awake()
     {
@@ -25,6 +26,13 @@ public class ChatDisplay : MonoBehaviour
         }
         inputField.text = "";
     }
+
+    public void WisSet(GameObject turaa)
+    {
+
+    }
+
+
     public void UpdateChatDisplay()
     {
         DebuLog.C.AddDlList($"UpdateChatDisplay");

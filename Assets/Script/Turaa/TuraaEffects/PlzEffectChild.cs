@@ -32,12 +32,14 @@ public class EffectController : MonoBehaviour
         // デフォルトのグラデーション（Inspectorで設定しない場合）
         if (colorGradient.colorKeys.Length == 0)
         {
+            Debug.Log("PlzEffectChild noLength");
             colorGradient = new Gradient();
             colorGradient.SetKeys(
                 new GradientColorKey[] { new GradientColorKey(Color.red, 0f), new GradientColorKey(Color.blue, 1f) },
                 new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) }
             );
         }
+        else { Debug.Log("PlzEffectChild hasLength"); }
     }
 
     void Update()
@@ -57,8 +59,9 @@ public class EffectController : MonoBehaviour
 
         // 🎨 色変化（グラデーションで徐々に変化）
         colorTimer += Time.deltaTime * 0.5f; // 速度調整
-        Color newColor = colorGradient.Evaluate(Mathf.PingPong(colorTimer, 1));
+        Color newColor = colorGradient.Evaluate(colorTimer);
         newColor.a = alpha; // 透明度も適用
+        Debug.Log($"{newColor}");
         spr.color = newColor;
     }
 }

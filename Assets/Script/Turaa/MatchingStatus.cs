@@ -4,6 +4,7 @@ using TMPro;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class MatchingStatus : NetworkBehaviour
 {
@@ -11,6 +12,7 @@ public class MatchingStatus : NetworkBehaviour
     public static MatchingStatus C { get; set; }
     NamePlate namePlate;
     TargetInfoManager targetIM;
+    SoManager soManager;
 
 
     private GameObject target;
@@ -50,17 +52,28 @@ public class MatchingStatus : NetworkBehaviour
         }
     }
 
-    private bool isPlz = false;
+    private  bool isPlz = false;
     public bool IsPlz
     {
         get => isPlz;
         set
         {
             if (!IsOwner) return;
-            isPlz = value;
-            GetComponent<PlzEffect>().ExeServerRpc(value);
-            namePlate.ChangeColor();
+            IsPlzServerRpc(value);
         }
+    }
+    [ServerRpc]
+    public void IsPlzServerRpc(bool b)
+    {
+        IsPlzClientRpc(b);
+    }
+
+    [ClientRpc]
+    void IsPlzClientRpc(bool b)
+    {
+        isPlz = b;
+        GetComponent<PlzEffect>().ExePlz(b);
+        namePlate.ChangeColor();
     }
 
     private bool isCant = false;
@@ -172,6 +185,7 @@ public class MatchingStatus : NetworkBehaviour
     {
         if (IsOwner) C = this;
         namePlate = GetComponent<NamePlate>();
+        soManager = GetComponent<SoManager>();
 
     }
 

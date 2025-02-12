@@ -7,12 +7,14 @@ using UnityEngine;
 
 public class SoManager : NetworkBehaviour
 {
-    MatchingStatus mStatus;
+    MatchingStatus ownerStatus;
+    MatchingStatus myStatus;
     int mySo = 0;
 
     void Start()
     {
-        mStatus = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<MatchingStatus>();
+        ownerStatus = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<MatchingStatus>();
+        myStatus = GetComponent<MatchingStatus>();
 
     }
 
@@ -27,11 +29,11 @@ public class SoManager : NetworkBehaviour
     
     public void MySoSelect()
     {
-        Debug.Log($"mySoSelect IsRed:{mStatus.IsRed}");
-        if (mStatus.IsPlz) mySo = 1000;
-        else if (mStatus.IsRed) mySo = 100;
-        else if (mStatus.IsPink) mySo = 100;
-        else if (mStatus.IsCant) mySo = -1;
+        Debug.Log($"mySoSelect IsRed:{ownerStatus.IsRed}");
+        if (ownerStatus.IsPlz) mySo = 1000;
+        else if (ownerStatus.IsRed) mySo = 100;
+        else if (ownerStatus.IsPink) mySo = 100;
+        else if (ownerStatus.IsCant) mySo = -1;
         else mySo = 0;
 
         ChangeSo();
@@ -40,15 +42,14 @@ public class SoManager : NetworkBehaviour
 
     public void OtherSoSelect()
     {
-        Debug.Log($"otherSoSelect RedTarget==go:{mStatus.RedTarget == gameObject}");
-        if (mStatus.RedTarget==gameObject) mySo = 100;
-        else if(mStatus.PinkTargetList.Contains(gameObject)) mySo = 100;
+        Debug.Log($"otherSoSelect RedTarget==go:{ownerStatus.RedTarget == gameObject}");
+        if (myStatus.IsPlz) mySo = 1000;
+        else if (ownerStatus.RedTarget==gameObject) mySo = 100;
+        else if(ownerStatus.PinkTargetList.Contains(gameObject)) mySo = 100;
         else mySo = 0;
 
         ChangeSo() ;
     }
-
-
 
     public void ChangeSo()
     {

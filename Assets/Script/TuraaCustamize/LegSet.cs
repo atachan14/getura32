@@ -8,13 +8,15 @@ public class LegSet : MonoBehaviour
     [SerializeField] List<Sprite> sp0 = new();
     [SerializeField] List<Sprite> sp1 = new();
     [SerializeField] List<Sprite> sp2 = new();
+    [SerializeField] List<Sprite> sp3 = new();
 
     private void Awake()
     {
         SpritesList = new List<List<Sprite>> {
             sp0 ,
             sp1 ,
-            sp2
+            sp2 ,
+            sp3
         };
         C = this;
     }

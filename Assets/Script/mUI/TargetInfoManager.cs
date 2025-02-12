@@ -156,6 +156,11 @@ public class TargetInfoManager : NetworkBehaviour
         TopInfo.C.ReleaseMinusForRed();
     }
 
+    public void WisClick()
+    {
+        ChatDisplay.CI.WisSet(TargetTuraa);
+    }
+
     public void Reset()
     {
         TargetTuraa = null;

@@ -24,6 +24,7 @@ public class ChatManager : NetworkBehaviour
         myName = PlayerPrefs.GetString("TuraaName");
     }
 
+   
     public void AddBlue(string value, Color senderColor)
     {
         //DebuLog.C.AddDlList($"AddBlueServerRpc:{myName} , {value} ,{senderColor}");

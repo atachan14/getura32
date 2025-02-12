@@ -129,12 +129,12 @@ TextureImporter:
       name: Eye1_out_0
       rect:
         serializedVersion: 2
-        x: 57
-        y: 177
-        width: 202
-        height: 217
+        x: 0
+        y: 0
+        width: 320
+        height: 400
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: ecb11641087ce6448a7e32f55019997e
     internalID: 0
     vertices: []
     indices: 
