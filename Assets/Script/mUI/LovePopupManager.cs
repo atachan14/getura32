@@ -61,7 +61,7 @@ public class LovePopupManage : NetworkBehaviour
 
     public void WisClick()
     {
-
+        ChatDisplay.CI.WisSet(senderTuraa);
     }
     public void NGClick()
     {
