@@ -20,7 +20,7 @@ public class ChatDisplay : MonoBehaviour
     {
         CI = this;
     }
-    public void OnSubmitChat()
+    public void SubmitChat()
     {
         if (inputField.text != "")
         {

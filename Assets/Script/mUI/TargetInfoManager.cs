@@ -51,7 +51,6 @@ public class TargetInfoManager : NetworkBehaviour
     }
     public bool SetTarget(GameObject target)
     {
-        if (TargetTuraa != null && TargetTuraa == target) return true;
         if(targetNamePlate) targetNamePlate.targetShadow.SetActive(false);
 
 

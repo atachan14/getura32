@@ -66,7 +66,7 @@ public class CameraController : MonoBehaviour
         //    myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject;
         //}
         Vector3 takePos = myTuraa.transform.position;
-        takePos.z = -10;
+        takePos.z = -100;
         myCamera.transform.position = takePos;
     }
 

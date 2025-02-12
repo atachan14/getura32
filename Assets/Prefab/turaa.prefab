@@ -1344,9 +1344,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7455275797438146173}
-  - component: {fileID: 9074886304288115075}
-  - component: {fileID: 7275902773443190705}
-  - component: {fileID: 8457586012396761648}
   m_Layer: 0
   m_Name: AuraAndEffect
   m_TagString: Untagged
@@ -1374,55 +1371,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &9074886304288115075
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5731924785877247586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7023a30bfecd5434bb3b11016c57223a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
---- !u!114 &7275902773443190705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5731924785877247586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b453791ee8e896458be5fbab888d13f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  plzAura: {fileID: 756297513631637738}
-  plz0: {fileID: 0}
-  plz1: {fileID: 0}
-  plz2: {fileID: 0}
-  plz3: {fileID: 0}
-  plz4: {fileID: 0}
-  plz5: {fileID: 0}
-  plz6: {fileID: 0}
-  plz7: {fileID: 0}
---- !u!114 &8457586012396761648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5731924785877247586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 238367a0d3a315748a9c5b264cab3fcf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  StickingHeartPrefab: {fileID: 2901203729677153397, guid: 0afd8d75379e0ea4cb0821f3c9591d0f, type: 3}
 --- !u!1 &6028861080330292292
 GameObject:
   m_ObjectHideFlags: 0
@@ -2346,7 +2294,7 @@ GameObject:
   - component: {fileID: 17323265837731020}
   - component: {fileID: 5211574336986022629}
   - component: {fileID: 5120320728812351859}
-  - component: {fileID: 6124102926077740045}
+  - component: {fileID: 8961272429128532683}
   m_Layer: 0
   m_Name: turaa
   m_TagString: CharacterClick
@@ -2700,7 +2648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
---- !u!114 &6124102926077740045
+--- !u!114 &8961272429128532683
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

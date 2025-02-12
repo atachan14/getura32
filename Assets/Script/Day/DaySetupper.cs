@@ -23,14 +23,15 @@ public class DaySetupper : NetworkBehaviour
         //yield return StartCoroutine(ServerDierSelect());
         Debug.Log("ServerNewDayFlow");
         yield return new WaitForSeconds(1);
+
         if (LastDayData.C.AlonerList.Count == 0) { ServerSeachFeelMinner(); LastDayData.C.AlonerList.Clear(); }
         else DieAfter();
-            DayManager.S.StartTurn();
+
 
 
     }
 
-    void DieAfter() 
+    void DieAfter()
     {
         SoResetClientRpc();
         DayManager.S.DayStartClientRpc();
@@ -46,7 +47,7 @@ public class DaySetupper : NetworkBehaviour
     {
         ServerFeelMinnerDie();
         MatchingSet.C.gameObject.SetActive(true);
-        if(IsHost)DayManager.S.DayStartClientRpc();
+        if (IsHost) DayManager.S.DayStartClientRpc();
     }
 
     void ServerSeachFeelMinner()

@@ -11,4 +11,11 @@ public class LastDayData : MonoBehaviour
     {
         C = this;
     }
+
+    public void ResetData()
+    {
+        PairIdList.Clear();
+        AlonerList.Clear();
+    }
+
 }

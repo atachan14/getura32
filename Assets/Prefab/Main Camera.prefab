@@ -151,4 +151,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myCamera: {fileID: 5378553482421695863}
-  ScrollSize: 0.01
+  ScrollSize: 0.3

@@ -33,7 +33,7 @@ public class PlzEffect : NetworkBehaviour
         plzAura.SetActive(b);
         exe = b;
 
-        if (soManager == null) soManager = GetComponent<SoManager>();
+        if (soManager == null) soManager = GetComponentInParent<SoManager>();
         soManager.SoSelect();
     }
 }

@@ -30,6 +30,7 @@ public class DayManager : NetworkBehaviour
     [ClientRpc]
     public void DayStartClientRpc()
     {
+        LastDayData.C.ResetData();
         StartCoroutine(DayStartCoroutine());
 
     }

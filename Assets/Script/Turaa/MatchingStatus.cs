@@ -14,6 +14,28 @@ public class MatchingStatus : NetworkBehaviour
     TargetInfoManager targetIM;
     SoManager soManager;
 
+    bool isNight;
+    public bool IsNight
+    {
+        get { return isNight; }
+        set
+        {
+            isNight = value;
+            SetIsNightServerRpc(value);
+        }
+    }
+    [ServerRpc]
+    void SetIsNightServerRpc(bool b)
+    {
+        SetIsNightClientRpc(b);
+    }
+
+    [ClientRpc]
+    void SetIsNightClientRpc(bool b)
+    {
+        isNight=b;
+    }
+
 
     private GameObject target;
     public GameObject Target
@@ -22,12 +44,10 @@ public class MatchingStatus : NetworkBehaviour
         set
         {
             if (!IsOwner) return;
-            if (target && target != value) target.GetComponent<NamePlate>().targetShadow.SetActive(false);
+            if(target) target.GetComponent<NamePlate>().targetShadow.SetActive(false);
 
             target = value;
-
             if (!targetIM) targetIM = TargetInfoManager.C;
-
             if (target) targetIM.gameObject.SetActive(true);
             if (target) targetIM.SetTarget(value);
             if (target) target.GetComponent<NamePlate>().targetShadow.SetActive(true);
@@ -191,6 +211,7 @@ public class MatchingStatus : NetworkBehaviour
 
     public void Reset()
     {
+        Target = null;
         IsPlz = false;
         IsCant = false;
         RedTarget = null;

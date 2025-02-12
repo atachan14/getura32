@@ -58,7 +58,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButtonDown(1)) ClickMove(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         if (Input.GetMouseButtonDown(0)) OpenInfo();
 
-        if (Input.GetKeyDown(KeyCode.Return)) ChatDisplay.CI.OnSubmitChat();
+        if (Input.GetKeyDown(KeyCode.Return)) ChatDisplay.CI.SubmitChat();
     }
 
 

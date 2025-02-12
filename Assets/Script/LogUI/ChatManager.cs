@@ -33,8 +33,30 @@ public class ChatManager : NetworkBehaviour
         GameObject pt = MatchingStatus.C.PartnerTuraa;
         string senderName = myName;
         if (pt) senderName += $" ( & {pt.GetComponent<NamePlate>().GetName()} )";
-     //   if(wisId!=9999&&)
-        AddBlueServerRpc(senderName, value, senderColor, myId, wisId);
+
+        if (WisFCheck(wisId, value)) AddBlueServerRpc(senderName, value, senderColor, myId, wisId);
+        else WisIdError();
+    }
+
+    bool WisFCheck(ulong wisId, string value)
+    {
+        if (wisId == 9999) return true;
+
+        string tn = NetworkManager.Singleton.ConnectedClients[wisId].PlayerObject.GetComponent<NamePlate>().GetName();
+        if (value.StartsWith($"[To:{tn}] ")) return true;
+        else return false;
+    }
+
+    void WisIdError()
+    {
+        string senderName = "Error";
+        string value = "I couldn't tell.";
+        string value2 = "Was this Wis or All ?";
+        GameObject chatItem = GenerateChatItem(senderName, value, Color.red);
+        GameObject chatItem2 = GenerateChatItem(senderName, value2, Color.red);
+        ChatDisplay.CI.ChatItemList.Insert(0, chatItem);
+        ChatDisplay.CI.ChatItemList.Insert(0, chatItem2);
+        ChatDisplay.CI.UpdateChatDisplay();
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -52,7 +74,7 @@ public class ChatManager : NetworkBehaviour
             Debug.Log($"addBlueCRpc !=9999 pass");
             if (wisId != myId && senderId != myId) return;
             Debug.Log($"addBlueCRpc 2 pass");
-            senderColor = new Color(255/255, 105/255, 180 / 255);
+            senderColor = new Color(255 / 255, 154 / 255, 255 / 255);
         }
 
         Debug.Log($"addBlueCRpc senderName,value,senderColor:{senderName},{value},{senderColor}");
@@ -60,6 +82,7 @@ public class ChatManager : NetworkBehaviour
         ChatDisplay.CI.ChatItemList.Insert(0, chatItem);
         ChatDisplay.CI.UpdateChatDisplay();
     }
+
 
 
 
