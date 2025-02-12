@@ -12,18 +12,17 @@ public class InputManager : MonoBehaviour
     [SerializeField] private QolEffect QolEffect;
     [SerializeField] private GameObject targetInfo;
     [SerializeField] private TargetInfoManager targetInfoScript;
-    private GameObject targetPlayer;
     private float scroll;
 
     TuraaWalker ownerPlayer;
     TentacleController tentacleController;
-    public bool IsRedStop { get; set; } = false;
+    MatchingStatus mStatus;
 
 
     private NetworkObject myTuraa;
-    public bool F8 { get; set; } 
+    public bool F8 { get; set; }
 
-    public bool F9 { get; set; } 
+    public bool F9 { get; set; }
 
     void Start()
     {
@@ -36,6 +35,8 @@ public class InputManager : MonoBehaviour
         GameObject myTuraa = NetworkManager.Singleton.LocalClient.PlayerObject.GameObject();
         ownerPlayer = myTuraa.GetComponent<TuraaWalker>();
         tentacleController = myTuraa.GetComponent<TentacleController>();
+        mStatus = myTuraa.GetComponent<MatchingStatus>();
+
     }
 
     void Update()
@@ -52,7 +53,7 @@ public class InputManager : MonoBehaviour
         scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0f) CameraController.C.ZoomCamera(scroll);
 
-        if (IsRedStop) return;
+        if (mStatus.IsRed) return;
         if (Input.GetMouseButtonDown(1)) ClickMove(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         if (Input.GetMouseButtonDown(0)) OpenInfo();
 
@@ -88,27 +89,32 @@ public class InputManager : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
             if (hit.collider != null && hit.collider.CompareTag("CharacterClick"))
             {
-                targetPlayer = hit.collider.gameObject;
-
-                tentacleController.ActivateTentacle(targetPlayer);
-                
-                targetInfo.SetActive(targetInfoScript.SetTarget(targetPlayer));
-                DebuLog.C.AddDlList("afterSetTarget");
-                
+                OpenInfoUI( hit);
+               
             }
             else
             {
                 HideInfoUI();
-                tentacleController.NoContactTentacle();
+                
             }
         }
     }
-    
+
+    void OpenInfoUI(RaycastHit2D hit)
+    {
+        mStatus.Target = hit.collider.gameObject;
+        tentacleController.ActivateTentacle(mStatus.Target);
+
+        //targetInfo.SetActive(targetInfoScript.SetTarget(mStatus.Target));
+        DebuLog.C.AddDlList("afterSetTarget");
+
+    }
+
 
     void HideInfoUI()
     {
         targetInfo.SetActive(false);
-        targetPlayer = null;
+        mStatus.Target = null;
         tentacleController.NoContactTentacle();
     }
 

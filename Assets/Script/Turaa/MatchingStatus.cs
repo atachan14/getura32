@@ -10,15 +10,42 @@ public class MatchingStatus : NetworkBehaviour
 
     public static MatchingStatus C { get; set; }
     NamePlate namePlate;
+    TargetInfoManager targetIM;
+
+
+    private GameObject target;
+    public GameObject Target
+    {
+        get { return target; }
+        set
+        {
+            if (!IsOwner) return;
+            if (target && target != value) target.GetComponent<NamePlate>().targetShadow.SetActive(false);
+
+            target = value;
+
+            if (!targetIM) targetIM = TargetInfoManager.C;
+
+            if (target) targetIM.gameObject.SetActive(true);
+            if (target) targetIM.SetTarget(value);
+            if (target) target.GetComponent<NamePlate>().targetShadow.SetActive(true);
+
+            if (!target) targetIM.gameObject.SetActive(false);
+        }
+    }
+
+
+
     private bool isAlive = true;
     public bool IsAlive
     {
         get => isAlive;
         set
         {
+            if (!IsOwner) return;
             if (isAlive && !value) StartCoroutine(GetComponent<DieStager>().DieStaging());
             isAlive = value;
-           
+
             namePlate.ChangeColor();
         }
     }
@@ -29,6 +56,7 @@ public class MatchingStatus : NetworkBehaviour
         get => isPlz;
         set
         {
+            if (!IsOwner) return;
             isPlz = value;
             GetComponent<PlzEffect>().ExeServerRpc(value);
             namePlate.ChangeColor();
@@ -41,9 +69,8 @@ public class MatchingStatus : NetworkBehaviour
         get => isCant;
         set
         {
-            Debug.Log("Set_IsCant");
+            if (!IsOwner) return;
             isCant = value;
-            if (value) IsCantReset();
             GetComponent<CantEffect>().ExeServerRpc(value);
             namePlate.ChangeColor();
         }
@@ -55,11 +82,11 @@ public class MatchingStatus : NetworkBehaviour
         get { return redTarget; }
         set
         {
-            if (redTarget != null) MatchingEffect.CI.OffRedEffect(redTarget);
-            if (value != null) MatchingEffect.CI.OnRedEffect(value);
-
+            if (!IsOwner) return;
             redTarget = value;
+
             namePlate.ChangeColor();
+            MatchingEffect.CI.RedEffect(value != null);
         }
     }
 
@@ -75,6 +102,7 @@ public class MatchingStatus : NetworkBehaviour
         get { return partnerId; }
         set
         {
+            if (!IsOwner) return;
             partnerId = value;
             if (value != 9999) PartnerTuraa = NetworkManager.Singleton.ConnectedClients[value].PlayerObject.gameObject;
             else partnerTuraa = null;
@@ -92,6 +120,7 @@ public class MatchingStatus : NetworkBehaviour
         get { return pinkList; }
         set
         {
+            if (!IsOwner) return;
             pinkList = value;
             if (IsOwner) LoveCallsManage.C.ShowLovePopups();
         }
@@ -116,18 +145,22 @@ public class MatchingStatus : NetworkBehaviour
         get { return partnerTuraa; }
         set
         {
+            if (!IsOwner) return;
             partnerTuraa = value;
             if (value != null) partnerId = value.GetComponent<NetworkObject>().OwnerClientId;
             else partnerId = 9999;
             GetComponent<StickEffect>().StickingServerRpc((value != null));
+
             namePlate.ChangeColor();
+            if (value) namePlate.SetPartnerNameServerRpc(value.GetComponent<NamePlate>().GetName());
+            else namePlate.SetPartnerNameServerRpc("");
         }
     }
 
 
 
 
-    public int PartnerTribute { get; set; }
+    public int PartnerTribute { get; set; } = 0;
 
 
     private void Awake()
@@ -139,6 +172,7 @@ public class MatchingStatus : NetworkBehaviour
     {
         if (IsOwner) C = this;
         namePlate = GetComponent<NamePlate>();
+
     }
 
     public void Reset()
@@ -155,5 +189,6 @@ public class MatchingStatus : NetworkBehaviour
     {
 
     }
+
 
 }

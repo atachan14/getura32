@@ -31,11 +31,13 @@ public class DayManager : NetworkBehaviour
     public void DayStartClientRpc()
     {
         StartCoroutine(DayStartCoroutine());
+
     }
 
     IEnumerator DayStartCoroutine()
     {
         yield return StartCoroutine(DayStartBand.S.StartExe());
+        mSetObject.SetActive(true);
         if (IsHost) StartTurn();
     }
 

@@ -25,8 +25,9 @@ public class TargetInfoManager : NetworkBehaviour
     private TentacleController tentacleController;
     private MatchingStatus mStatus;
 
-    private GameObject targetTuraa;
+    public GameObject TargetTuraa { get; set; }
     ulong targetId;
+    NamePlate targetNamePlate;
 
 
     private void Awake()
@@ -50,14 +51,16 @@ public class TargetInfoManager : NetworkBehaviour
     }
     public bool SetTarget(GameObject target)
     {
-        DebuLog.C.AddDlList("SetTarget Start");
-        if (targetTuraa != null && targetTuraa == target) return true;
-        DebuLog.C.AddDlList("SetTarget ifPass");
+        if (TargetTuraa != null && TargetTuraa == target) return true;
+        if(targetNamePlate) targetNamePlate.targetShadow.SetActive(false);
+
 
         targetId = target.GetComponent<NetworkObject>().OwnerClientId;
-        targetTuraa = target;
+        TargetTuraa = target;
+        targetNamePlate = TargetTuraa.GetComponent<NamePlate>();
+        targetNamePlate.targetShadow.SetActive(true);
 
-        if (targetTuraa != null) topInfo.SetTopInfo(targetId, targetTuraa.GetComponent<NamePlate>());
+        if (TargetTuraa != null) topInfo.SetTopInfo(targetId, targetNamePlate);
 
 
         DebuLog.C.AddDlList("SetTarget End");
@@ -85,7 +88,7 @@ public class TargetInfoManager : NetworkBehaviour
 
     public void LoveCall()
     {
-        mStatus.RedTarget = targetTuraa;
+        mStatus.RedTarget = TargetTuraa;
         DebuLog.C.AddDlList($"LoveCall");
         LoveCallServerRpc(targetId, myId, topInfo.GetTribute());
     }
@@ -155,7 +158,7 @@ public class TargetInfoManager : NetworkBehaviour
 
     public void Reset()
     {
-        targetTuraa = null;
+        TargetTuraa = null;
         targetId = 9999;
     }
 }

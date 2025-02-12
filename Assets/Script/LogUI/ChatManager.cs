@@ -27,7 +27,10 @@ public class ChatManager : NetworkBehaviour
     public void AddBlue(string value, Color senderColor)
     {
         //DebuLog.C.AddDlList($"AddBlueServerRpc:{myName} , {value} ,{senderColor}");
-        AddBlueServerRpc(myName, value, senderColor);
+        GameObject pt = MatchingStatus.C.PartnerTuraa;
+        string senderName = myName;
+        if (pt) senderName += $" ( & {pt.GetComponent<NamePlate>().GetName()} )";
+        AddBlueServerRpc(senderName, value, senderColor);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -49,7 +52,7 @@ public class ChatManager : NetworkBehaviour
     GameObject GenerateChatItem(string senderName, string value, Color senderColor)
     {
         GameObject chatItem = Instantiate(chatItemPrefab, ChatDisplay.CI.transform);
-        chatItem.GetComponent<ChatItem>().SenderName.text = senderName;
+        chatItem.GetComponent<ChatItem>().Value.text = $"[ {senderName} ] ";
 
         foreach (char c in value)
         {

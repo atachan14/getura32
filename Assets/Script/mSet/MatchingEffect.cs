@@ -41,30 +41,34 @@ public class MatchingEffect : MonoBehaviour
     //}
 
    
-
-    public void OnRedEffect(GameObject target)
+    public void RedEffect(bool b)
     {
-        PullSO(myTuraa);
-        PullSO(target);
-
-        redBoard.SetActive(true);
-        inputManager.IsRedStop = true;
+        AllTuraaSoSelect();
+        redBoard.SetActive(b);
     }
 
-    public void OffRedEffect(GameObject target)
-    {
-        ReturnSO(myTuraa);
-        ReturnSO(target);
+    //public void OnRedEffect(GameObject target)
+    //{
+    //    //PullSO(myTuraa);
+    //    //PullSO(target);
 
-        redBoard.SetActive(false);
-        inputManager.IsRedStop = false;
-    }
+    //    redBoard.SetActive(true);
+    //}
+
+    //public void OffRedEffect(GameObject target)
+    //{
+    //    //ReturnSO(myTuraa);
+    //    //ReturnSO(target);
+
+    //    redBoard.SetActive(false);
+    //}
 
     public void OnPinkEffect(List<GameObject> targetList)
     {
         purpleTargetList = targetList;
-        PullSO(myTuraa);
-        foreach (GameObject target in purpleTargetList) PullSO(target);
+        //PullSO(myTuraa);
+        //foreach (GameObject target in purpleTargetList) PullSO(target);
+        AllTuraaSoSelect();
 
         purpleBoard.SetActive(true);
         myTuraa.GetComponent<TuraaWalker>().OnPinkSlow(targetList.Count);
@@ -72,9 +76,10 @@ public class MatchingEffect : MonoBehaviour
 
     public void OffPinkEffect()
     {
-        ReturnSO(myTuraa);
-        foreach (GameObject target in purpleTargetList) ReturnSO(target);
+        //ReturnSO(myTuraa);
+        //foreach (GameObject target in purpleTargetList) ReturnSO(target);
         purpleTargetList.Clear();
+        AllTuraaSoSelect();
 
         purpleBoard.SetActive(false);
         myTuraa.GetComponent<TuraaWalker>().OffPinkSlow();
@@ -95,6 +100,14 @@ public class MatchingEffect : MonoBehaviour
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
             sprite.sortingOrder -= 100;
+        }
+    }
+
+    void AllTuraaSoSelect()
+    {
+        foreach (var Client in NetworkManager.Singleton.ConnectedClients)
+        {
+            Client.Value.PlayerObject.GetComponent<SoManager>().SoSelect();
         }
     }
 }

@@ -24,9 +24,22 @@ public class DaySetupper : NetworkBehaviour
         Debug.Log("ServerNewDayFlow");
         yield return new WaitForSeconds(1);
         if (LastDayData.C.AlonerList.Count == 0) { ServerSeachFeelMinner(); LastDayData.C.AlonerList.Clear(); }
-        else DayManager.S.StartTurn();
+        else DieAfter();
+            DayManager.S.StartTurn();
 
 
+    }
+
+    void DieAfter() 
+    {
+        SoResetClientRpc();
+        DayManager.S.DayStartClientRpc();
+    }
+
+    [ClientRpc]
+    void SoResetClientRpc()
+    {
+        NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.GetComponent<SoManager>().ChangeSo();
     }
 
     void ServerNewDayFlow2()

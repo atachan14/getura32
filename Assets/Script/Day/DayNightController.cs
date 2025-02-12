@@ -3,8 +3,6 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using TMPro;
-using UnityEditor.PackageManager;
 
 public class DayNightController : NetworkBehaviour
 {
@@ -116,12 +114,13 @@ public class DayNightController : NetworkBehaviour
             turaa.GetComponent<NetworkTransform>().enabled = true;
             turaa.GetComponent<Rigidbody2D>().simulated = true;
             turaa.GetComponent<SpriteController>().ChangeSPRs_TMPs_A(1f);
-            turaa.GetComponent<MatchingStatus>().Reset();
         }
     }
     void ClientResetLastDayUIs()
     {
         TargetInfoManager.C.Reset();
+        NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<MatchingStatus>().Reset();
+
     }
 
 

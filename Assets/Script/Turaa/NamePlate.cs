@@ -14,12 +14,15 @@ public class NamePlate : NetworkBehaviour
     [SerializeField] TextMeshProUGUI lpTMP;
     [SerializeField] SpriteRenderer shadow;
     [SerializeField] SpriteRenderer ownerShadow;
+    public GameObject targetShadow;
+    public string PartnerName { get; set; }
+
     public NetworkVariable<FixedString64Bytes> TuraaName { get; set; } = new NetworkVariable<FixedString64Bytes>();
 
     public Color NameColor
     {
         get => nameTMP.color;
-        set 
+        set
         {
             nameTMP.color = value;
             shadow.color = value;
@@ -45,7 +48,7 @@ public class NamePlate : NetworkBehaviour
             nameTMP.text = PlayerPrefs.GetString("TuraaName");
 
             ownerShadow.gameObject.SetActive(true);
-            
+
             StartCoroutine(WaitStart());
         }
         NameColor = Color.blue;
@@ -74,7 +77,12 @@ public class NamePlate : NetworkBehaviour
             float t = Mathf.InverseLerp(0, 100, displayLp);
             lpTMP.color = Color.Lerp(Color.blue, Color.magenta, t);
         }
+
+        //CheckTarget();
     }
+
+    
+
     [ServerRpc]
     void SetTuraaNameServerRpc(string newName)
     {
@@ -125,6 +133,16 @@ public class NamePlate : NetworkBehaviour
         return nameTMP.text;
     }
 
+    [ServerRpc]
+    public void SetPartnerNameServerRpc(string pn)
+    {
+        SetPartnerNameClientRpc(pn);
+    }
+    [ClientRpc]
+    void SetPartnerNameClientRpc(string pn)
+    {
+        PartnerName = pn;
+    }
 
 
 

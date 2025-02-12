@@ -36,6 +36,7 @@ public class DayStartBand : MonoBehaviour
         day++;
 
 
+        values.anchoredPosition = new Vector2(0, values.anchoredPosition.y);
         yield return StartCoroutine(BandOpen());
         yield return StartCoroutine(GtlMoveIn());
         yield return StartCoroutine(GtlPop());
@@ -106,6 +107,7 @@ public class DayStartBand : MonoBehaviour
         float startA = 0;
         float endA = 1f;
         Color c = dayTMP.color;
+        dayTMP.text = $"Day {day}";
 
         while (elapsedTime < duration)
         {

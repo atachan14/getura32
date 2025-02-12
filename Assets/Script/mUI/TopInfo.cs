@@ -19,7 +19,7 @@ public class TopInfo : MonoBehaviour
     string type;
     public static Dictionary<ulong, int> tributeDict = new();
 
-  
+
 
     private void Awake()
     {
@@ -62,7 +62,8 @@ public class TopInfo : MonoBehaviour
         DebuLog.C.AddDlList($"SetTopInfo");
         targetId = id;
         targetNameTMP.text = targetNP.GetName();
-        
+        if (targetNP.NameColor == Color.green) targetNameTMP.text += $" & {targetNP.PartnerName}";
+
         ShowTributeTMP();
     }
 
@@ -97,7 +98,7 @@ public class TopInfo : MonoBehaviour
             tributeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f);
             triTypeTMP.text = "get";
             triTypeTMP.color = new Color(245 / 255f, 125 / 255f, 64 / 255f);
-        
+
         }
         else if (tribute > 0)
         {

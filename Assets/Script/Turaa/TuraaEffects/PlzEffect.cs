@@ -61,30 +61,30 @@ public class PlzEffect : NetworkBehaviour
     {
         plzAura.SetActive(b);
         exe = b;
-        SpriteRenderer[] srs = GetComponentsInChildren<SpriteRenderer>();
-        TextMeshProUGUI[] tmps = GetComponentsInChildren<TextMeshProUGUI>();
+        //SpriteRenderer[] srs = GetComponentsInChildren<SpriteRenderer>();
+        //TextMeshProUGUI[] tmps = GetComponentsInChildren<TextMeshProUGUI>();
 
-        if (b)
-        {
-            foreach (SpriteRenderer sr in srs)
-            {
-                sr.sortingOrder += 100;
-            }
-            foreach (TextMeshProUGUI tmp in tmps)
-            {
-                tmp.geometrySortingOrder += 1000;
-            }
-        }
-        else
-        {
-            foreach (SpriteRenderer sr in srs)
-            {
-                sr.sortingOrder -= 100;
-            }
-            foreach (TextMeshProUGUI tmp in tmps)
-            {
-                tmp.geometrySortingOrder -= 1000;
-            }
-        }
+        //if (b)
+        //{
+        //    foreach (SpriteRenderer sr in srs)
+        //    {
+        //        sr.sortingOrder += 100;
+        //    }
+        //    foreach (TextMeshProUGUI tmp in tmps)
+        //    {
+        //        tmp.geometrySortingOrder += 1000;
+        //    }
+        //}
+        //else
+        //{
+        //    foreach (SpriteRenderer sr in srs)
+        //    {
+        //        sr.sortingOrder -= 100;
+        //    }
+        //    foreach (TextMeshProUGUI tmp in tmps)
+        //    {
+        //        tmp.geometrySortingOrder -= 1000;
+        //    }
+        //}
     }
 }
