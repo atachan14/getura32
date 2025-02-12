@@ -43,12 +43,13 @@ public class InputManager : MonoBehaviour
     {
         if (EventSystem.current.currentSelectedGameObject != null
             && EventSystem.current.currentSelectedGameObject.GetComponent<InputField>()) return;
-
-        if (Input.GetKeyDown(KeyCode.F8)) F8 = !F8;
-        if (Input.GetKey(KeyCode.Space) || F8) CameraController.C.TakeCamera();
-
-        if (!F9 && !F8) SelectMoveCamera();
-        if (Input.GetKeyDown(KeyCode.F9)) F9 = !F9;
+        if (!ChatDisplay.CI.NowInput){
+            if (Input.GetKeyDown(KeyCode.F8)) F8 = !F8;
+            if (Input.GetKey(KeyCode.Space) || F8) CameraController.C.TakeCamera();
+            if (!F9 && !F8) SelectMoveCamera();
+            if (Input.GetKeyDown(KeyCode.F9)) F9 = !F9;
+        }
+     
 
         scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0f) CameraController.C.ZoomCamera(scroll);
@@ -57,6 +58,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButtonDown(1)) ClickMove(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         if (Input.GetMouseButtonDown(0)) OpenInfo();
 
+        if (Input.GetKeyDown(KeyCode.Return)) ChatDisplay.CI.OnSubmitChat();
     }
 
 

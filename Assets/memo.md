@@ -1,6 +1,6 @@
 ﻿
 ### 未修正バグ
-	
+	CameraのSpaceとかF8
 
 ### 優先順
 
@@ -11,11 +11,7 @@
 		- targetName
 		- LovePopup.SenderName
 		- chat
-	- LP表示
-		- targetInfo
-		- lovePopup
-	- PleaseTalkAura
-	- CantTalkAura
+	
 	- turaa
 		- eyeMove
 		- ?触手分割SortingOrder

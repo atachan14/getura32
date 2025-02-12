@@ -14,6 +14,8 @@ public class ChatDisplay : MonoBehaviour
     private Color inputColor = Color.blue;
     ulong wisId = 9999;
 
+    public bool NowInput { get; set; }
+
     private void Awake()
     {
         CI = this;
@@ -35,6 +37,16 @@ public class ChatDisplay : MonoBehaviour
         string tn = turaa.GetComponent<NamePlate>().GetName();
         inputField.text = $"[To:{tn}] " + inputField.text;
         Debug.Log($"WisSet end wisId:{wisId}");
+    }
+
+    public void OnSelectField()
+    {
+        NowInput = true;
+    }
+
+    public void OnDisableField()
+    {
+        NowInput = false;
     }
 
 
