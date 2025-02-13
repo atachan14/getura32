@@ -66,6 +66,9 @@
 	
 	- ？item（開発リソース的に無しかも）
 		- ファームに設置する恒久アイテム（家具とか？）/消費アイテム（食べ物とか？）
+			- 出産確率Up
+			- 親密度上昇量Up
+			- 戦闘ステータス上昇量Up
 		- 戦闘用所持アイテム（武器/防具）
 		- サーヴァント強化消費アイテム
 		- ？技マシン
@@ -132,15 +135,45 @@
 			- Levelに応じたアイテムテーブルで、欲しいアイテムを狙った周回プレイとかで遊べる。
 			- 択になるかと思ったけどやっぱ1のが面白そう。
 
-## バトルロジック（とサーヴァント）構造案（制作開始までにガチガチに調整したい）
+## 実装要素 雑分類
+	（4人で40日）
+	1.Battle（7日）
+		- ロジック
+			- 敵の行動（1日）
+			- プレイヤーの操作（コマンドUI周り）（3日）
+		- 表示（3日）
+	2.Farm（7日）
+		- ロジック
+		- 表示
+	3.DataTable/シリアライズ（要件さえ決まれば2~3時間）
+		- Excel
+		- シリアライズ→パース
+	4.その他（7日）
+		- save/load
+		- Title, Load画面？, Menu的なMain的な画面, 編成画面とか。
+
+
+## 追加したい要素
+	newGameのたびに展開が変わるような要素
+		1. StageLotteryでBunusStage → 上位Servant取得
+			- 恒久性がちょっと低め
+			- やっぱ恒久Item実装してそういうのDropしたほうが良い味変になりそう。
+
+
+## 要件定義
+# バトルロジック（とサーヴァント）構造案（制作開始までにガチガチに調整しておきたい）
 	[MyServant(Prefab)]
-		- component[MyServantData]
 		- component[CommondAction] //CommondのActionTypeに応じた動作処理
 		- component[BattleAction] //Battle中の諸々の動作処理だけどもっと細分化しそう。
+		- component[MyServantData]　//あとからAddComponent？
 
-	Class Roster()
+	Class AllMyServantData()
+		public static AllMyServantData Instance;
+		public List<MyServantData> AMSD { get; set; } = new List<Servant>(); // 非Battle時も使いそうだから多分<MyServant(Prefab)>じゃない。
+
+	Class Roster() //AllMyServantDataに統合するかも。
 		public static Roster Instance;
-		public List<MyServantData> RosterList { get; set; } = new List<Servant>();
+		public List<MyServantData> RosterList { get; set; } = new List<Servant>(); // 非Battle時も使いそうだから多分<MyServant(Prefab)>じゃない。
 		public bool HasReserver => RosterList?.Count > 0;
 
 		GameObject GenerateSummonServantCommond() //AddComponent<SummonServantCommond>
@@ -149,37 +182,15 @@
 		public Servant S { get; set; }
 		public Commond C { get; set; }
 
-	Class MyServantData() //Battle中の処理はここに書かないほうが良さそう。
+	Class MyServantData() 
 		public 各基礎ステータスとか　//DataTableから入れる
 		〃 〃
 		
-		public 名前かIDか、管理用の一意の値。
-		public 各ステータス　//インスタンス化後、基礎ステータスを使って諸々（加齢や強化）によって増減。
+		public 名前かIDか、管理用の一意の値？ Listのindexで十分かも。
+		public bool IsRoster { get; set; } 
+		public 各ステータス　//基礎ステータス（不変）を使った諸々（加齢や強化）の処理で増減。
 		public List<Commond> C { get; set; }
 
 	Class Commond()　//コマンドを強化するような要素を追加しないなら、初期値から変えずに参照先でガチャガチャする。
 		public 各数値やActionType（Atack/Buff/Debuff..）　//DataTableから
 		public 〃
-
-
-
-
-## 実装要素 雑分類
-	1.Battle
-		- ロジック
-		- 表示
-	2.Farm
-		- ロジック
-		- 表示
-	3.DataTable/シリアライズ
-		- Excel
-		- シリアライズ→パース
-	4.その他
-		- save/load
-		- Title, Load画面？, Menu的なMain的な画面, 
-
-## 追加したい要素
-	newGameのたびに展開が変わるような要素
-		1. StageLotteryでBunusStage → 上位Servant取得
-			- 恒久性がちょっと低め
-			- やっぱ恒久Item実装してそういうのDropしたほうが良い味変になりそう。
