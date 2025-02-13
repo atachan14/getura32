@@ -81,11 +81,11 @@
 	●ゲーム開始まで
 	①（Title）
 	②（Menu）画面左側でTuraa（DefaultPlayerPrefab（アバター））のカスタマイズやハンドルネームの設定を行い、画面右側のボタンでHostやClientとして接続。
-	③（Robby）参加者たちのTuraaが表示され、MatchingTurnに近い動作や操作が可能。Hostの[Start]ボタンによってゲーム開始。
+	③（Robby）参加者たちのTuraaが表示され、MainTurnとほぼ同等の操作が可能。Hostの[Start]ボタンによってゲーム開始。
 
 	●ゲーム開始後
-	①（Opening）適当な演出。
-	②（MatchingTurn）制限時間内に各プレイヤーが自由にペアを作る。このフェイズ以外には殆ど操作がない。
+	①（GameOpening）適当な演出。
+	②（MainTurn）制限時間内に各プレイヤーが自由にペアを作る。このフェイズ以外には殆ど操作がない。
 	③（TurnEnd）制限時間の終了に伴いペアが確定する。
 	④（TurnResult）ペア毎にホテルに入っていき、ステータスの増減等が行われる。
 	⑤（TurnSetup）下記条件によりプレイヤーが1人以上脱落する。
@@ -110,7 +110,7 @@
 	　　●TurnSetup時、（前回）ペア対象のこの値が半分になり、その差分を他のプレイヤーの[魅力]に応じて分配する。
 
 	　[お金]：
-	　　●MatchingTurn時、この値の譲渡をペア成立の交渉条件に組み込める。
+	　　●MainTurn時、この値の譲渡をペア成立の交渉条件に組み込める。
 		●TurnEnd時、この値をリソースにして整形コマンド等で[魅力]の値の購入が可能。
 		●GameResult時、この値によって1位から4位が決まる。
 
@@ -122,11 +122,11 @@
 	　[魅力]：
 	　　●上述の条件で上昇し、他プレイヤーからの[好き好きポイント]を集めやすくする。
 
-	●Robby/MatchingTurnでの操作（その他のフェイズでは殆ど操作しない）：
+	●Robby/MainTurnでの操作（その他のフェイズでは殆ど操作しない）：
 	　[右クリック] LOL的なTuraaの座標移動（実装済）。
 	　[左クリック] targetの選択やButtonのクリック。
 
-	- Robby/MatchingTurnの主なオブジェクト
+	- Robby/MainTurnの主なオブジェクト
 			- Turaa（DefaultPlayerPrefab（アバター））
 			- MatchingSet
 				- MatchingUI
@@ -167,7 +167,7 @@
 				- StartButton（その下 , Hostにだけ表示）
 				- StageSelect（その下 ,Hostにだけ表示）
 				- TimeSetting（中上）
-			- GameManager？（MatchingTurnの処理？）
+			- GameManager？（MainTurnの処理？）
 				- GameSize（右上 , 生存人数/参加人数）
 				- Time（中上 , 制限時間）
 				- 未定
